@@ -35,10 +35,27 @@ interface DoctorSidebarProps {
 export function DoctorSidebar({
   doctorName = "Attending Physician",
   pendingReviewsCount = 3,
-  criticalAlertsCount = 3,
+  criticalAlertsCount = 0,
 }: DoctorSidebarProps) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
+  const [unreadMessages, setUnreadMessages] = useState<number>(criticalAlertsCount ?? 0);
+
+  useEffect(() => {
+    if (pathname === "/doctor/notifications") {
+      setUnreadMessages(0);
+    } else {
+      setUnreadMessages(criticalAlertsCount ?? 0);
+    }
+  }, [criticalAlertsCount, pathname]);
+
+  useEffect(() => {
+    function handleRead() {
+      setUnreadMessages(0);
+    }
+    window.addEventListener("notifications-read", handleRead);
+    return () => window.removeEventListener("notifications-read", handleRead);
+  }, []);
 
   // Doctor Clinical Credentials State
   const [displayName, setDisplayName] = useState(doctorName);
@@ -176,7 +193,7 @@ export function DoctorSidebar({
       label: "Messages",
       href: "/doctor/notifications",
       icon: Mail,
-      badge: "3",
+      badge: unreadMessages > 0 ? String(unreadMessages) : null,
       badgeType: "count",
     },
     {

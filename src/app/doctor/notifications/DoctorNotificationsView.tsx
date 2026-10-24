@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Bell,
@@ -23,6 +23,41 @@ export function DoctorNotificationsView({
   const [notifications, setNotifications] = useState<any[]>(initialNotifications);
   const [filter, setFilter] = useState<"ALL" | "UNREAD">("ALL");
 
+  useEffect(() => {
+    // Notify sidebar and header that notifications are viewed
+    window.dispatchEvent(new Event("notifications-read"));
+
+    // Automatically mark all unread notifications as read when visited
+    const hasUnread = initialNotifications.some((n) => n.status === "UNREAD");
+    if (hasUnread) {
+      fetch("/api/notifications", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}),
+      })
+        .then(() => {
+          setNotifications((prev) =>
+            prev.map((n) => ({ ...n, status: "READ" }))
+          );
+        })
+        .catch(() => {});
+    }
+  }, [initialNotifications]);
+
+  async function handleMarkAllAsRead() {
+    try {
+      await fetch("/api/notifications", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}),
+      });
+      setNotifications((prev) =>
+        prev.map((n) => ({ ...n, status: "READ" }))
+      );
+      window.dispatchEvent(new Event("notifications-read"));
+    } catch {}
+  }
+
   async function handleMarkAsRead(id: string) {
     try {
       await fetch("/api/notifications", {
@@ -30,9 +65,13 @@ export function DoctorNotificationsView({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id }),
       });
-      setNotifications((prev) =>
-        prev.map((n) => (n.id === id ? { ...n, status: "READ" } : n))
-      );
+      setNotifications((prev) => {
+        const next = prev.map((n) => (n.id === id ? { ...n, status: "READ" } : n));
+        if (!next.some((n) => n.status === "UNREAD")) {
+          window.dispatchEvent(new Event("notifications-read"));
+        }
+        return next;
+      });
     } catch {}
   }
 
@@ -56,6 +95,15 @@ export function DoctorNotificationsView({
         </div>
 
         <div className="flex items-center gap-2">
+          {notifications.some((n) => n.status === "UNREAD") && (
+            <button
+              onClick={handleMarkAllAsRead}
+              className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
+            >
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              Mark All as Read
+            </button>
+          )}
           <button
             onClick={() => setFilter("ALL")}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${

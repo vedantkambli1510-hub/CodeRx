@@ -19,17 +19,38 @@ import {
 interface DoctorHeaderProps {
   doctorName?: string;
   onToggleSidebar?: () => void;
+  unreadAlertsCount?: number;
 }
 
 export function DoctorHeader({
   doctorName = "Dr. Aarav Mehta",
   onToggleSidebar,
+  unreadAlertsCount = 0,
 }: DoctorHeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [searchQuery, setSearchQuery] = useState("");
   const [showNotifications, setShowNotifications] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [unreadCount, setUnreadCount] = useState<number>(
+    pathname === "/doctor/notifications" ? 0 : unreadAlertsCount
+  );
+
+  useEffect(() => {
+    if (pathname === "/doctor/notifications") {
+      setUnreadCount(0);
+    } else {
+      setUnreadCount(unreadAlertsCount);
+    }
+  }, [unreadAlertsCount, pathname]);
+
+  useEffect(() => {
+    function handleRead() {
+      setUnreadCount(0);
+    }
+    window.addEventListener("notifications-read", handleRead);
+    return () => window.removeEventListener("notifications-read", handleRead);
+  }, []);
 
   const notifRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
@@ -109,9 +130,11 @@ export function DoctorHeader({
             title="Clinical Alerts"
           >
             <Bell className="w-4 h-4 text-[#465A54]" />
-            <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-[#FAF7F2]">
-              3
-            </span>
+            {unreadCount > 0 && (
+              <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-[#FAF7F2]">
+                {unreadCount}
+              </span>
+            )}
           </button>
 
           {showNotifications && (
@@ -120,8 +143,10 @@ export function DoctorHeader({
                 <span className="text-xs font-black uppercase text-slate-700 tracking-wider">
                   Clinical Notifications
                 </span>
-                <span className="text-[10px] font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full">
-                  3 Pending
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                  unreadCount > 0 ? "text-rose-600 bg-rose-50" : "text-emerald-700 bg-emerald-50"
+                }`}>
+                  {unreadCount > 0 ? `${unreadCount} Pending` : "All Caught Up"}
                 </span>
               </div>
               <div className="space-y-2 text-xs">

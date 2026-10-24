@@ -84,7 +84,7 @@ export function PatientSidebar({
           href: "/patient/notifications",
           icon: MessageSquare,
           exact: false,
-          badge: "2",
+          badge: null,
           badgeColor: "bg-[#059669] text-white",
         },
       ],
