@@ -18,9 +18,18 @@ import {
   ExternalLink,
   RotateCw,
   FileText,
-  Filter,
   ChevronDown,
   Sparkles,
+  ShoppingCart,
+  Truck,
+  HelpCircle,
+  MessageCircle,
+  Building2,
+  X,
+  ArrowRight,
+  BadgePercent,
+  CheckCircle,
+  ShoppingBag,
 } from "lucide-react";
 
 interface PatientPrescriptionsViewProps {
@@ -113,7 +122,7 @@ function parseTiming(frequency = "", instructions = "", timingPattern = ""): Par
 function getMealTiming(instructions = ""): string {
   const text = instructions.toLowerCase();
   if (text.includes("after meal") || text.includes("after food") || text.includes("immediately after")) {
-    return "After food (खाने के बाद)";
+    return "After Food (खाने के बाद)";
   }
   if (text.includes("before meal") || text.includes("before food") || text.includes("empty stomach")) {
     return "Empty Stomach (खाली पेट)";
@@ -127,7 +136,7 @@ function getMealTiming(instructions = ""): string {
   return "With Water";
 }
 
-// Demo historical visits if only 1 is in DB, so user has multiple visits in the dropdown!
+// Demo historical visits so dropdown is populated if only 1 is currently in database
 const SAMPLE_HISTORICAL_RX = [
   {
     id: "rx-historical-apr2024",
@@ -198,11 +207,11 @@ export function PatientPrescriptionsView({
   prescriptions: rawPrescriptions,
   patientName,
 }: PatientPrescriptionsViewProps) {
-  // Combine real DB prescriptions + historical visits so dropdown is fully populated!
+  // Combine real DB prescriptions + historical visits so dropdown is populated
   const allPrescriptions =
     rawPrescriptions && rawPrescriptions.length > 0
       ? [
-          ...rawPrescriptions.map((rx, idx) => ({
+          ...rawPrescriptions.map((rx) => ({
             ...rx,
             visitLabel: `${new Date(rx.createdAt).toLocaleDateString("en-US", {
               month: "short",
@@ -217,6 +226,14 @@ export function PatientPrescriptionsView({
   const [selectedRxId, setSelectedRxId] = useState<string>(allPrescriptions[0]?.id || "");
   const [timeFilter, setTimeFilter] = useState<"ALL" | "MORNING" | "AFTERNOON" | "NIGHT">("ALL");
   const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  // Refill Assistant Modal State
+  const [refillModalOpen, setRefillModalOpen] = useState(false);
+  const [activeMedicineForRefill, setActiveMedicineForRefill] = useState<any | null>(null);
+  const [isOrderingAll, setIsOrderingAll] = useState(false);
+  const [showHowItWorksModal, setShowHowItWorksModal] = useState(false);
+  const [orderSuccessStatus, setOrderSuccessStatus] = useState<string | null>(null);
+  const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
 
   const currentRx =
     allPrescriptions.find((p) => p.id === selectedRxId) || allPrescriptions[0];
@@ -281,6 +298,30 @@ export function PatientPrescriptionsView({
     }
   }
 
+  function openSingleRefill(medicine: any) {
+    setActiveMedicineForRefill(medicine);
+    setIsOrderingAll(false);
+    setOrderSuccessStatus(null);
+    setRefillModalOpen(true);
+  }
+
+  function openOrderAllRefill() {
+    setActiveMedicineForRefill(null);
+    setIsOrderingAll(true);
+    setOrderSuccessStatus(null);
+    setRefillModalOpen(true);
+  }
+
+  function handleInstantHospitalDelivery() {
+    setIsSubmittingOrder(true);
+    setTimeout(() => {
+      setIsSubmittingOrder(false);
+      setOrderSuccessStatus(
+        `Order #CRX-${Math.floor(10000 + Math.random() * 90000)} Placed! Your medicines are being packed by the hospital pharmacy for express delivery to Flat 402, Cyber City.`
+      );
+    }, 700);
+  }
+
   const rxIdDisplay = "CRX-2026-OCT-8841";
   const issuedDate = currentRx?.createdAt
     ? new Date(currentRx.createdAt).toLocaleDateString("en-IN", {
@@ -297,10 +338,22 @@ export function PatientPrescriptionsView({
     { bg: "bg-[#FFF3E0]", text: "text-[#FB8C00]" }, // Soft amber
   ];
 
+  // WhatsApp order link text generator
+  const getWhatsAppOrderUrl = () => {
+    const medList = isOrderingAll
+      ? meds.map((m, i) => `${i + 1}. ${m.name} ${m.strength || ""} (${m.duration || "90 Days"})`).join("\n")
+      : activeMedicineForRefill
+      ? `1. ${activeMedicineForRefill.name} ${activeMedicineForRefill.strength || ""} (${activeMedicineForRefill.duration || "90 Days"})`
+      : "";
+
+    const text = `Hi, I want to order medicine refill from my Dr. Aarav Mehta prescription (Rx #${rxIdDisplay}) for ${patientName}:\n\n${medList}\n\nPlease let me know the total price and delivery time to my address. Thank you!`;
+    return `https://wa.me/?text=${encodeURIComponent(text)}`;
+  };
+
   return (
-    <div className="space-y-5 max-w-5xl mx-auto text-slate-900 pb-20">
+    <div className="space-y-5 max-w-5xl mx-auto text-slate-900 pb-20 font-['Quicksand',sans-serif]">
       {/* 1. TOP CONTROLS & TIME-BASED DROPDOWN (Hidden during Print) */}
-      <div className="print:hidden bg-white p-4 rounded-3xl border border-slate-200/80 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="print:hidden bg-white p-4 rounded-3xl border border-slate-200/80 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4 font-['Quicksand',sans-serif]">
         {/* Prescription Date / Visit Dropdown */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 flex-1">
           <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5 shrink-0">
@@ -389,8 +442,51 @@ export function PatientPrescriptionsView({
         </div>
       </div>
 
-      {/* 2. THE OFFICIAL PRESCRIPTION DOCUMENT (EXACT MATCH WITH USER'S DESIGN!) */}
-      <div className="bg-[#FAFDFE] rounded-3xl border border-[#D0E2EF] shadow-lg p-6 sm:p-8 space-y-6 print:border-none print:shadow-none print:p-0 font-sans">
+      {/* 2. DOORSTEP MEDICINE DELIVERY BANNER (Explains Refill to Patient!) */}
+      <div className="print:hidden bg-gradient-to-r from-emerald-50 via-teal-50/70 to-sky-50 border border-emerald-200/80 rounded-3xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xs font-['Quicksand',sans-serif]">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-xs text-2xl">
+            🛵
+          </div>
+          <div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="font-extrabold text-emerald-950 text-sm sm:text-base">
+                Doorstep Medicine Refill &amp; Delivery
+              </span>
+              <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1">
+                <Check className="w-3 h-3 text-emerald-600" />
+                Rx Digitally Verified
+              </span>
+            </div>
+            <p className="text-xs text-emerald-900/80 font-medium pt-0.5 max-w-xl">
+              Running low on your prescribed medicines? Order your complete 90-day pack directly to your home via <strong>Tata 1mg</strong>, <strong>Apollo 24|7</strong>, or <strong>In-Clinic Pharmacy</strong> with instant 15–20% discount.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2.5 w-full md:w-auto shrink-0">
+          <button
+            type="button"
+            onClick={openOrderAllRefill}
+            className="flex-1 md:flex-initial px-4 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <ShoppingCart className="w-3.5 h-3.5" />
+            <span>Order All Medicines ({meds.length})</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setShowHowItWorksModal(true)}
+            className="px-3 py-2.5 rounded-2xl bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs border border-slate-200 shadow-2xs transition-all flex items-center gap-1.5 cursor-pointer"
+          >
+            <HelpCircle className="w-3.5 h-3.5 text-slate-500" />
+            <span className="hidden sm:inline">How it works</span>
+          </button>
+        </div>
+      </div>
+
+      {/* 3. THE OFFICIAL PRESCRIPTION DOCUMENT (CUTE, SOFT & PROPER MEDICAL SLIP!) */}
+      <div className="bg-[#FAFDFE] rounded-3xl border border-[#D0E2EF] shadow-lg p-6 sm:p-8 space-y-6 print:border-none print:shadow-none print:p-0 font-['Quicksand',sans-serif]">
         {/* HEADER: Doctor Identity & Clinic Branding */}
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-2 border-b border-[#E1EDF5]">
           <div className="flex items-start gap-4">
@@ -418,27 +514,27 @@ export function PatientPrescriptionsView({
             </div>
 
             <div className="space-y-0.5">
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#113B5F] tracking-tight font-serif italic">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#113B5F] tracking-tight">
                 {currentRx.doctor?.user?.name || "Dr. Aarav Mehta"}
               </h1>
-              <p className="text-xs sm:text-sm font-semibold text-[#1C5B8C]">
+              <p className="text-xs sm:text-sm font-bold text-[#1C5B8C]">
                 {currentRx.doctor?.specialization || "Internal Medicine & Diabetology"} •{" "}
-                <span className="font-normal text-slate-600">
+                <span className="font-semibold text-slate-600">
                   {currentRx.doctor?.qualification || "MBBS, MD (Medicine), DM (Endocrinology)"}
                 </span>
               </p>
-              <p className="text-[11px] text-slate-500 pt-0.5">
+              <p className="text-[11px] text-slate-500 font-medium pt-0.5">
                 AIIMS New Delhi | CodeRx Specialty Health Hub • OPD Suite 402, Cyber City Medical Center
               </p>
             </div>
           </div>
 
-          {/* Top-Right Motivational Motto */}
+          {/* Top-Right Cute Motto */}
           <div className="text-right shrink-0">
-            <span className="font-serif italic font-bold text-[#1C5B8C] text-sm block">
+            <span className="font-['Caveat',cursive] text-xl font-bold text-[#1C5B8C] block leading-tight">
               Better Health,
             </span>
-            <span className="font-serif italic font-bold text-[#1C5B8C] text-sm block">
+            <span className="font-['Caveat',cursive] text-xl font-bold text-[#1C5B8C] block leading-tight">
               Brighter Tomorrow ♡
             </span>
           </div>
@@ -489,19 +585,19 @@ export function PatientPrescriptionsView({
             </div>
           </div>
 
-          {/* Right Stamp: Digitally Signed Box */}
+          {/* Right Stamp: Cute Digitally Signed Box */}
           <div className="bg-[#FFF5F6] border border-[#FFD9DF] rounded-2xl p-3 text-center sm:text-right shrink-0">
             <div className="text-[11px] font-bold text-[#C7254E] flex items-center justify-center sm:justify-end gap-1">
               <Heart className="w-3 h-3 fill-[#FF8093] text-[#FF8093]" />
               <span>Digitally Signed</span>
             </div>
-            <div className="font-serif italic font-extrabold text-[#113B5F] text-base py-0.5">
+            <div className="font-['Caveat',cursive] font-bold text-[#113B5F] text-2xl py-0.5 leading-none">
               Dr. Aarav Mehta
             </div>
-            <div className="text-[10px] text-slate-500 font-medium">
+            <div className="text-[10px] text-slate-500 font-semibold">
               Reg. No: MCI/2018/98421
             </div>
-            <div className="text-[9px] text-slate-400">
+            <div className="text-[9px] text-slate-400 font-medium">
               Issued: {issuedDate} | Valid: 90 Days
             </div>
           </div>
@@ -511,11 +607,13 @@ export function PatientPrescriptionsView({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
           <div className="flex items-center gap-2">
             <HeartPulse className="w-4 h-4 text-[#1E5685] shrink-0" />
-            <span className="text-xs font-serif italic text-slate-800">
-              <strong className="font-sans font-bold text-slate-700 not-italic mr-1">
+            <span className="text-xs text-slate-800">
+              <strong className="font-bold text-slate-700 mr-1.5">
                 Clinical Diagnosis:
               </strong>
-              {currentRx.diagnosis || "Type 2 Diabetes Mellitus, Essential Hypertension, Dyslipidemia"}
+              <span className="font-semibold text-[#113B5F]">
+                {currentRx.diagnosis || "Type 2 Diabetes Mellitus, Essential Hypertension, Dyslipidemia"}
+              </span>
             </span>
           </div>
 
@@ -533,30 +631,30 @@ export function PatientPrescriptionsView({
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="text-3xl font-black text-[#113B5F] font-serif leading-none">
+              <span className="text-3xl font-black text-[#113B5F] leading-none select-none">
                 ℞
               </span>
-              <h2 className="text-base font-extrabold text-[#113B5F] font-serif underline decoration-pink-300 underline-offset-4 decoration-2">
+              <h2 className="text-base font-extrabold text-[#113B5F] underline decoration-pink-300 underline-offset-4 decoration-2">
                 Prescribed Medications ({meds.length})
               </h2>
             </div>
 
-            <span className="text-xs font-serif italic text-slate-500">
+            <span className="text-xs text-slate-500 font-semibold">
               All dosages verified against renal profile (eGFR: 46 mL/min)
             </span>
           </div>
 
           {/* Table Container */}
           <div className="overflow-x-auto rounded-2xl border border-[#D6E6F2] bg-white shadow-2xs">
-            <table className="w-full text-left text-xs border-collapse">
+            <table className="w-full text-left text-xs border-collapse font-['Quicksand',sans-serif]">
               <thead>
-                <tr className="bg-[#EAF3FA] text-[#1C5B8C] font-serif italic font-extrabold text-xs border-b border-[#D6E6F2]">
-                  <th className="py-3 px-3.5 w-10 text-center">#</th>
-                  <th className="py-3 px-3.5">Medicine &amp; Strength</th>
-                  <th className="py-3 px-3.5 text-center">Schedule (M - A - N)</th>
-                  <th className="py-3 px-3.5">Timing &amp; Instructions</th>
-                  <th className="py-3 px-3.5 text-center">Duration</th>
-                  <th className="py-3 px-3.5 text-center print:hidden">Refill</th>
+                <tr className="bg-[#EAF3FA] text-[#1C5B8C] font-bold text-xs border-b border-[#D6E6F2]">
+                  <th className="py-3.5 px-3.5 w-10 text-center">#</th>
+                  <th className="py-3.5 px-3.5">Medicine &amp; Strength</th>
+                  <th className="py-3.5 px-3.5 text-center">Schedule (M - A - N)</th>
+                  <th className="py-3.5 px-3.5">Timing &amp; Instructions</th>
+                  <th className="py-3.5 px-3.5 text-center">Duration</th>
+                  <th className="py-3.5 px-3.5 text-center print:hidden">Refill &amp; Order</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#EAF3FA] text-slate-800">
@@ -567,9 +665,6 @@ export function PatientPrescriptionsView({
                   const strength = m.strength || m.dosage || "Standard Dose";
                   const colorIndex = mIdx % numColors.length;
                   const circleTheme = numColors[colorIndex];
-                  const search1mgUrl = `https://www.1mg.com/search/all?name=${encodeURIComponent(
-                    cleanName
-                  )}`;
 
                   return (
                     <tr
@@ -587,16 +682,16 @@ export function PatientPrescriptionsView({
 
                       {/* Medicine & Strength with Pill Icon */}
                       <td className="py-4 px-3.5">
-                        <div className="flex items-start gap-2">
-                          <span className="text-base select-none">💊</span>
+                        <div className="flex items-start gap-2.5">
+                          <span className="text-lg select-none">💊</span>
                           <div className="space-y-0.5">
                             <span className="font-extrabold text-slate-900 text-sm block">
                               {cleanName}
                             </span>
-                            <span className="text-xs text-slate-600 font-medium block">
+                            <span className="text-xs text-slate-600 font-semibold block">
                               {cleanForm} {strength}
                             </span>
-                            <span className="text-[11px] text-slate-400 font-serif italic block">
+                            <span className="text-[11px] text-slate-500 font-medium block">
                               {m.frequency}
                             </span>
                           </div>
@@ -605,7 +700,7 @@ export function PatientPrescriptionsView({
 
                       {/* Schedule: M - A - N */}
                       <td className="py-4 px-3.5 text-center">
-                        <span className="font-mono font-bold text-sm text-[#113B5F] bg-[#EEF5FB] px-3 py-1 rounded-xl border border-[#D6E7F4] inline-block">
+                        <span className="font-bold text-sm text-[#113B5F] bg-[#EEF5FB] px-3 py-1 rounded-xl border border-[#D6E7F4] inline-block">
                           {timing.pattern}
                         </span>
                       </td>
@@ -613,10 +708,10 @@ export function PatientPrescriptionsView({
                       {/* Timing & Instructions */}
                       <td className="py-4 px-3.5">
                         <div className="space-y-1">
-                          <span className="font-bold text-slate-900 text-xs block">
+                          <span className="font-extrabold text-slate-900 text-xs block">
                             {timing.mealTiming}
                           </span>
-                          <p className="text-[11px] font-serif italic text-slate-500 max-w-xs leading-relaxed">
+                          <p className="text-[11px] text-slate-600 font-medium max-w-xs leading-relaxed">
                             {m.instructions || "Take regularly as prescribed by Dr. Mehta."}
                           </p>
                         </div>
@@ -624,22 +719,24 @@ export function PatientPrescriptionsView({
 
                       {/* Duration */}
                       <td className="py-4 px-3.5 text-center whitespace-nowrap">
-                        <span className="font-serif italic font-bold text-slate-900 text-sm underline decoration-slate-400 underline-offset-2">
+                        <span className="font-bold text-slate-900 text-xs bg-sky-50 px-2.5 py-1 rounded-xl border border-sky-100 inline-block">
                           {m.duration || "90 Days"}
                         </span>
                       </td>
 
-                      {/* 1mg Refill Button */}
+                      {/* Refill Button - Clear, intuitive, patient-friendly! */}
                       <td className="py-4 px-3.5 text-center whitespace-nowrap print:hidden">
-                        <a
-                          href={search1mgUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-white hover:bg-sky-50 text-sky-800 border border-sky-200 font-serif italic font-bold text-xs transition-all shadow-2xs"
+                        <button
+                          type="button"
+                          onClick={() => openSingleRefill(m)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold text-xs transition-all shadow-2xs hover:shadow-xs cursor-pointer group"
                         >
-                          <span>1mg</span>
-                          <RotateCw className="w-3 h-3 text-sky-600" />
-                        </a>
+                          <ShoppingCart className="w-3.5 h-3.5 text-emerald-600 group-hover:scale-110 transition-transform" />
+                          <span>Order Refill</span>
+                        </button>
+                        <span className="block text-[10px] text-slate-400 font-semibold pt-0.5">
+                          via 1mg / Apollo
+                        </span>
                       </td>
                     </tr>
                   );
@@ -650,11 +747,11 @@ export function PatientPrescriptionsView({
         </div>
 
         {/* BOTTOM MOTIVATIONAL NOTE & AUTHENTIC DOCTOR SIGNATURE (MATCHES IMAGE!) */}
-        <div className="pt-4 border-t border-[#E1EDF5] flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+        <div className="pt-4 border-t border-[#E1EDF5] flex flex-col sm:flex-row sm:items-center justify-between gap-6 font-['Quicksand',sans-serif]">
           {/* Left: Friendly note */}
           <div className="flex items-center gap-2">
             <Heart className="w-4 h-4 fill-[#FF8093] text-[#FF8093] shrink-0" />
-            <span className="text-xs font-serif italic text-slate-700">
+            <span className="font-['Caveat',cursive] text-base font-bold text-slate-700">
               Take your medicines regularly. Stay healthy, stay happy! 😊
             </span>
           </div>
@@ -684,13 +781,13 @@ export function PatientPrescriptionsView({
           {/* Right: Signature & Pills Illustration */}
           <div className="flex items-center justify-end gap-4 shrink-0">
             <div className="text-right">
-              <div className="font-serif italic font-extrabold text-[#113B5F] text-lg leading-tight">
+              <div className="font-['Caveat',cursive] font-bold text-[#113B5F] text-2xl leading-tight">
                 Dr. Aarav Mehta
               </div>
-              <div className="text-xs text-slate-600 font-serif italic">
+              <div className="text-xs text-slate-600 font-bold">
                 Dr. Aarav Mehta
               </div>
-              <div className="text-[10px] text-slate-400 font-mono">
+              <div className="text-[10px] text-slate-400 font-semibold font-mono">
                 MCI Reg. No. 98421
               </div>
             </div>
@@ -702,6 +799,340 @@ export function PatientPrescriptionsView({
           </div>
         </div>
       </div>
+
+      {/* 4. INTERACTIVE "PRESCRIPTION REFILL & MEDICINE DELIVERY" MODAL */}
+      {refillModalOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl max-w-lg w-full border border-slate-200 shadow-2xl p-6 space-y-5 relative my-8 font-['Quicksand',sans-serif]">
+            {/* Close Button */}
+            <button
+              type="button"
+              onClick={() => setRefillModalOpen(false)}
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-all cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            {/* Modal Header */}
+            <div className="flex items-start gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 text-2xl">
+                🛵
+              </div>
+              <div>
+                <h3 className="text-lg font-extrabold text-slate-900 leading-tight">
+                  Doorstep Medicine Refill
+                </h3>
+                <p className="text-xs text-slate-500 font-medium pt-0.5">
+                  Verified against Rx #{rxIdDisplay} • Dr. Aarav Mehta
+                </p>
+              </div>
+            </div>
+
+            {/* Selection Scope Switcher (Single Item vs Complete Prescription) */}
+            <div className="bg-slate-100 p-1 rounded-2xl flex text-xs font-bold border border-slate-200">
+              <button
+                type="button"
+                onClick={() => setIsOrderingAll(false)}
+                className={`flex-1 py-2 rounded-xl transition-all ${
+                  !isOrderingAll
+                    ? "bg-white text-emerald-800 shadow-2xs"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                {activeMedicineForRefill?.name
+                  ? activeMedicineForRefill.name.replace(/^(Tab\.|Cap\.|Syp\.)\s*/i, "")
+                  : "Single Medicine"}
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsOrderingAll(true)}
+                className={`flex-1 py-2 rounded-xl transition-all ${
+                  isOrderingAll
+                    ? "bg-white text-emerald-800 shadow-2xs"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                All 3 Medicines (Complete Kit)
+              </button>
+            </div>
+
+            {/* Summary of what will be ordered */}
+            <div className="bg-[#F8FBFC] border border-[#D9EAF4] rounded-2xl p-3.5 space-y-2">
+              <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider block">
+                Items In Refill Order:
+              </span>
+              {isOrderingAll ? (
+                <div className="space-y-1.5">
+                  {meds.map((m, idx) => (
+                    <div key={idx} className="flex items-center justify-between text-xs font-bold text-slate-800">
+                      <span className="flex items-center gap-1.5">
+                        <span className="text-sm">💊</span>
+                        <span>{m.name} {m.strength || ""}</span>
+                      </span>
+                      <span className="text-[11px] text-slate-500 font-semibold bg-white px-2 py-0.5 rounded-lg border border-slate-200">
+                        {m.duration || "90 Days"}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex items-center justify-between text-xs font-bold text-slate-800">
+                  <span className="flex items-center gap-1.5">
+                    <span className="text-sm">💊</span>
+                    <span>
+                      {activeMedicineForRefill?.name || meds[0]?.name}{" "}
+                      {activeMedicineForRefill?.strength || meds[0]?.strength || ""}
+                    </span>
+                  </span>
+                  <span className="text-[11px] text-slate-500 font-semibold bg-white px-2 py-0.5 rounded-lg border border-slate-200">
+                    {activeMedicineForRefill?.duration || "90 Days Pack"}
+                  </span>
+                </div>
+              )}
+
+              <div className="pt-2 border-t border-[#D9EAF4] flex items-center justify-between text-[11px] text-emerald-700 font-bold">
+                <span className="flex items-center gap-1">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                  Prescription Auto-Attached
+                </span>
+                <span>Valid: 90 Days</span>
+              </div>
+            </div>
+
+            {/* Order Confirmation Feedback Banner (if ordered via hospital) */}
+            {orderSuccessStatus && (
+              <div className="bg-emerald-50 border border-emerald-300 rounded-2xl p-3.5 text-xs text-emerald-900 font-semibold flex items-start gap-2.5 animate-in fade-in">
+                <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+                <div className="space-y-1">
+                  <div className="font-extrabold text-emerald-950">Refill Dispatched!</div>
+                  <p className="leading-relaxed">{orderSuccessStatus}</p>
+                </div>
+              </div>
+            )}
+
+            {/* FULFILLMENT CHANNELS (HOW PATIENT ACTUALLY REFILLS) */}
+            <div className="space-y-2.5">
+              <span className="text-xs font-bold text-slate-700 block">
+                Choose How You Want To Refill:
+              </span>
+
+              {/* 1. Tata 1mg Online Pharmacy (Direct Search & Instant Cart) */}
+              <a
+                href={
+                  isOrderingAll
+                    ? `https://www.1mg.com/search/all?name=${encodeURIComponent(
+                        meds[0]?.name.replace(/^(Tab\.|Cap\.|Syp\.)\s*/i, "") || "Metformin"
+                      )}`
+                    : `https://www.1mg.com/search/all?name=${encodeURIComponent(
+                        activeMedicineForRefill?.name.replace(/^(Tab\.|Cap\.|Syp\.)\s*/i, "") || "Metformin"
+                      )}`
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between p-3.5 rounded-2xl border border-amber-200 bg-amber-50/50 hover:bg-amber-50 hover:border-amber-300 transition-all group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-amber-500 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-2xs">
+                    1mg
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-extrabold text-xs text-slate-900">
+                        Order on Tata 1mg
+                      </span>
+                      <span className="text-[10px] font-bold bg-amber-200/80 text-amber-900 px-1.5 py-0.5 rounded-md">
+                        15% OFF
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-600 font-medium">
+                      Doorstep delivery in 2–4 hours • Genuine medicines
+                    </p>
+                  </div>
+                </div>
+                <ExternalLink className="w-4 h-4 text-amber-700 group-hover:translate-x-0.5 transition-transform shrink-0" />
+              </a>
+
+              {/* 2. Apollo 24|7 Pharmacy (2-Hour Express Delivery) */}
+              <a
+                href={`https://www.apollopharmacy.in/search-medicines/${encodeURIComponent(
+                  isOrderingAll
+                    ? meds[0]?.name.replace(/^(Tab\.|Cap\.|Syp\.)\s*/i, "") || "Metformin"
+                    : activeMedicineForRefill?.name.replace(/^(Tab\.|Cap\.|Syp\.)\s*/i, "") || "Metformin"
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between p-3.5 rounded-2xl border border-sky-200 bg-sky-50/50 hover:bg-sky-50 hover:border-sky-300 transition-all group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-sky-600 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-2xs">
+                    Apollo
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-extrabold text-xs text-slate-900">
+                        Order on Apollo 24|7
+                      </span>
+                      <span className="text-[10px] font-bold bg-sky-200/80 text-sky-900 px-1.5 py-0.5 rounded-md">
+                        2-Hr Delivery
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-600 font-medium">
+                      Fulfilled by nearest Apollo outlet in your locality
+                    </p>
+                  </div>
+                </div>
+                <ExternalLink className="w-4 h-4 text-sky-700 group-hover:translate-x-0.5 transition-transform shrink-0" />
+              </a>
+
+              {/* 3. In-Clinic Pharmacy 1-Click Home Delivery */}
+              <button
+                type="button"
+                onClick={handleInstantHospitalDelivery}
+                disabled={isSubmittingOrder}
+                className="w-full flex items-center justify-between p-3.5 rounded-2xl border border-emerald-300 bg-emerald-500 text-white hover:bg-emerald-600 transition-all cursor-pointer shadow-xs group"
+              >
+                <div className="flex items-center gap-3 text-left">
+                  <div className="w-10 h-10 rounded-xl bg-white/20 text-white font-black text-lg flex items-center justify-center shrink-0">
+                    🏥
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-extrabold text-xs">
+                        1-Click In-Clinic Chemist Delivery
+                      </span>
+                      <span className="text-[10px] font-bold bg-white text-emerald-900 px-1.5 py-0.5 rounded-md">
+                        Pay on Delivery
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-emerald-100 font-medium">
+                      Delivers to: Flat 402, Cyber City Medical Center Area
+                    </p>
+                  </div>
+                </div>
+                {isSubmittingOrder ? (
+                  <RotateCw className="w-4 h-4 animate-spin shrink-0" />
+                ) : (
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform shrink-0" />
+                )}
+              </button>
+
+              {/* 4. WhatsApp Rx to Chemist (Traditional Indian Neighborhood Chemist) */}
+              <a
+                href={getWhatsAppOrderUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between p-3.5 rounded-2xl border border-emerald-200 bg-emerald-50/30 hover:bg-emerald-50 transition-all group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white font-black text-lg flex items-center justify-center shrink-0 shadow-2xs">
+                    💬
+                  </div>
+                  <div>
+                    <div className="font-extrabold text-xs text-slate-900">
+                      Send Rx to Local Chemist on WhatsApp
+                    </div>
+                    <p className="text-[11px] text-slate-600 font-medium">
+                      Auto-formats medicine list &amp; doctor details to share with any pharmacy
+                    </p>
+                  </div>
+                </div>
+                <ExternalLink className="w-4 h-4 text-emerald-700 group-hover:translate-x-0.5 transition-transform shrink-0" />
+              </a>
+            </div>
+
+            <div className="pt-2 text-center">
+              <button
+                type="button"
+                onClick={() => setRefillModalOpen(false)}
+                className="text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors"
+              >
+                Close Window
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 5. "HOW MEDICINE REFILL WORKS" HELPER MODAL */}
+      {showHowItWorksModal && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl max-w-md w-full border border-slate-200 shadow-2xl p-6 space-y-5 relative font-['Quicksand',sans-serif]">
+            <button
+              type="button"
+              onClick={() => setShowHowItWorksModal(false)}
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-all cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-sky-100 text-sky-700 flex items-center justify-center text-xl">
+                💡
+              </div>
+              <div>
+                <h3 className="text-base font-extrabold text-slate-900">
+                  How Digital Refills Work
+                </h3>
+                <p className="text-xs text-slate-500 font-medium">
+                  3 simple steps for easy doorstep medicines
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-3.5 text-xs">
+              <div className="flex items-start gap-3 p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                <div className="w-6 h-6 rounded-full bg-sky-500 text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">
+                  1
+                </div>
+                <div>
+                  <span className="font-extrabold text-slate-900 block">
+                    Click &quot;Order Refill&quot; on Any Medicine
+                  </span>
+                  <p className="text-slate-600 font-medium pt-0.5">
+                    Select a single medicine or tap &quot;Order All Medicines&quot; to refill your complete 90-day supply.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3 p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                <div className="w-6 h-6 rounded-full bg-emerald-500 text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">
+                  2
+                </div>
+                <div>
+                  <span className="font-extrabold text-slate-900 block">
+                    Pick Tata 1mg, Apollo, or Hospital Delivery
+                  </span>
+                  <p className="text-slate-600 font-medium pt-0.5">
+                    Your digital prescription signed by Dr. Aarav Mehta (MCI: 98421) is automatically attached, fulfilling all statutory telemedicine guidelines.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3 p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                <div className="w-6 h-6 rounded-full bg-indigo-500 text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">
+                  3
+                </div>
+                <div>
+                  <span className="font-extrabold text-slate-900 block">
+                    Medicines Delivered to Your Door
+                  </span>
+                  <p className="text-slate-600 font-medium pt-0.5">
+                    Delivered in 2 to 4 hours with temperature-controlled packaging and 15–20% partner discount applied.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowHowItWorksModal(false)}
+              className="w-full py-2.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-all cursor-pointer"
+            >
+              Got it, thanks!
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
