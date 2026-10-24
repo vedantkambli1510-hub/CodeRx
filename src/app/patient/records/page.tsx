@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   Upload,
   FileText,
@@ -16,6 +17,8 @@ import {
   Info,
   X,
   FileSpreadsheet,
+  FlaskConical,
+  ArrowRight,
 } from "lucide-react";
 import { ReportModal } from "@/components/workspace/ReportModal";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
@@ -83,6 +86,30 @@ export default function PatientRecordsPage() {
             <span>Upload Medical Report</span>
           </button>
         </div>
+      </div>
+
+      {/* QUICK BANNER: LAB TESTS NEAR ME */}
+      <div className="p-3.5 sm:p-4 rounded-3xl bg-[#E8F8F0] border border-[#BCE8D0] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-2xs">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-2xl bg-white border border-[#BCE8D0] flex items-center justify-center text-[#059669] shrink-0 shadow-2xs">
+            <FlaskConical className="w-5 h-5" />
+          </div>
+          <div>
+            <span className="font-black text-[#064E3B] text-xs sm:text-sm block">
+              Need to take a diagnostic test or locate a pathology center?
+            </span>
+            <span className="text-[#047857] font-medium text-[11px] sm:text-xs">
+              Check out <strong>Lab Tests Near Me</strong> for NABL accredited centers with turn-by-turn Google Maps GPS navigation and free home sample collection.
+            </span>
+          </div>
+        </div>
+        <Link
+          href="/patient/labs"
+          className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-2xl bg-[#059669] hover:bg-[#047857] text-white font-black text-xs shadow-xs shrink-0 transition-all cursor-pointer"
+        >
+          <span>Lab Tests Near Me</span>
+          <ArrowRight className="w-3.5 h-3.5" />
+        </Link>
       </div>
 
       {/* SECURITY & DATA PROTECTION PROTOCOL GUARANTEE */}

@@ -72,12 +72,12 @@ export function PatientSidebar({
           badgeColor: "",
         },
         {
-          label: "Lab Reports",
-          href: "/patient/records?type=lab",
+          label: "Lab Tests Near Me",
+          href: "/patient/labs",
           icon: FlaskConical,
           exact: false,
-          badge: null,
-          badgeColor: "",
+          badge: "GPS",
+          badgeColor: "bg-[#059669] text-white font-bold",
         },
         {
           label: "Messages",

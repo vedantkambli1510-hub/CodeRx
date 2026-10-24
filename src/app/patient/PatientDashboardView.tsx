@@ -24,6 +24,7 @@ import {
   MapPin,
   ExternalLink,
   HelpCircle,
+  FlaskConical,
 } from "lucide-react";
 
 interface PatientDashboardViewProps {
@@ -346,21 +347,21 @@ export function PatientDashboardView({
           <ArrowRight className="w-4 h-4 text-[#8FE3B8] group-hover:text-[#059669] group-hover:translate-x-1 transition-all" />
         </Link>
 
-        {/* Metric 4: Pending Lab Report */}
+        {/* Metric 4: Lab Tests Near Me */}
         <Link
-          href="/patient/records?type=lab"
+          href="/patient/labs"
           className="p-5 bg-white rounded-3xl border border-[#D6EDE1] hover:border-[#8FE3B8] hover:bg-[#F3FAF6]/50 transition-all shadow-xs flex items-center justify-between group cursor-pointer"
         >
           <div className="flex items-center gap-3.5">
             <div className="w-11 h-11 rounded-2xl bg-[#E8F8F0] border border-[#BCE8D0] flex items-center justify-center text-[#059669] group-hover:scale-105 transition-transform">
-              <Activity className="w-5 h-5" />
+              <FlaskConical className="w-5 h-5" />
             </div>
             <div>
               <div className="text-2xl font-black text-[#064E3B] leading-tight">
-                1
+                6+
               </div>
               <div className="text-[11px] font-bold text-[#047857]">
-                Pending Lab Report
+                Lab Tests Near Me
               </div>
             </div>
           </div>
