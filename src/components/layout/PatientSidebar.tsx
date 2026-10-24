@@ -90,7 +90,7 @@ export function PatientSidebar({
       ],
     },
     {
-      group: "PREMIUM & FAMILY",
+      group: "PREMIUM CARE",
       items: [
         {
           label: "AI Health Story (Timeline & Progress)",
@@ -99,18 +99,6 @@ export function PatientSidebar({
           exact: false,
           badge: isSubscribed ? "AI PASS" : "₹99/mo",
           badgeColor: isSubscribed
-            ? "bg-[#0D9488] text-white"
-            : "bg-[#059669] text-white",
-        },
-        {
-          label: "Family Health Portal",
-          href: "/patient/family",
-          icon: Users,
-          exact: false,
-          badge: isFamilyActive ? "FAMILY PASS" : isSoloActive ? "UPGRADE" : "👑 ₹199",
-          badgeColor: isFamilyActive
-            ? "bg-[#10B981] text-white"
-            : isSoloActive
             ? "bg-[#0D9488] text-white"
             : "bg-[#059669] text-white",
         },
@@ -124,7 +112,7 @@ export function PatientSidebar({
           href: "/patient/subscription",
           icon: Crown,
           exact: false,
-          badge: isSubscribed ? (isFamilyActive ? "₹199/mo" : "₹99/mo") : "₹99/mo",
+          badge: isSubscribed ? "ACTIVE" : "₹99/mo",
           badgeColor: "bg-[#059669] text-white font-black",
         },
         {

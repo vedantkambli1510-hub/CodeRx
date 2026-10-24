@@ -705,20 +705,13 @@ export function PatientDashboardView({
               See how your condition evolved over time (<strong>pehle condition kaisi thi vs ab kaisi hai</strong>): HbA1c, kidney filtration, and 60-second audio summary.
             </p>
 
-            <div className="flex items-center gap-2 pt-0.5">
+            <div className="pt-0.5">
               <Link
                 href="/patient/timeline"
-                className="flex-1 py-2 px-3 rounded-xl bg-[#059669] hover:bg-[#047857] text-white text-xs font-black flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer"
+                className="w-full py-2.5 px-4 rounded-xl bg-[#059669] hover:bg-[#047857] text-white text-xs font-black flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer"
               >
-                <span>Open AI Timeline</span>
+                <span>Open AI Timeline (Pehle vs Abhi)</span>
                 <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-              <Link
-                href="/patient/family"
-                className="py-2 px-3 rounded-xl bg-white hover:bg-[#E4F5ED] text-[#064E3B] text-xs font-extrabold border border-[#8FE3B8] flex items-center justify-center transition-all shadow-2xs cursor-pointer"
-                title="Family Health Portal"
-              >
-                Family Pass
               </Link>
             </div>
           </div>

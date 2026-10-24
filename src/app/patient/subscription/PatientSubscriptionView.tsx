@@ -56,25 +56,15 @@ export function PatientSubscriptionView({
   }
 
   const getPlanTitle = (type: "INDIVIDUAL" | "FAMILY") => {
-    switch (type) {
-      case "INDIVIDUAL":
-        return "Essential Care";
-      case "FAMILY":
-        return "Family Health";
-    }
+    return "Essential Care";
   };
 
   const getPlanPrice = (type: "INDIVIDUAL" | "FAMILY") => {
-    switch (type) {
-      case "INDIVIDUAL":
-        return "99";
-      case "FAMILY":
-        return "199";
-    }
+    return "99";
   };
 
   return (
-    <div className="space-y-8 max-w-5xl mx-auto pb-16 text-[#4C0519]">
+    <div className="space-y-8 max-w-5xl mx-auto pb-16 text-[#064E3B]">
       
       {/* ============================================================== */}
       {/* 1. TOP HERO BANNER: SELECT YOUR PREFERRED CARE PLAN             */}
@@ -88,7 +78,7 @@ export function PatientSubscriptionView({
             <div className="flex flex-wrap items-center gap-2">
               <span className="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-white/80 border border-[#8FE3B8] text-[#059669] flex items-center gap-1.5 shadow-2xs">
                 <Crown className="w-3.5 h-3.5" />
-                <span>CodeRx Care Memberships</span>
+                <span>CodeRx Care Membership</span>
               </span>
 
               {/* DEMO SWITCHER */}
@@ -108,21 +98,11 @@ export function PatientSubscriptionView({
                   type="button"
                   onClick={() => updateSubscription(true, "INDIVIDUAL")}
                   className={`px-2.5 py-0.5 rounded-full transition-all cursor-pointer ${
-                    isSubscribed && plan === "INDIVIDUAL" ? "bg-[#059669] text-white font-black" : "text-[#047857] hover:bg-[#E8F8F0]"
+                    isSubscribed ? "bg-[#059669] text-white font-black" : "text-[#047857] hover:bg-[#E8F8F0]"
                   }`}
-                  title="Simulate Basic (₹99)"
+                  title="Simulate Active (₹99)"
                 >
-                  Basic (₹99)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => updateSubscription(true, "FAMILY")}
-                  className={`px-2.5 py-0.5 rounded-full transition-all cursor-pointer ${
-                    isSubscribed && (plan === "FAMILY" || plan === "PREMIUM") ? "bg-[#059669] text-white font-black" : "text-[#047857] hover:bg-[#E8F8F0]"
-                  }`}
-                  title="Simulate Family (₹199)"
-                >
-                  Family (₹199)
+                  ✨ Active (₹99)
                 </button>
               </div>
             </div>
@@ -207,52 +187,61 @@ export function PatientSubscriptionView({
       </div>
 
       {/* ============================================================== */}
-      {/* 2. CARE PLANS: FIRST TWO PLANS ONLY (ESSENTIAL & FAMILY)       */}
+      {/* 2. CARE PLAN: CODE-RX ESSENTIAL CARE (₹99/mo)                   */}
       {/* ============================================================== */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto pt-2">
-        
-        {/* ---------------------------------------------------------- */}
-        {/* PLAN 1: BASIC (Essential Care - ₹99/mo)                   */}
-        {/* ---------------------------------------------------------- */}
-        <div className="bg-white rounded-3xl border border-[#D6EDE1] shadow-sm p-7 sm:p-8 flex flex-col justify-between hover:shadow-md hover:border-[#8FE3B8] transition-all">
+      <div className="max-w-md mx-auto pt-2">
+        <div className="bg-white rounded-3xl border-2 border-[#059669] shadow-lg p-7 sm:p-8 flex flex-col justify-between relative hover:shadow-xl transition-all">
+          {/* MOST POPULAR TAG */}
+          <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#059669] text-white text-[11px] font-black uppercase tracking-wider shadow-sm flex items-center gap-1.5">
+            <Sparkles className="w-3.5 h-3.5 text-emerald-200" />
+            <span>CODE-RX CARE PASS</span>
+          </div>
+
           <div className="space-y-5">
             <div>
               <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-[#E8F8F0] text-[#047857] border border-[#BCE8D0]">
-                BASIC
+                ACTIVE CARE
               </span>
-              <h3 className="text-2xl font-black text-[#064E3B] mt-3">Essential Care</h3>
+              <h3 className="text-2xl font-black text-[#064E3B] mt-3">Essential Care Pass</h3>
               <p className="text-xs text-[#047857] font-medium mt-1">
-                For your everyday health needs
+                Complete clinical intelligence &amp; everyday health needs
               </p>
             </div>
 
             {/* Price */}
-            <div className="flex items-baseline gap-1.5 pt-1 pb-3 border-b border-[#D6EDE1]">
+            <div className="flex items-baseline gap-2 pt-1 pb-3 border-b border-[#D6EDE1]">
               <span className="text-4xl font-black text-[#064E3B]">&#8377;99</span>
               <span className="text-xs font-bold text-[#047857]">/month</span>
+              <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black bg-[#E8F8F0] text-[#059669] border border-[#BCE8D0] ml-auto">
+                POPULAR
+              </span>
             </div>
 
             {/* Feature Checklist */}
             <div className="space-y-3 text-xs sm:text-sm text-[#047857]">
               <div className="flex items-start gap-2.5">
                 <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
-                <span className="font-semibold text-[#064E3B]">1 Upcoming Appointment</span>
+                <span className="font-bold text-[#064E3B]">AI Health Story (Pehle vs Abhi Timeline)</span>
               </div>
               <div className="flex items-start gap-2.5">
                 <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
-                <span>Doctor Consultations (General)</span>
+                <span className="font-semibold text-[#064E3B]">Longitudinal Biomarker Shifts (HbA1c, eGFR)</span>
               </div>
               <div className="flex items-start gap-2.5">
                 <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
-                <span>Digital Prescriptions</span>
+                <span>Doctor OPD Consultations &amp; Appointments</span>
               </div>
               <div className="flex items-start gap-2.5">
                 <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
-                <span>Access to Medical Records</span>
+                <span>Digital Prescriptions &amp; Pharmacy Refills</span>
               </div>
               <div className="flex items-start gap-2.5">
                 <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
-                <span>Health Tips &amp; Guidance</span>
+                <span>Diagnostic Lab Reports Access</span>
+              </div>
+              <div className="flex items-start gap-2.5">
+                <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
+                <span>24/7 AI Health Assistant Insights</span>
               </div>
             </div>
           </div>
@@ -261,89 +250,13 @@ export function PatientSubscriptionView({
             <button
               type="button"
               onClick={() => handleOpenCheckout("INDIVIDUAL")}
-              className={`w-full py-3 px-4 rounded-2xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-2 shadow-2xs ${
-                isSubscribed && plan === "INDIVIDUAL"
-                  ? "bg-[#E8F8F0] text-[#059669] border border-[#8FE3B8]"
-                  : "bg-white text-[#064E3B] border border-[#8FE3B8] hover:bg-[#F3FAF6] hover:border-[#059669]"
-              }`}
+              className="w-full py-3.5 px-4 rounded-2xl bg-[#059669] hover:bg-[#047857] text-white text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md shadow-emerald-500/25"
             >
-              <span>{isSubscribed && plan === "INDIVIDUAL" ? "Current Plan" : "Choose Basic"}</span>
+              <span>{isSubscribed ? "Active Plan" : "Subscribe Now (₹99/mo)"}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
         </div>
-
-        {/* ---------------------------------------------------------- */}
-        {/* PLAN 2: FAMILY (Family Health - ₹199/mo) - MOST POPULAR    */}
-        {/* ---------------------------------------------------------- */}
-        <div className="bg-white rounded-3xl border-2 border-[#059669] shadow-lg p-7 sm:p-8 flex flex-col justify-between relative hover:shadow-xl transition-all scale-[1.02]">
-          {/* MOST POPULAR TAG */}
-          <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#059669] text-white text-[11px] font-black uppercase tracking-wider shadow-sm flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-200" />
-            <span>MOST POPULAR</span>
-          </div>
-
-          <div className="space-y-5">
-            <div>
-              <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-[#E8F8F0] text-[#047857] border border-[#BCE8D0]">
-                FAMILY
-              </span>
-              <h3 className="text-2xl font-black text-[#064E3B] mt-3">Family Health</h3>
-              <p className="text-xs text-[#047857] font-medium mt-1">
-                Complete care for your loved ones
-              </p>
-            </div>
-
-            {/* Price & 20% OFF Tag */}
-            <div className="flex items-baseline gap-2 pt-1 pb-3 border-b border-[#D6EDE1]">
-              <span className="text-4xl font-black text-[#064E3B]">&#8377;199</span>
-              <span className="text-xs font-bold text-[#047857]">/month</span>
-              <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black bg-[#E8F8F0] text-[#059669] border border-[#BCE8D0] ml-auto">
-                20% OFF
-              </span>
-            </div>
-
-            {/* Feature Checklist */}
-            <div className="space-y-3 text-xs sm:text-sm text-[#047857]">
-              <div className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
-                <span className="font-black text-[#064E3B]">Up to 4 Family Members</span>
-              </div>
-              <div className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
-                <span className="font-semibold text-[#064E3B]">Unlimited Consultations</span>
-              </div>
-              <div className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
-                <span>Digital Prescriptions</span>
-              </div>
-              <div className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
-                <span>Lab Reports Access</span>
-              </div>
-              <div className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
-                <span className="font-bold text-[#059669]">Health Timeline (AI)</span>
-              </div>
-              <div className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
-                <span>Priority Support</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="pt-8">
-            <button
-              type="button"
-              onClick={() => handleOpenCheckout("FAMILY")}
-              className="w-full py-3 px-4 rounded-2xl bg-[#059669] hover:bg-[#047857] text-white text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md shadow-emerald-500/25"
-            >
-              <span>{isSubscribed && (plan === "FAMILY" || plan === "PREMIUM") ? "Active Plan" : "Choose Family"}</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-
       </div>
 
       {/* ============================================================== */}
@@ -533,7 +446,7 @@ export function PatientSubscriptionView({
               <div className="flex justify-between">
                 <span className="text-slate-500">Plan:</span>
                 <strong className="text-slate-900">
-                  CodeRx {plan === "FAMILY" || plan === "PREMIUM" ? "Family Health" : "Essential Care"}
+                  CodeRx Essential Care Pass
                 </strong>
               </div>
               <div className="flex justify-between">
@@ -546,7 +459,7 @@ export function PatientSubscriptionView({
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">Amount Billed:</span>
-                <span className="font-black text-slate-900">₹{plan === "FAMILY" || plan === "PREMIUM" ? "199" : "99"}.00</span>
+                <span className="font-black text-slate-900">₹99.00</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">Status:</span>

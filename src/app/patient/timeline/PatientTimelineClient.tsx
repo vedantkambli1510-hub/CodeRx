@@ -40,7 +40,7 @@ export function PatientTimelineClient({
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="px-2.5 py-0.5 rounded-full text-[10.5px] font-black bg-[#E8F8F0] text-[#059669] border border-[#BCE8D0]">
-              {isSubscribed ? (plan === "FAMILY" ? "👑 FAMILY PASS ACTIVE" : plan === "PREMIUM" ? "✨ COMPLETE CARE ACTIVE" : "⚡ BASIC PASS ACTIVE") : "🔒 ₹99/MO CARE FEATURE"}
+              {isSubscribed ? "✨ CARE PASS ACTIVE" : "🔒 ₹99/MO CARE FEATURE"}
             </span>
             <span className="text-xs text-[#047857] font-bold">
               Longitudinal Clinical Intelligence
@@ -57,7 +57,7 @@ export function PatientTimelineClient({
           </p>
         </div>
 
-        {/* 3-WAY DEMO SWITCHER */}
+        {/* DEMO SWITCHER */}
         <div className="flex items-center gap-2 bg-white border border-[#D6EDE1] p-1.5 rounded-2xl shadow-2xs self-start md:self-auto">
           <span className="text-[11px] font-bold text-[#047857] px-2">Demo:</span>
           <button
@@ -76,25 +76,13 @@ export function PatientTimelineClient({
             type="button"
             onClick={() => updateSubscription(true, "INDIVIDUAL")}
             className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-              isSubscribed && plan === "INDIVIDUAL"
+              isSubscribed
                 ? "bg-[#059669] text-white shadow-xs font-black"
                 : "text-[#047857] hover:bg-[#E8F8F0]"
             }`}
-            title="Simulate Solo Pass (₹99) - Unlocks AI Before vs Now Timeline"
+            title="Simulate Care Pass (₹99) - Unlocks AI Before vs Now Timeline"
           >
-            ⚡ Basic (₹99)
-          </button>
-          <button
-            type="button"
-            onClick={() => updateSubscription(true, "FAMILY")}
-            className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-              isSubscribed && plan === "FAMILY"
-                ? "bg-[#059669] text-white shadow-xs font-black"
-                : "text-[#047857] hover:bg-[#E8F8F0]"
-            }`}
-            title="Simulate Family Pass (₹199) - Unlocks all family timelines"
-          >
-            👑 Family (₹199)
+            ⚡ Care Pass (₹99)
           </button>
         </div>
       </div>

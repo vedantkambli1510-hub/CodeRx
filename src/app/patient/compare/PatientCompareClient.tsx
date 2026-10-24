@@ -59,7 +59,7 @@ export function PatientCompareClient({ comparison }: PatientCompareClientProps) 
                 <span>PREMIUM CLINICAL AI FEATURE &bull; LOCKED (₹99 / mo)</span>
               </div>
 
-              {/* 3-Way Demo Switcher */}
+              {/* Demo Switcher */}
               <div className="inline-flex items-center gap-1 p-1 rounded-2xl bg-white/70 border border-[#8FE3B8] text-[11px] font-bold">
                 <span className="text-[#047857] px-2">Demo:</span>
                 <button
@@ -74,14 +74,7 @@ export function PatientCompareClient({ comparison }: PatientCompareClientProps) 
                   onClick={() => updateSubscription(true, "INDIVIDUAL")}
                   className="px-2.5 py-1 rounded-xl text-[#047857] hover:bg-[#E8F8F0] cursor-pointer"
                 >
-                  ⚡ Basic (₹99)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => updateSubscription(true, "FAMILY")}
-                  className="px-2.5 py-1 rounded-xl text-[#047857] hover:bg-[#E8F8F0] cursor-pointer"
-                >
-                  👑 Family (₹199)
+                  ⚡ Care Pass (₹99)
                 </button>
               </div>
             </div>
@@ -107,7 +100,7 @@ export function PatientCompareClient({ comparison }: PatientCompareClientProps) 
                 className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-[#059669] hover:bg-[#047857] text-white font-black text-xs shadow-md shadow-emerald-500/25 transition-all cursor-pointer"
               >
                 <Sparkles className="w-4 h-4 text-emerald-200" />
-                <span>Unlock Care Plans (from ₹99/mo) &rarr;</span>
+                <span>Unlock Care Pass (₹99/mo) &rarr;</span>
               </Link>
 
               <span className="text-xs text-[#047857] font-medium text-center sm:text-left">
@@ -162,7 +155,7 @@ export function PatientCompareClient({ comparison }: PatientCompareClientProps) 
               href="/patient/subscription"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-[#059669] hover:bg-[#047857] text-white font-bold text-xs shadow-md shadow-emerald-500/20 transition-all cursor-pointer"
             >
-              <span>Unlock Care Plans (from ₹99/mo)</span>
+              <span>Unlock Care Pass (₹99/mo)</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -189,7 +182,7 @@ export function PatientCompareClient({ comparison }: PatientCompareClientProps) 
                 CodeRx Clinical Pro &bull; AI Health Story Engine Active
               </span>
               <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-[#E8F8F0] text-[#059669] border border-[#BCE8D0]">
-                {plan === "FAMILY" ? "FAMILY PASS ACTIVE" : plan === "PREMIUM" ? "COMPLETE CARE ACTIVE" : "BASIC PASS ACTIVE"}
+                CARE PASS ACTIVE
               </span>
             </div>
             <p className="text-xs text-[#047857] mt-0.5 font-medium">
@@ -214,43 +207,14 @@ export function PatientCompareClient({ comparison }: PatientCompareClientProps) 
               type="button"
               onClick={() => updateSubscription(true, "INDIVIDUAL")}
               className={`px-2 py-0.5 rounded-lg transition-all cursor-pointer text-[10px] ${
-                isSubscribed && plan === "INDIVIDUAL"
+                isSubscribed
                   ? "bg-[#059669] text-white font-black"
                   : "text-[#047857] hover:bg-[#E8F8F0]"
               }`}
             >
               ⚡ ₹99
             </button>
-            <button
-              type="button"
-              onClick={() => updateSubscription(true, "FAMILY")}
-              className={`px-2 py-0.5 rounded-lg transition-all cursor-pointer text-[10px] ${
-                isSubscribed && plan === "FAMILY"
-                  ? "bg-[#059669] text-white font-black"
-                  : "text-[#047857] hover:bg-[#E8F8F0]"
-              }`}
-            >
-              👑 ₹199
-            </button>
           </div>
-
-          {plan === "FAMILY" ? (
-            <Link
-              href="/patient/family"
-              className="px-3.5 py-2 rounded-xl bg-white hover:bg-[#E4F5ED] text-[#064E3B] border border-[#8FE3B8] text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-2xs"
-            >
-              <Users className="w-3.5 h-3.5" />
-              <span>Family Portal</span>
-            </Link>
-          ) : (
-            <Link
-              href="/patient/subscription"
-              className="px-3.5 py-2 rounded-xl bg-white hover:bg-[#E4F5ED] text-[#064E3B] border border-[#8FE3B8] text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-2xs"
-            >
-              <Crown className="w-3.5 h-3.5 text-[#059669]" />
-              <span>Upgrade to Family (₹199)</span>
-            </Link>
-          )}
 
           <Link
             href="/patient/subscription"
@@ -288,12 +252,12 @@ export function PatientCompareClient({ comparison }: PatientCompareClientProps) 
               <div className="flex justify-between">
                 <span className="text-[#047857]">Plan:</span>
                 <strong className="text-[#064E3B]">
-                  {plan === "FAMILY" ? "CodeRx Family Health Care Pass" : "CodeRx Essential Care Pass"}
+                  CodeRx Essential Care Pass
                 </strong>
               </div>
               <div className="flex justify-between">
                 <span className="text-[#047857]">Amount Paid:</span>
-                <strong className="text-[#059669]">₹{plan === "FAMILY" ? "199.00" : "99.00"} / month</strong>
+                <strong className="text-[#059669]">₹99.00 / month</strong>
               </div>
               <div className="flex justify-between">
                 <span className="text-[#047857]">Payment Mode:</span>
