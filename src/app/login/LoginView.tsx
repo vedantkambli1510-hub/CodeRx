@@ -262,7 +262,7 @@ export function LoginView({ currentUser, requestedRole = "PATIENT" }: LoginViewP
                 Welcome Back
               </h3>
               <p className="text-xs sm:text-sm text-[#667E76] font-medium">
-                Log in to access your encrypted medical vault.
+                Glad to have you back! Sign in to continue your care 🌿
               </p>
             </div>
 
@@ -292,7 +292,7 @@ export function LoginView({ currentUser, requestedRole = "PATIENT" }: LoginViewP
                     : "text-[#667E76] hover:text-[#183E36]"
                 }`}
               >
-                <User className="w-4 h-4" />
+                <span>🌱</span>
                 <span>Patient</span>
               </button>
 
@@ -305,7 +305,7 @@ export function LoginView({ currentUser, requestedRole = "PATIENT" }: LoginViewP
                     : "text-[#667E76] hover:text-[#183E36]"
                 }`}
               >
-                <Stethoscope className="w-4 h-4" />
+                <span>🩺</span>
                 <span>Doctor</span>
               </button>
             </div>
