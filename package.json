@@ -1,0 +1,56 @@
+{
+  "name": "triageai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TriageAI - AI-Assisted Pre-Visit Patient Intake",
+  "scripts": {
+    "dev": "next dev -H 0.0.0.0",
+    "live": "node scripts/live-server.js",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "deploy": "vercel --prod",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev --name init",
+    "db:push": "prisma db push",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:reset": "tsx scripts/reset-db.ts",
+    "setup": "prisma generate && prisma db push && tsx prisma/seed.ts",
+    "tunnel": ".\\cloudflared.exe tunnel --url http://localhost:3000",
+    "tunnel:localtunnel": "node scripts/tunnel.js"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@google/genai": "^2.24.0",
+    "@prisma/client": "^5.21.1",
+    "@types/qrcode": "^1.5.6",
+    "bcryptjs": "^2.4.3",
+    "jose": "^5.9.6",
+    "lucide-react": "^0.454.0",
+    "next": "14.2.16",
+    "qrcode": "^1.5.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20.17.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "14.2.16",
+    "localtunnel": "^2.0.2",
+    "postcss": "^8.4.47",
+    "prisma": "^5.21.1",
+    "tailwindcss": "^3.4.14",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.3"
+  }
+}

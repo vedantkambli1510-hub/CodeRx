@@ -1,0 +1,307 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id             String          @id @default(cuid())
+  name           String
+  email          String          @unique
+  passwordHash   String
+  role           String          @default("PATIENT") // "PATIENT" | "DOCTOR"
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  patientProfile PatientProfile?
+  doctorProfile  DoctorProfile?
+  notifications  Notification[]
+  auditLogs      AuditLog[]
+}
+
+model PatientProfile {
+  id                    String           @id @default(cuid())
+  userId                String           @unique
+  user                  User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dob                   String?
+  gender                String?
+  phone                 String?
+  bloodGroup            String?
+  emergencyContactName  String?
+  emergencyContactPhone String?
+  allergies             String?
+  conditions            String?
+  currentMedications    String?
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+  appointments          Appointment[]
+  medicalRecords        MedicalRecord[]
+  timelines             MedicalTimeline[]
+  medicines             Medicine[]
+  prescriptions         Prescription[]
+  payments              Payment[]
+  checklistItems        ChecklistItem[]
+}
+
+model DoctorProfile {
+  id                String            @id @default(cuid())
+  userId            String            @unique
+  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  designation       String?           @default("Senior Consultant")
+  visitingHospitals String?           @default("Max Super Speciality Hospital, Apollo Indraprastha")
+  specialization    String            @default("General Medicine")
+  qualification     String?           @default("MBBS, MD")
+  experience        Int               @default(10)
+  consultationFee   Int               @default(800)
+  clinicInfo        String?           @default("CodeRx Specialty Health Hub, Suite 402")
+  licenseNumber     String?
+  bio               String?
+  upiId             String?           @default("dr.aarav.mehta@okaxis")
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  slots          AppointmentSlot[]
+  appointments   Appointment[]
+  notes          DoctorNote[]
+  prescriptions  Prescription[]
+  payments       Payment[]
+}
+
+model AppointmentSlot {
+  id          String        @id @default(cuid())
+  doctorId    String
+  doctor      DoctorProfile @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  startTime   DateTime
+  endTime     DateTime
+  duration    Int           @default(30)
+  status      String        @default("AVAILABLE") // "AVAILABLE" | "BOOKED" | "BLOCKED"
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  appointment Appointment?
+}
+
+model Appointment {
+  id             String          @id @default(cuid())
+  patientId      String
+  patient        PatientProfile  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  doctorId       String
+  doctor         DoctorProfile   @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  slotId         String          @unique
+  slot           AppointmentSlot @relation(fields: [slotId], references: [id], onDelete: Cascade)
+  status         String          @default("SCHEDULED") // "SCHEDULED" | "CONFIRMED" | "COMPLETED" | "CANCELLED"
+  paymentStatus  String          @default("PENDING") // "PENDING" | "PAID" | "REFUNDED"
+  bookedAt       DateTime        @default(now())
+  completedAt    DateTime?
+  cancelledAt    DateTime?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  intakeSession  IntakeSession?
+  aiReport       AIReport?
+  medicalRecords MedicalRecord[]
+  doctorNotes    DoctorNote[]
+  prescription   Prescription?
+  payment        Payment?
+  reminderJobs   ReminderJob[]
+  checklistItems ChecklistItem[]
+}
+
+model IntakeSession {
+  id             String         @id @default(cuid())
+  appointmentId  String         @unique
+  appointment    Appointment    @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  status         String         @default("NOT_STARTED") // "NOT_STARTED" | "IN_PROGRESS" | "COMPLETED"
+  startedAt      DateTime?
+  completedAt    DateTime?
+  lastSavedAt    DateTime       @default(now())
+  safetyFlagged  Boolean        @default(false)
+  safetyCategory String?
+  safetyTrigger  String?
+  currentStepKey String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  answers        IntakeAnswer[]
+}
+
+model IntakeAnswer {
+  id              String        @id @default(cuid())
+  intakeSessionId String
+  intakeSession   IntakeSession @relation(fields: [intakeSessionId], references: [id], onDelete: Cascade)
+  questionKey     String
+  questionText    String
+  section         String
+  answerText      String
+  answerJson      String?
+  source          String        @default("CORE") // CORE or AI_ADAPTIVE
+  reasonCategory  String?
+  sequence        Int           @default(0)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@unique([intakeSessionId, questionKey])
+}
+
+model AIReport {
+  id                   String       @id @default(cuid())
+  appointmentId        String       @unique
+  appointment          Appointment  @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  structuredReportJson String
+  modelUsed            String       @default("gemini-3.5-flash-lite")
+  reportStatus         String       @default("READY") // "READY" | "NEEDS_REVIEW" | "FAILED"
+  needsReview          Boolean      @default(false)
+  reviewReason         String?
+  reviewedAt           DateTime?
+  generatedAt          DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
+}
+
+model MedicalRecord {
+  id                String          @id @default(cuid())
+  patientId         String
+  patient           PatientProfile  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  appointmentId     String?
+  appointment       Appointment?    @relation(fields: [appointmentId], references: [id], onDelete: SetNull)
+  originalName      String
+  storedName        String
+  mimeType          String
+  size              Int
+  reportName        String          @default("Medical Document")
+  reportType        String          @default("LAB_REPORT") // LAB_REPORT | PRESCRIPTION | SCAN | XRAY | MRI | DISCHARGE_SUMMARY
+  reportDate        DateTime?
+  fileUrl           String?
+  processingStatus  String          @default("COMPLETED") // PENDING | PROCESSING | COMPLETED | FAILED
+  extractedDataJson String?         // Structured test parameters, findings, ranges, doctor notes, meds
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  timelines         MedicalTimeline[]
+}
+
+model MedicalTimeline {
+  id                String          @id @default(cuid())
+  patientId         String
+  patient           PatientProfile  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  recordId          String?
+  record            MedicalRecord?  @relation(fields: [recordId], references: [id], onDelete: SetNull)
+  eventDate         DateTime
+  eventType         String          // LAB_REPORT | CONSULTATION | PRESCRIPTION | SCAN | ECG | MRI
+  title             String
+  summary           String
+  importantFindings String?
+  medicinesJson     String?
+  doctorNotes       String?
+  isKeyMilestone    Boolean         @default(false)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+}
+
+model Medicine {
+  id           String          @id @default(cuid())
+  patientId    String
+  patient      PatientProfile  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  medicineName String
+  dosage       String
+  frequency    String
+  startDate    String?
+  endDate      String?
+  status       String          @default("CURRENT") // CURRENT | PREVIOUS | RECENTLY_ADDED | DISCONTINUED
+  source       String          @default("PRESCRIPTION") // PRESCRIPTION | SELF_REPORTED | LAB_NOTE
+  notes        String?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+}
+
+model Prescription {
+  id            String          @id @default(cuid())
+  patientId     String
+  patient       PatientProfile  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  doctorId      String
+  doctor        DoctorProfile   @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  appointmentId String?         @unique
+  appointment   Appointment?    @relation(fields: [appointmentId], references: [id], onDelete: SetNull)
+  diagnosis     String
+  medicinesJson String          // Array of { name, strength, dose, frequency, duration, instructions }
+  advice        String?
+  followUpDate  String?
+  pdfUrl        String?
+  emailStatus   String          @default("NOT_SENT") // NOT_SENT | SENDING | SENT | FAILED
+  emailedAt     DateTime?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model Payment {
+  id            String          @id @default(cuid())
+  appointmentId String          @unique
+  appointment   Appointment     @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  patientId     String
+  patient       PatientProfile  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  doctorId      String
+  doctor        DoctorProfile   @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  amount        Int             @default(800)
+  paymentStatus String          @default("COMPLETED") // PENDING | COMPLETED | FAILED | REFUNDED
+  transactionId String          @default(cuid())
+  paymentMethod String          @default("MOCK_GATEWAY") // RAZORPAY | STRIPE | MOCK_GATEWAY
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model Notification {
+  id          String        @id @default(cuid())
+  userId      String
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type        String        // APPOINTMENT | REPORT_READY | IMPORTANT_CHANGE | PRESCRIPTION | REMINDER | SYSTEM
+  title       String
+  message     String
+  status      String        @default("UNREAD") // UNREAD | READ
+  link        String?
+  scheduledAt DateTime?
+  sentAt      DateTime      @default(now())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model ReminderJob {
+  id            String      @id @default(cuid())
+  appointmentId String
+  appointment   Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  reminderType  String      // SEVEN_DAYS | ONE_DAY | TWO_HOURS
+  scheduledAt   DateTime
+  status        String      @default("SCHEDULED") // SCHEDULED | SENT | CANCELLED
+  sentAt        DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model ChecklistItem {
+  id            String       @id @default(cuid())
+  patientId     String
+  patient       PatientProfile @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  appointmentId String?
+  appointment   Appointment? @relation(fields: [appointmentId], references: [id], onDelete: SetNull)
+  text          String
+  isReady       Boolean      @default(false)
+  category      String       @default("GENERAL") // GENERAL | LABS | PRESCRIPTIONS | MEDICINES
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model DoctorNote {
+  id            String        @id @default(cuid())
+  appointmentId String
+  appointment   Appointment   @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  doctorId      String
+  doctor        DoctorProfile @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  content       String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  details   String?
+  ipAddress String?
+  createdAt DateTime @default(now())
+}
