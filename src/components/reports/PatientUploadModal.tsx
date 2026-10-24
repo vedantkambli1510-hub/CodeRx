@@ -9,16 +9,16 @@ import {
   CheckCircle2,
   AlertCircle,
   Sparkles,
-  Layers,
   ArrowRight,
   RefreshCw,
   Trash2,
-  Eye,
   ShieldCheck,
   Lock,
   Check,
   ChevronLeft,
   Info,
+  User,
+  Heart,
 } from "lucide-react";
 import { PatientReport } from "@/lib/data/reports-data";
 import { createGenericReportAnalysis } from "@/lib/data/mock-ai-generator";
@@ -105,7 +105,7 @@ export function PatientUploadModal({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
-  // ALWAYS RESET TO STEP 1 (CONSENT FORM) ON EVERY REPORT UPLOAD
+  // Reset to Step 1 on opening
   useEffect(() => {
     if (isOpen) {
       setCurrentStep("consent");
@@ -269,201 +269,334 @@ export function PatientUploadModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/65 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-      <div className="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden my-6 animate-in fade-in zoom-in-95 duration-200">
+    <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto animate-in fade-in duration-200">
+      <div className="bg-white rounded-[32px] max-w-3xl w-full shadow-2xl border border-slate-200/90 overflow-hidden my-6 font-['Quicksand',sans-serif]">
         
-        {/* STEPPER HEADER */}
-        <div className="px-6 py-4 bg-gradient-to-r from-slate-900 via-slate-800 to-teal-950 text-white flex items-center justify-between border-b border-slate-700/80">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-teal-500/20 border border-teal-400/40 text-teal-300 flex items-center justify-center shadow-inner">
-              <ShieldCheck className="w-5 h-5 text-teal-300" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h3 className="text-base font-black text-white tracking-tight">
-                  {currentStep === "consent" ? "Patient Consent & Data Guidelines" : "Upload Medical Report"}
-                </h3>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-teal-400/20 text-teal-300 border border-teal-400/30">
-                  AES-256 E2E
-                </span>
-              </div>
-              <p className="text-xs text-slate-300 mt-0.5">
-                {currentStep === "consent"
-                  ? "Required confidentiality agreement before uploading diagnostic records"
-                  : "Upload files for automated extraction and standardized clinical formatting"}
-              </p>
-            </div>
+        {/* ------------------------------------------------------------------ */}
+        {/* 1. TOP HEADER BANNER (WARM PASTEL WITH 3D SHIELD & ENCRYPTED BADGE) */}
+        {/* ------------------------------------------------------------------ */}
+        <div className="relative px-6 sm:px-8 pt-6 pb-5 bg-gradient-to-r from-[#FFF8EE] via-[#FFFBF6] to-[#FFF3F0] border-b border-[#F7EAE1]">
+          {/* Subtle floating heart accents in background */}
+          <div className="absolute top-4 right-28 opacity-25 select-none pointer-events-none">
+            <Heart className="w-5 h-5 fill-rose-300 text-rose-300" />
+          </div>
+          <div className="absolute bottom-2 right-40 opacity-20 select-none pointer-events-none">
+            <Heart className="w-4 h-4 fill-rose-300 text-rose-300" />
           </div>
 
-          <button
-            type="button"
-            onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
-            title="Close"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            {/* Left: 3D Shield Graphic & Title */}
+            <div className="flex items-center gap-4">
+              {/* Cute 3D Medical Shield & Stethoscope Illustration */}
+              <div className="shrink-0 drop-shadow-sm">
+                <svg
+                  className="w-16 h-16"
+                  viewBox="0 0 72 72"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  {/* Soft mint base circle */}
+                  <circle cx="36" cy="36" r="32" fill="#E8F8F0" />
+                  {/* Medical folder background */}
+                  <rect x="36" y="20" width="22" height="26" rx="4" fill="#BFDBFE" />
+                  <rect x="40" y="26" width="14" height="2" rx="1" fill="#93C5FD" />
+                  <rect x="40" y="31" width="10" height="2" rx="1" fill="#93C5FD" />
+                  {/* Shield outer layer */}
+                  <path
+                    d="M32 14L48 21V36C48 48 32 58 32 58C32 58 16 48 16 36V21L32 14Z"
+                    fill="#10B981"
+                  />
+                  {/* Shield inner highlight */}
+                  <path
+                    d="M32 17L45 23V36C45 46 32 55 32 55C32 55 19 46 19 36V23L32 17Z"
+                    fill="#34D399"
+                  />
+                  {/* White heart in shield */}
+                  <path
+                    d="M32 40C31.2 40 25 35 25 30C25 27 27 25 29.5 25C31 25 32 26 32 26C32 26 33 25 34.5 25C37 25 39 27 39 30C39 35 32.8 40 32 40Z"
+                    fill="white"
+                  />
+                  {/* Stethoscope wrapping */}
+                  <path
+                    d="M22 44C17 44 14 50 18 56C22 62 34 62 42 61"
+                    stroke="#1E40AF"
+                    strokeWidth="3.2"
+                    strokeLinecap="round"
+                  />
+                  <circle cx="43" cy="61" r="3.5" fill="#1E3A8A" />
+                  {/* Small pill badge */}
+                  <rect x="14" y="44" width="12" height="6" rx="3" fill="#60A5FA" transform="rotate(-15 14 44)" />
+                </svg>
+              </div>
+
+              {/* Title & Subtitle */}
+              <div>
+                <h2 className="text-xl sm:text-2xl font-black text-[#102A45] tracking-tight">
+                  Patient Consent &amp; Data Guidelines
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-500 font-semibold pt-0.5">
+                  Your health information deserves care, privacy and protection.
+                </p>
+              </div>
+            </div>
+
+            {/* Right: "Secure & Encrypted" Badge & Close 'X' */}
+            <div className="flex items-center gap-3 self-end sm:self-center shrink-0">
+              <div className="bg-[#E7F8F1] border border-[#BDEBD7] text-[#0A7B54] px-3.5 py-1.5 rounded-2xl flex items-center gap-2 shadow-2xs">
+                <div className="w-5 h-5 rounded-full bg-[#10B981] text-white flex items-center justify-center shrink-0 shadow-2xs">
+                  <Lock className="w-3 h-3" />
+                </div>
+                <div className="text-left">
+                  <div className="text-[11px] font-black leading-tight text-[#085F40]">
+                    Secure &amp; Encrypted
+                  </div>
+                  <div className="text-[9px] font-bold text-[#0D9465]">
+                    Your data is always protected
+                  </div>
+                </div>
+              </div>
+
+              {/* Close Button */}
+              <button
+                type="button"
+                onClick={onClose}
+                className="w-8 h-8 rounded-full bg-white/80 hover:bg-white text-slate-400 hover:text-slate-700 border border-slate-200/60 flex items-center justify-center transition-all cursor-pointer shadow-2xs"
+                title="Close"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
         </div>
 
-        {/* STEP PROGRESS INDICATOR */}
-        <div className="px-6 py-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between text-xs">
+        {/* ------------------------------------------------------------------ */}
+        {/* 2. STEPPER PROGRESS INDICATOR (1 Guidelines & Consent -> 2 Upload) */}
+        {/* ------------------------------------------------------------------ */}
+        <div className="px-6 sm:px-8 py-3 bg-[#FAFDFE] border-b border-slate-200/80 flex items-center justify-between text-xs">
           <div className="flex items-center gap-2">
             <span
-              className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-black transition-all ${
+              className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-black transition-all ${
                 currentStep === "consent"
-                  ? "bg-teal-600 text-white shadow-xs"
-                  : "bg-emerald-600 text-white"
+                  ? "bg-[#0FA968] text-white shadow-2xs"
+                  : "bg-[#0FA968] text-white"
               }`}
             >
-              {currentStep === "upload" ? <Check className="w-3.5 h-3.5" /> : "1"}
+              1
             </span>
             <span
-              className={`font-bold ${
-                currentStep === "consent" ? "text-teal-950" : "text-slate-600"
+              className={`font-black text-xs ${
+                currentStep === "consent" ? "text-[#0FA968]" : "text-slate-600"
               }`}
             >
-              1. Guidelines &amp; Consent
+              Guidelines &amp; Consent
             </span>
           </div>
 
-          <div className="w-8 h-0.5 bg-slate-200 rounded-full" />
+          {/* Stepper Connecting Line */}
+          <div className="flex-1 mx-4 max-w-xs h-[3px] bg-slate-200 rounded-full overflow-hidden">
+            <div
+              className={`h-full bg-[#0FA968] transition-all duration-300 ${
+                currentStep === "consent" ? "w-1/2" : "w-full"
+              }`}
+            />
+          </div>
 
           <div className="flex items-center gap-2">
             <span
-              className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-black transition-all ${
+              className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-black transition-all ${
                 currentStep === "upload"
-                  ? "bg-teal-600 text-white shadow-xs"
+                  ? "bg-[#0FA968] text-white shadow-2xs"
                   : "bg-slate-200 text-slate-500"
               }`}
             >
               2
             </span>
             <span
-              className={`font-bold ${
-                currentStep === "upload" ? "text-teal-950" : "text-slate-400"
+              className={`font-bold text-xs ${
+                currentStep === "upload" ? "text-[#0FA968]" : "text-slate-400"
               }`}
             >
-              2. Select &amp; Upload Report
+              Select &amp; Upload Report
             </span>
           </div>
         </div>
 
-        {/* ------------------------------------------------------------- */}
-        {/* STEP 1: CONSENT & GUIDELINES FORM (SHOWN BEFORE EVERY UPLOAD) */}
-        {/* ------------------------------------------------------------- */}
+        {/* ------------------------------------------------------------------ */}
+        {/* STEP 1: PATIENT CONSENT & GUIDELINES (MATCHES REFERENCE IMAGE!)     */}
+        {/* ------------------------------------------------------------------ */}
         {currentStep === "consent" && (
-          <div className="p-6 space-y-5">
-            {/* Context Badge */}
-            <div className="flex flex-wrap items-center justify-between gap-2 p-3 rounded-2xl bg-teal-50/70 border border-teal-200/80 text-xs">
-              <div className="flex items-center gap-2">
-                <span className="text-slate-500">Patient:</span>
-                <strong className="text-slate-900 font-bold">{patientName}</strong>
-                <span className="text-slate-500">({patientId})</span>
+          <div className="p-6 sm:p-8 space-y-5">
+            {/* Patient & Authorized Doctor Context Card */}
+            <div className="bg-[#F4F9FD] border border-[#DEEDF8] rounded-2xl p-3 sm:p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              {/* Left: Patient Avatar & Name */}
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-sky-200 to-indigo-100 border-2 border-white shadow-2xs flex items-center justify-center shrink-0 overflow-hidden">
+                  <svg className="w-9 h-9" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20" cy="20" r="20" fill="#E0F2FE" />
+                    {/* Hair */}
+                    <path d="M12 20C12 14 15 10 20 10C25 10 28 14 28 20C28 22 28 25 28 26C28 27 26 28 25 26C24 23 24 19 24 19C24 19 21 21 16 19C16 23 16 26 15 26C14 28 12 27 12 26V20Z" fill="#78350F" />
+                    {/* Face */}
+                    <ellipse cx="20" cy="20" rx="6" ry="6.5" fill="#FED7AA" />
+                    <circle cx="16.5" cy="21.5" r="1.2" fill="#FDA4AF" />
+                    <circle cx="23.5" cy="21.5" r="1.2" fill="#FDA4AF" />
+                    <circle cx="17.5" cy="19.5" r="0.8" fill="#1E293B" />
+                    <circle cx="22.5" cy="19.5" r="0.8" fill="#1E293B" />
+                    <path d="M18.5 22.5C19.5 23.5 20.5 23.5 21.5 22.5" stroke="#9A3412" strokeWidth="0.8" strokeLinecap="round" />
+                    {/* Scrubs */}
+                    <path d="M11 36C11 30 15 28 20 28C25 28 29 30 29 36" fill="#38BDF8" />
+                    <path d="M16 29C16 32 18 34 20 34C22 34 24 32 24 29" stroke="#E2E8F0" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+                    <circle cx="20" cy="35" r="1" fill="#F43F5E" />
+                  </svg>
+                </div>
+                <div className="text-xs">
+                  <span className="text-slate-500 font-medium">Patient: </span>
+                  <strong className="text-slate-900 font-extrabold text-sm">
+                    {patientName}
+                  </strong>
+                  <span className="text-slate-400 font-semibold ml-1.5">
+                    ({patientId})
+                  </span>
+                </div>
               </div>
-              <div className="flex items-center gap-1.5 text-teal-800 font-bold">
-                <span className="text-slate-500 font-normal">Authorized Doctor:</span>
-                <span>Dr. Aarav Mehta (Senior Consultant)</span>
-              </div>
-            </div>
 
-            {/* Privacy & Security Guidelines Cards */}
-            <div className="space-y-3">
-              <h4 className="text-xs font-black text-slate-800 uppercase tracking-wider">
-                Please Review the Data Protection &amp; Clinical Guidelines:
-              </h4>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {/* Rule 1 */}
-                <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1">
-                  <div className="flex items-center gap-2 text-teal-700 font-bold text-xs">
-                    <Lock className="w-4 h-4 shrink-0" />
-                    <span>Strict Clinical Confidentiality</span>
-                  </div>
-                  <p className="text-[11px] text-slate-600 leading-relaxed">
-                    <strong>ONLY your consulting doctor (Dr. Aarav Mehta) and you</strong> have access to your uploaded reports. No third party or unauthorized hospital staff can view your records.
-                  </p>
+              {/* Right: Authorized Doctor Badge */}
+              <div className="flex items-center gap-2.5 sm:border-l sm:border-[#D5E6F3] sm:pl-4 text-xs">
+                <div className="w-8 h-8 rounded-full bg-sky-100 text-sky-700 flex items-center justify-center shrink-0">
+                  <User className="w-4 h-4" />
                 </div>
-
-                {/* Rule 2 */}
-                <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1">
-                  <div className="flex items-center gap-2 text-teal-700 font-bold text-xs">
-                    <ShieldCheck className="w-4 h-4 shrink-0" />
-                    <span>Zero Data Leakage or Selling</span>
+                <div>
+                  <div className="text-[11px] text-slate-500 font-medium leading-none">
+                    Authorized Doctor: <strong className="text-slate-900 font-bold">Dr. Aarav Mehta</strong>
                   </div>
-                  <p className="text-[11px] text-slate-600 leading-relaxed">
-                    Your medical information is <strong>never sold, shared, or leased</strong> to third-party advertisers, insurance companies, or commercial brokers.
-                  </p>
-                </div>
-
-                {/* Rule 3 */}
-                <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1">
-                  <div className="flex items-center gap-2 text-sky-700 font-bold text-xs">
-                    <Sparkles className="w-4 h-4 shrink-0" />
-                    <span>Standardized AI Formatter Only</span>
+                  <div className="text-[10px] text-slate-400 font-semibold pt-0.5">
+                    (Senior Consultant)
                   </div>
-                  <p className="text-[11px] text-slate-600 leading-relaxed">
-                    CodeRx AI only digitizes and organizes your lab numbers for easy viewing and download. <strong>AI does NOT give medical diagnoses;</strong> diagnosis remains solely with Dr. Aarav Mehta.
-                  </p>
-                </div>
-
-                {/* Rule 4 */}
-                <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1">
-                  <div className="flex items-center gap-2 text-indigo-700 font-bold text-xs">
-                    <FileText className="w-4 h-4 shrink-0" />
-                    <span>Per-Upload Consent Standard</span>
-                  </div>
-                  <p className="text-[11px] text-slate-600 leading-relaxed">
-                    In compliance with Indian Digital Data Protection and healthcare privacy norms, you authorize each uploaded document individually.
-                  </p>
                 </div>
               </div>
             </div>
 
-            {/* MANDATORY CHECKBOX FORM CARD */}
-            <div className="pt-2">
+            {/* Section Heading with Shield Icon */}
+            <div className="flex items-center gap-1.5 text-xs font-black text-[#0D8466] uppercase tracking-wider">
+              <ShieldCheck className="w-4 h-4 text-[#0D8466]" />
+              <span>PLEASE REVIEW THE DATA PROTECTION &amp; CLINICAL GUIDELINES:</span>
+            </div>
+
+            {/* 4 PASTEL GUIDELINE CARDS (2x2 GRID) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              {/* Card 1: Strict Clinical Confidentiality (Soft Mint Green) */}
+              <div className="p-4 rounded-2xl bg-[#F2FAF6] border border-[#D5EFE3] space-y-1.5">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-[#C7EEDD] text-[#0A7B54] flex items-center justify-center shrink-0 shadow-2xs">
+                    <Lock className="w-4 h-4" />
+                  </div>
+                  <h4 className="font-extrabold text-[#0D6246] text-xs sm:text-sm">
+                    Strict Clinical Confidentiality
+                  </h4>
+                </div>
+                <p className="text-[11px] text-[#2C5E4E] leading-relaxed font-medium">
+                  <strong>ONLY your consulting doctor (Dr. Aarav Mehta)</strong> and you have access to your uploaded reports. No third party or unauthorized hospital staff can view your records.
+                </p>
+              </div>
+
+              {/* Card 2: Zero Data Leakage or Selling (Soft Warm Peach) */}
+              <div className="p-4 rounded-2xl bg-[#FFF6F0] border border-[#FFE3D1] space-y-1.5">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-[#FFDFCA] text-[#D95B16] flex items-center justify-center shrink-0 shadow-2xs">
+                    <ShieldCheck className="w-4 h-4" />
+                  </div>
+                  <h4 className="font-extrabold text-[#B94709] text-xs sm:text-sm">
+                    Zero Data Leakage or Selling
+                  </h4>
+                </div>
+                <p className="text-[11px] text-[#7A4526] leading-relaxed font-medium">
+                  Your medical information is <strong>never sold, shared, or leased</strong> to third-party advertisers, insurance companies, or commercial brokers.
+                </p>
+              </div>
+
+              {/* Card 3: Standardized AI Formatter Only (Soft Lavender) */}
+              <div className="p-4 rounded-2xl bg-[#F4F7FF] border border-[#DEE6FF] space-y-1.5">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-[#D8E2FF] text-[#3D5FD9] flex items-center justify-center shrink-0 shadow-2xs">
+                    <Sparkles className="w-4 h-4" />
+                  </div>
+                  <h4 className="font-extrabold text-[#2949B8] text-xs sm:text-sm">
+                    Standardized AI Formatter Only
+                  </h4>
+                </div>
+                <p className="text-[11px] text-[#3C4E8A] leading-relaxed font-medium">
+                  CodeRx AI only digitizes and organizes your lab numbers for easy viewing and download. It does <strong>NOT</strong> give medical diagnoses, diagnosis, or advice solely with Dr. Aarav Mehta.
+                </p>
+              </div>
+
+              {/* Card 4: Per-Upload Consent Standard (Soft Sky Blue) */}
+              <div className="p-4 rounded-2xl bg-[#F0F8FF] border border-[#D4ECFF] space-y-1.5">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-[#C6E5FF] text-[#1677C4] flex items-center justify-center shrink-0 shadow-2xs">
+                    <FileText className="w-4 h-4" />
+                  </div>
+                  <h4 className="font-extrabold text-[#0E5C9A] text-xs sm:text-sm">
+                    Per-Upload Consent Standard
+                  </h4>
+                </div>
+                <p className="text-[11px] text-[#2C5270] leading-relaxed font-medium">
+                  In compliance with Indian Digital Data Protection and healthcare privacy norms, you authorize each uploaded document individually.
+                </p>
+              </div>
+            </div>
+
+            {/* MANDATORY CHECKBOX CONSENT CARD WITH CUTE REPORT ILLUSTRATION */}
+            <div className="bg-[#FAFDFB] border border-[#CDEBDC] rounded-2xl p-4 flex items-center justify-between gap-4">
               <label
-                htmlFor="upload-consent-checkbox"
-                className={`flex items-start gap-3.5 p-4 rounded-2xl border-2 transition-all cursor-pointer select-none ${
-                  hasAcceptedGuidelines
-                    ? "bg-emerald-50/80 border-emerald-400 shadow-xs"
-                    : "bg-amber-50/50 border-amber-300 hover:border-amber-400"
-                }`}
+                htmlFor="consent-checkbox-modal"
+                className="flex items-start gap-3 cursor-pointer select-none flex-1"
               >
                 <input
                   type="checkbox"
-                  id="upload-consent-checkbox"
+                  id="consent-checkbox-modal"
                   checked={hasAcceptedGuidelines}
                   onChange={(e) => setHasAcceptedGuidelines(e.target.checked)}
-                  className="w-5 h-5 mt-0.5 text-teal-600 rounded-md border-slate-300 focus:ring-teal-500 cursor-pointer shrink-0"
+                  className="w-5 h-5 mt-0.5 rounded-md text-[#0FA968] border-slate-300 focus:ring-[#0FA968] cursor-pointer shrink-0"
                 />
-                <div className="space-y-1.5 flex-1">
-                  <span className="text-xs sm:text-sm font-bold text-slate-900 block leading-snug">
+                <div className="space-y-1">
+                  <span className="font-bold text-slate-800 text-xs sm:text-sm leading-snug block">
                     I accept the above guidelines and give my explicit informed consent to upload, format, and share this diagnostic report strictly with Dr. Aarav Mehta.
                   </span>
-                  
-                  <div className="flex items-center gap-2 text-[11px]">
-                    {hasAcceptedGuidelines ? (
-                      <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 font-black inline-flex items-center gap-1 shadow-2xs">
-                        <Check className="w-3.5 h-3.5 text-emerald-700" />
-                        <span>Consent Signed for this Report Upload</span>
-                      </span>
-                    ) : (
-                      <span className="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300 font-bold inline-flex items-center gap-1">
-                        <AlertCircle className="w-3.5 h-3.5 text-amber-700" />
-                        <span>Please check this box to unlock report upload</span>
-                      </span>
-                    )}
-                  </div>
+                  <span className="text-[11px] text-slate-500 font-medium flex items-center gap-1">
+                    <Info className="w-3.5 h-3.5 text-slate-400" />
+                    Please check this box to unlock report upload
+                  </span>
                 </div>
               </label>
+
+              {/* Cute Medical Consent Card Graphic with Heart & Green Leaves */}
+              <div className="shrink-0 hidden sm:block">
+                <svg className="w-20 h-16" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  {/* Sprout Leaves */}
+                  <path d="M22 62C18 52 28 44 34 48C38 52 32 64 22 62Z" fill="#86EFAC" />
+                  <path d="M20 62C24 54 36 56 34 64C32 68 22 68 20 62Z" fill="#4ADE80" />
+                  <path d="M78 62C82 52 72 44 66 48C62 52 68 64 78 62Z" fill="#86EFAC" />
+                  <path d="M80 62C76 54 64 56 66 64C68 68 78 68 80 62Z" fill="#4ADE80" />
+                  {/* Clipboard Paper */}
+                  <rect x="28" y="14" width="44" height="54" rx="8" fill="#F0FDF4" stroke="#86EFAC" strokeWidth="2" />
+                  <rect x="33" y="22" width="34" height="40" rx="5" fill="#FFFFFF" stroke="#BBF7D0" strokeWidth="1.5" />
+                  {/* Heart on report */}
+                  <path
+                    d="M50 44C49 44 43 39 43 35C43 32.5 44.5 31 47 31C48.2 31 49.5 31.8 50 32.5C50.5 31.8 51.8 31 53 31C55.5 31 57 32.5 57 35C57 39 51 44 50 44Z"
+                    fill="#38BDF8"
+                  />
+                  {/* Document lines */}
+                  <rect x="42" y="48" width="16" height="2" rx="1" fill="#BAE6FD" />
+                  <rect x="44" y="52" width="12" height="2" rx="1" fill="#BAE6FD" />
+                </svg>
+              </div>
             </div>
 
-            {/* FOOTER ACTIONS FOR STEP 1 */}
-            <div className="flex items-center justify-between pt-4 border-t border-slate-200">
+            {/* FOOTER ACTIONS: CANCEL & CORAL "ACCEPT & PROCEED" BUTTON */}
+            <div className="flex items-center justify-between pt-2">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+                className="text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors cursor-pointer px-3 py-2"
               >
                 Cancel
               </button>
@@ -472,10 +605,10 @@ export function PatientUploadModal({
                 type="button"
                 disabled={!hasAcceptedGuidelines}
                 onClick={() => setCurrentStep("upload")}
-                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                className={`flex items-center gap-2 px-6 py-2.5 rounded-2xl text-xs font-extrabold transition-all ${
                   hasAcceptedGuidelines
-                    ? "bg-teal-600 hover:bg-teal-500 text-white shadow-lg shadow-teal-600/30 cursor-pointer"
-                    : "bg-slate-200 text-slate-400 cursor-not-allowed border border-slate-300"
+                    ? "bg-gradient-to-r from-[#FF8E7F] to-[#FFA28D] hover:from-[#f87867] hover:to-[#ff9179] text-white shadow-md shadow-[#FF8E7F]/30 cursor-pointer"
+                    : "bg-[#FFD3CC] text-white/90 cursor-not-allowed shadow-none"
                 }`}
               >
                 <span>Accept Guidelines &amp; Proceed to Upload</span>
@@ -485,23 +618,23 @@ export function PatientUploadModal({
           </div>
         )}
 
-        {/* ------------------------------------------------------------- */}
-        {/* STEP 2: REPORT UPLOAD FORM (UNLOCKED ONLY AFTER CONSENT)     */}
-        {/* ------------------------------------------------------------- */}
+        {/* ------------------------------------------------------------------ */}
+        {/* STEP 2: REPORT UPLOAD FORM (UNLOCKED AFTER CONSENT ACCEPTANCE)     */}
+        {/* ------------------------------------------------------------------ */}
         {currentStep === "upload" && (
-          <form onSubmit={handleSubmit} className="p-6 space-y-5">
+          <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-5">
             {/* Active Consent Confirmation Banner */}
-            <div className="flex items-center justify-between p-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-xs">
+            <div className="flex items-center justify-between p-3 rounded-2xl bg-[#E7F8F1] border border-[#BDEBD7] text-xs">
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span className="text-emerald-900 font-bold">
+                <CheckCircle2 className="w-4 h-4 text-[#0A7B54] shrink-0" />
+                <span className="text-[#085F40] font-bold">
                   Informed Consent Signed: Authorized for Dr. Aarav Mehta (Encrypted AES-256)
                 </span>
               </div>
               <button
                 type="button"
                 onClick={() => setCurrentStep("consent")}
-                className="text-teal-700 hover:text-teal-900 font-bold hover:underline shrink-0 text-[11px] cursor-pointer"
+                className="text-[#0A7B54] hover:text-[#085F40] font-bold hover:underline shrink-0 text-[11px] cursor-pointer"
               >
                 Review Guidelines
               </button>
@@ -719,7 +852,7 @@ export function PatientUploadModal({
                 <button
                   type="submit"
                   disabled={uploadedFiles.length === 0 || isProcessing}
-                  className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white text-xs font-bold shadow-lg shadow-teal-600/30 disabled:opacity-50 transition-colors cursor-pointer"
+                  className="flex items-center gap-2 px-6 py-2.5 rounded-2xl bg-gradient-to-r from-[#FF8E7F] to-[#FFA28D] hover:from-[#f87867] hover:to-[#ff9179] text-white text-xs font-extrabold shadow-md shadow-[#FF8E7F]/30 disabled:opacity-50 transition-all cursor-pointer"
                 >
                   <Sparkles className="w-4 h-4" />
                   <span>{isProcessing ? "Standardizing Report..." : "Submit & Format Report"}</span>
