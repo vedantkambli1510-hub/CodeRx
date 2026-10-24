@@ -33,40 +33,40 @@ export function PatientTimelineClient({
   const { isSubscribed, plan, isLoaded, updateSubscription } = useSubscription();
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto pb-16 animate-in fade-in duration-200 text-[#4C0519]">
+    <div className="space-y-6 max-w-5xl mx-auto pb-16 animate-in fade-in duration-200 text-[#064E3B]">
       
       {/* 1. TOP HEADER WITH TITLE & 3-WAY DEMO TOGGLE */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[#FCE7F0]">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[#D6EDE1]">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="px-2.5 py-0.5 rounded-full text-[10.5px] font-black bg-pink-100 text-[#E11D48] border border-pink-200">
+            <span className="px-2.5 py-0.5 rounded-full text-[10.5px] font-black bg-[#E8F8F0] text-[#059669] border border-[#BCE8D0]">
               {isSubscribed ? (plan === "FAMILY" ? "👑 FAMILY PASS ACTIVE" : plan === "PREMIUM" ? "✨ COMPLETE CARE ACTIVE" : "⚡ BASIC PASS ACTIVE") : "🔒 ₹99/MO CARE FEATURE"}
             </span>
-            <span className="text-xs text-[#881337] font-bold">
+            <span className="text-xs text-[#047857] font-bold">
               Longitudinal Clinical Intelligence
             </span>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-black text-[#4C0519] tracking-tight flex items-center gap-2.5">
-            <Sparkles className="w-7 h-7 text-[#E11D48]" />
+          <h1 className="text-2xl sm:text-3xl font-black text-[#064E3B] tracking-tight flex items-center gap-2.5">
+            <Sparkles className="w-7 h-7 text-[#059669]" />
             <span>Health Journal &amp; AI Timeline</span>
           </h1>
 
-          <p className="text-xs sm:text-sm text-[#881337] mt-1 leading-relaxed font-medium">
+          <p className="text-xs sm:text-sm text-[#047857] mt-1 leading-relaxed font-medium">
             See how your body condition evolved over time (<strong>pehle condition kaisi thi vs ab kaisi hai</strong>) &amp; chronological clinical events.
           </p>
         </div>
 
         {/* 3-WAY DEMO SWITCHER */}
-        <div className="flex items-center gap-2 bg-white border border-[#FCE7F0] p-1.5 rounded-2xl shadow-2xs self-start md:self-auto">
-          <span className="text-[11px] font-bold text-[#881337] px-2">Demo:</span>
+        <div className="flex items-center gap-2 bg-white border border-[#D6EDE1] p-1.5 rounded-2xl shadow-2xs self-start md:self-auto">
+          <span className="text-[11px] font-bold text-[#047857] px-2">Demo:</span>
           <button
             type="button"
             onClick={() => updateSubscription(false)}
             className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               !isSubscribed
-                ? "bg-[#E11D48] text-white shadow-xs font-black"
-                : "text-[#881337] hover:bg-pink-100"
+                ? "bg-[#059669] text-white shadow-xs font-black"
+                : "text-[#047857] hover:bg-[#E8F8F0]"
             }`}
             title="Simulate unsubscribed locked state"
           >
@@ -77,8 +77,8 @@ export function PatientTimelineClient({
             onClick={() => updateSubscription(true, "INDIVIDUAL")}
             className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               isSubscribed && plan === "INDIVIDUAL"
-                ? "bg-[#E11D48] text-white shadow-xs font-black"
-                : "text-[#881337] hover:bg-pink-100"
+                ? "bg-[#059669] text-white shadow-xs font-black"
+                : "text-[#047857] hover:bg-[#E8F8F0]"
             }`}
             title="Simulate Solo Pass (₹99) - Unlocks AI Before vs Now Timeline"
           >
@@ -89,8 +89,8 @@ export function PatientTimelineClient({
             onClick={() => updateSubscription(true, "FAMILY")}
             className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               isSubscribed && plan === "FAMILY"
-                ? "bg-[#E11D48] text-white shadow-xs font-black"
-                : "text-[#881337] hover:bg-pink-100"
+                ? "bg-[#059669] text-white shadow-xs font-black"
+                : "text-[#047857] hover:bg-[#E8F8F0]"
             }`}
             title="Simulate Family Pass (₹199) - Unlocks all family timelines"
           >
@@ -100,7 +100,7 @@ export function PatientTimelineClient({
       </div>
 
       {/* 2. DUAL TAB SELECTOR (AI HEALTH STORY vs CHRONOLOGICAL LOG) */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-white p-2 rounded-2xl border border-[#FCE7F0] shadow-xs">
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-white p-2 rounded-2xl border border-[#D6EDE1] shadow-xs">
         <div className="flex items-center gap-2">
           {/* TAB 1: AI HEALTH STORY (BEFORE VS NOW) */}
           <button
@@ -163,10 +163,10 @@ export function PatientTimelineClient({
           <div className="bg-white rounded-3xl border border-[#D6EDE1] shadow-xs p-6">
             <div className="mb-4">
               <h2 className="text-base font-extrabold text-[#064E3B] flex items-center gap-2">
-                <Clock className="w-5 h-5 text-[#E11D48]" />
+                <Clock className="w-5 h-5 text-[#059669]" />
                 <span>Chronological Medical Journal</span>
               </h2>
-              <p className="text-xs text-[#881337] mt-0.5 font-medium">
+              <p className="text-xs text-[#047857] mt-0.5 font-medium">
                 Every logged doctor consultation, prescription modification, and diagnostic scan report.
               </p>
             </div>

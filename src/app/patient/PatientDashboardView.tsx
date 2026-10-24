@@ -262,14 +262,14 @@ export function PatientDashboardView({
             <div className="w-32 h-28 relative">
               <svg viewBox="0 0 140 120" fill="none" className="w-full h-full">
                 {/* Botanical leaves behind */}
-                <path d="M110 90 Q 130 50 125 15" stroke="#E11D48" strokeWidth="2.5" strokeLinecap="round" />
-                <ellipse cx="120" cy="30" rx="10" ry="16" fill="#FECDD3" opacity="0.65" transform="rotate(25 120 30)" />
-                <ellipse cx="130" cy="50" rx="8" ry="14" fill="#FDA4AF" opacity="0.7" transform="rotate(40 130 50)" />
-                <ellipse cx="115" cy="70" rx="7" ry="12" fill="#FB7185" opacity="0.75" transform="rotate(15 115 70)" />
+                <path d="M110 90 Q 130 50 125 15" stroke="#059669" strokeWidth="2.5" strokeLinecap="round" />
+                <ellipse cx="120" cy="30" rx="10" ry="16" fill="#BBF7D0" opacity="0.65" transform="rotate(25 120 30)" />
+                <ellipse cx="130" cy="50" rx="8" ry="14" fill="#86EFAC" opacity="0.7" transform="rotate(40 130 50)" />
+                <ellipse cx="115" cy="70" rx="7" ry="12" fill="#4ADE80" opacity="0.75" transform="rotate(15 115 70)" />
                 {/* Serene Patient Silhouette */}
-                <circle cx="65" cy="40" r="16" fill="#FDA4AF" />
-                <path d="M52 35 Q 65 18 78 35 Q 75 48 52 35 Z" fill="#4C0519" />
-                <path d="M42 85 Q 45 60 65 60 Q 85 60 88 85 Z" fill="#E11D48" />
+                <circle cx="65" cy="40" r="16" fill="#A7F3D0" />
+                <path d="M52 35 Q 65 18 78 35 Q 75 48 52 35 Z" fill="#064E3B" />
+                <path d="M42 85 Q 45 60 65 60 Q 85 60 88 85 Z" fill="#059669" />
                 <circle cx="70" cy="68" r="4" fill="#FFFFFF" opacity="0.6" />
               </svg>
             </div>
@@ -279,92 +279,92 @@ export function PatientDashboardView({
       </div>
 
       {/* ============================================================== */}
-      {/* 2. KPI METRIC STAT CARDS (4 COLUMNS)                            */}
+      {/* 2. KPI METRIC STAT CARDS (4 COLUMNS - LIGHT DOCTORY GREEN)       */}
       {/* ============================================================== */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         
         {/* Metric 1: Upcoming Appointments */}
         <Link
           href="/patient/appointments"
-          className="p-5 bg-white rounded-3xl border border-[#FCE7F0] hover:border-[#FDA4AF] transition-all shadow-xs flex items-center justify-between group cursor-pointer"
+          className="p-5 bg-white rounded-3xl border border-[#D6EDE1] hover:border-[#8FE3B8] hover:bg-[#F3FAF6]/50 transition-all shadow-xs flex items-center justify-between group cursor-pointer"
         >
           <div className="flex items-center gap-3.5">
-            <div className="w-11 h-11 rounded-2xl bg-[#FFE4E6] border border-[#FDA4AF] flex items-center justify-center text-[#E11D48] group-hover:scale-105 transition-transform">
+            <div className="w-11 h-11 rounded-2xl bg-[#E8F8F0] border border-[#BCE8D0] flex items-center justify-center text-[#059669] group-hover:scale-105 transition-transform">
               <Calendar className="w-5 h-5" />
             </div>
             <div>
-              <div className="text-2xl font-black text-[#4C0519] leading-tight">
+              <div className="text-2xl font-black text-[#064E3B] leading-tight">
                 {displayedAppointments.length || 3}
               </div>
-              <div className="text-[11px] font-bold text-[#9F1239]">
+              <div className="text-[11px] font-bold text-[#047857]">
                 Upcoming Appointments
               </div>
             </div>
           </div>
-          <ArrowRight className="w-4 h-4 text-[#FDA4AF] group-hover:text-[#E11D48] group-hover:translate-x-1 transition-all" />
+          <ArrowRight className="w-4 h-4 text-[#8FE3B8] group-hover:text-[#059669] group-hover:translate-x-1 transition-all" />
         </Link>
 
         {/* Metric 2: Active Prescriptions */}
         <Link
           href="/patient/prescriptions"
-          className="p-5 bg-white rounded-3xl border border-[#FCE7F0] hover:border-[#86EFAC] transition-all shadow-xs flex items-center justify-between group cursor-pointer"
+          className="p-5 bg-white rounded-3xl border border-[#D6EDE1] hover:border-[#8FE3B8] hover:bg-[#F3FAF6]/50 transition-all shadow-xs flex items-center justify-between group cursor-pointer"
         >
           <div className="flex items-center gap-3.5">
-            <div className="w-11 h-11 rounded-2xl bg-[#DCFCE7] border border-[#86EFAC] flex items-center justify-center text-[#16A34A] group-hover:scale-105 transition-transform">
+            <div className="w-11 h-11 rounded-2xl bg-[#E8F8F0] border border-[#BCE8D0] flex items-center justify-center text-[#059669] group-hover:scale-105 transition-transform">
               <Pill className="w-5 h-5" />
             </div>
             <div>
-              <div className="text-2xl font-black text-[#4C0519] leading-tight">
+              <div className="text-2xl font-black text-[#064E3B] leading-tight">
                 {medicines?.filter((m) => m.status === "CURRENT")?.length || 2}
               </div>
-              <div className="text-[11px] font-bold text-[#9F1239]">
+              <div className="text-[11px] font-bold text-[#047857]">
                 Active Prescriptions
               </div>
             </div>
           </div>
-          <ArrowRight className="w-4 h-4 text-[#FDA4AF] group-hover:text-[#16A34A] group-hover:translate-x-1 transition-all" />
+          <ArrowRight className="w-4 h-4 text-[#8FE3B8] group-hover:text-[#059669] group-hover:translate-x-1 transition-all" />
         </Link>
 
         {/* Metric 3: Medical Records */}
         <Link
           href="/patient/records"
-          className="p-5 bg-white rounded-3xl border border-[#FCE7F0] hover:border-[#D8B4FE] transition-all shadow-xs flex items-center justify-between group cursor-pointer"
+          className="p-5 bg-white rounded-3xl border border-[#D6EDE1] hover:border-[#8FE3B8] hover:bg-[#F3FAF6]/50 transition-all shadow-xs flex items-center justify-between group cursor-pointer"
         >
           <div className="flex items-center gap-3.5">
-            <div className="w-11 h-11 rounded-2xl bg-[#F3E8FF] border border-[#D8B4FE] flex items-center justify-center text-[#9333EA] group-hover:scale-105 transition-transform">
+            <div className="w-11 h-11 rounded-2xl bg-[#E8F8F0] border border-[#BCE8D0] flex items-center justify-center text-[#059669] group-hover:scale-105 transition-transform">
               <FileText className="w-5 h-5" />
             </div>
             <div>
-              <div className="text-2xl font-black text-[#4C0519] leading-tight">
+              <div className="text-2xl font-black text-[#064E3B] leading-tight">
                 {records?.length || 5}
               </div>
-              <div className="text-[11px] font-bold text-[#9F1239]">
+              <div className="text-[11px] font-bold text-[#047857]">
                 Medical Records
               </div>
             </div>
           </div>
-          <ArrowRight className="w-4 h-4 text-[#FDA4AF] group-hover:text-[#9333EA] group-hover:translate-x-1 transition-all" />
+          <ArrowRight className="w-4 h-4 text-[#8FE3B8] group-hover:text-[#059669] group-hover:translate-x-1 transition-all" />
         </Link>
 
         {/* Metric 4: Pending Lab Report */}
         <Link
           href="/patient/records?type=lab"
-          className="p-5 bg-white rounded-3xl border border-[#FCE7F0] hover:border-[#FDE68A] transition-all shadow-xs flex items-center justify-between group cursor-pointer"
+          className="p-5 bg-white rounded-3xl border border-[#D6EDE1] hover:border-[#8FE3B8] hover:bg-[#F3FAF6]/50 transition-all shadow-xs flex items-center justify-between group cursor-pointer"
         >
           <div className="flex items-center gap-3.5">
-            <div className="w-11 h-11 rounded-2xl bg-[#FEF3C7] border border-[#FDE68A] flex items-center justify-center text-[#D97706] group-hover:scale-105 transition-transform">
+            <div className="w-11 h-11 rounded-2xl bg-[#E8F8F0] border border-[#BCE8D0] flex items-center justify-center text-[#059669] group-hover:scale-105 transition-transform">
               <Activity className="w-5 h-5" />
             </div>
             <div>
-              <div className="text-2xl font-black text-[#4C0519] leading-tight">
+              <div className="text-2xl font-black text-[#064E3B] leading-tight">
                 1
               </div>
-              <div className="text-[11px] font-bold text-[#9F1239]">
+              <div className="text-[11px] font-bold text-[#047857]">
                 Pending Lab Report
               </div>
             </div>
           </div>
-          <ArrowRight className="w-4 h-4 text-[#FDA4AF] group-hover:text-[#D97706] group-hover:translate-x-1 transition-all" />
+          <ArrowRight className="w-4 h-4 text-[#8FE3B8] group-hover:text-[#059669] group-hover:translate-x-1 transition-all" />
         </Link>
 
       </div>
@@ -379,18 +379,18 @@ export function PatientDashboardView({
         <div className="lg:col-span-8 space-y-6">
           
           {/* Section A: Upcoming Appointments */}
-          <div className="bg-white rounded-3xl border border-[#FCE7F0] shadow-xs p-6 space-y-4">
+          <div className="bg-white rounded-3xl border border-[#D6EDE1] shadow-xs p-6 space-y-4">
             
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Calendar className="w-5 h-5 text-[#E11D48]" />
-                <h2 className="text-base font-extrabold text-[#4C0519]">
+                <Calendar className="w-5 h-5 text-[#059669]" />
+                <h2 className="text-base font-extrabold text-[#064E3B]">
                   Upcoming Appointments
                 </h2>
               </div>
               <Link
                 href="/patient/appointments"
-                className="text-xs font-bold text-[#9F1239] hover:text-[#E11D48] transition-colors flex items-center gap-1"
+                className="text-xs font-bold text-[#047857] hover:text-[#059669] transition-colors flex items-center gap-1"
               >
                 <span>View All</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -429,14 +429,14 @@ export function PatientDashboardView({
 
                     {/* Doctor Details */}
                     <div className="space-y-0.5">
-                      <h4 className="text-xs font-extrabold text-[#4C0519]">
+                      <h4 className="text-xs font-extrabold text-[#064E3B]">
                         {apt.doctorName}
                       </h4>
-                      <p className="text-[11px] text-[#881337]">
+                      <p className="text-[11px] text-[#047857]">
                         {apt.doctorSpecialty}
                       </p>
-                      <p className="text-[10.5px] text-[#9F1239] flex items-center gap-1">
-                        <Clock className="w-3 h-3 text-[#E11D48]" />
+                      <p className="text-[10.5px] text-[#134E39] flex items-center gap-1">
+                        <Clock className="w-3 h-3 text-[#059669]" />
                         <span>{apt.time}</span>
                       </p>
                     </div>
@@ -445,8 +445,8 @@ export function PatientDashboardView({
                   {/* Hospital & Status Badge */}
                   <div className="flex items-center justify-between sm:justify-end gap-3 border-t sm:border-t-0 pt-2 sm:pt-0 border-slate-100">
                     <div className="text-left sm:text-right">
-                      <span className="text-[11px] font-semibold text-[#881337] flex items-center gap-1 sm:justify-end">
-                        <MapPin className="w-3 h-3 text-[#FDA4AF]" />
+                      <span className="text-[11px] font-semibold text-[#047857] flex items-center gap-1 sm:justify-end">
+                        <MapPin className="w-3 h-3 text-[#059669]" />
                         <span>{apt.hospital}</span>
                       </span>
                     </div>
@@ -472,18 +472,18 @@ export function PatientDashboardView({
           </div>
 
           {/* Section B: Recent Prescriptions */}
-          <div className="bg-white rounded-3xl border border-[#FCE7F0] shadow-xs p-6 space-y-4">
+          <div className="bg-white rounded-3xl border border-[#D6EDE1] shadow-xs p-6 space-y-4">
             
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Pill className="w-5 h-5 text-[#E11D48]" />
-                <h2 className="text-base font-extrabold text-[#4C0519]">
+                <Pill className="w-5 h-5 text-[#059669]" />
+                <h2 className="text-base font-extrabold text-[#064E3B]">
                   Recent Prescriptions
                 </h2>
               </div>
               <Link
                 href="/patient/prescriptions"
-                className="text-xs font-bold text-[#9F1239] hover:text-[#E11D48] transition-colors flex items-center gap-1"
+                className="text-xs font-bold text-[#047857] hover:text-[#059669] transition-colors flex items-center gap-1"
               >
                 <span>View All</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -491,32 +491,32 @@ export function PatientDashboardView({
             </div>
 
             {/* Prescription Item matching mockup */}
-            <div className="p-4 rounded-2xl border border-[#FCE7F0] hover:border-[#FDA4AF] hover:bg-[#FFF5F8]/50 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="p-4 rounded-2xl border border-[#D6EDE1] hover:border-[#8FE3B8] hover:bg-[#F3FAF6]/60 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex items-center gap-3.5">
-                <div className="w-10 h-10 rounded-2xl bg-[#FFF0F4] border border-[#FCE7F0] flex items-center justify-center text-[#E11D48] shrink-0">
+                <div className="w-10 h-10 rounded-2xl bg-[#E8F8F0] border border-[#BCE8D0] flex items-center justify-center text-[#059669] shrink-0">
                   <FileText className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-extrabold text-[#4C0519]">
+                  <h4 className="text-xs font-extrabold text-[#064E3B]">
                     {prescriptions?.[0]?.diagnosis || samplePrescription.name}
                   </h4>
-                  <p className="text-[11px] text-[#881337]">
+                  <p className="text-[11px] text-[#047857]">
                     {samplePrescription.dosage}
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between sm:justify-end gap-6 text-xs text-[#881337]">
+              <div className="flex items-center justify-between sm:justify-end gap-6 text-xs text-[#047857]">
                 <span>
                   {prescriptions?.[0]?.doctor?.user?.name || samplePrescription.doctor}
                 </span>
-                <span className="text-[#9F1239]">
+                <span className="text-[#064E3B] font-semibold">
                   {samplePrescription.date}
                 </span>
                 <button
                   type="button"
                   onClick={() => setSelectedRx(samplePrescription)}
-                  className="px-4 py-1.5 rounded-full bg-white border border-[#FDA4AF] hover:border-[#E11D48] hover:text-[#E11D48] text-xs font-bold text-[#4C0519] transition-all cursor-pointer shadow-2xs"
+                  className="px-4 py-1.5 rounded-full bg-white border border-[#8FE3B8] hover:border-[#059669] hover:bg-[#059669] hover:text-white text-xs font-bold text-[#064E3B] transition-all cursor-pointer shadow-2xs"
                 >
                   View Details
                 </button>
@@ -532,14 +532,14 @@ export function PatientDashboardView({
         {/* ============================================================ */}
         <div className="lg:col-span-4 space-y-6">
           
-          {/* Card 1: AI Health Assistant in Rich Berry Rose */}
-          <div className="bg-gradient-to-br from-[#4C0519] via-[#881337] to-[#9F1239] text-white rounded-3xl p-6 shadow-md relative overflow-hidden space-y-4 border border-[#FDA4AF]/30">
+          {/* Card 1: AI Health Assistant in Rich Clinical Emerald */}
+          <div className="bg-gradient-to-br from-[#064E3B] via-[#047857] to-[#0D9488] text-white rounded-3xl p-6 shadow-md relative overflow-hidden space-y-4 border border-[#8FE3B8]/30">
             
             {/* Header: Title + Cute 3D Mascot Robot */}
             <div className="flex items-start justify-between gap-3 relative z-10">
               <div className="space-y-1">
                 <div className="flex items-center gap-1.5">
-                  <Sparkles className="w-4 h-4 text-pink-300" />
+                  <Sparkles className="w-4 h-4 text-emerald-200" />
                   <h3 className="text-sm font-extrabold tracking-tight">
                     AI Health Assistant
                   </h3>
@@ -547,7 +547,7 @@ export function PatientDashboardView({
                     Beta
                   </span>
                 </div>
-                <p className="text-[11px] text-pink-100/90 leading-relaxed pr-2">
+                <p className="text-[11px] text-emerald-50/90 leading-relaxed pr-2">
                   Get insights, understand your reports, and ask health questions.
                 </p>
               </div>
@@ -556,22 +556,22 @@ export function PatientDashboardView({
               <div className="w-14 h-14 shrink-0 relative animate-pulse duration-1000">
                 <svg viewBox="0 0 100 100" fill="none" className="w-full h-full">
                   {/* Antennas */}
-                  <circle cx="50" cy="15" r="4" fill="#FDA4AF" />
-                  <line x1="50" y1="15" x2="50" y2="28" stroke="#FDA4AF" strokeWidth="3" strokeLinecap="round" />
+                  <circle cx="50" cy="15" r="4" fill="#8FE3B8" />
+                  <line x1="50" y1="15" x2="50" y2="28" stroke="#8FE3B8" strokeWidth="3" strokeLinecap="round" />
                   {/* Head */}
                   <rect x="25" y="26" width="50" height="38" rx="14" fill="#FFFFFF" />
-                  <rect x="30" y="32" width="40" height="26" rx="8" fill="#1E293B" />
+                  <rect x="30" y="32" width="40" height="26" rx="8" fill="#064E3B" />
                   {/* Eyes */}
-                  <circle cx="40" cy="45" r="4.5" fill="#38BDF8" />
-                  <circle cx="60" cy="45" r="4.5" fill="#38BDF8" />
+                  <circle cx="40" cy="45" r="4.5" fill="#34D399" />
+                  <circle cx="60" cy="45" r="4.5" fill="#34D399" />
                   {/* Body */}
                   <rect x="32" y="66" width="36" height="28" rx="10" fill="#FFFFFF" />
                   {/* Stethoscope */}
-                  <path d="M42 70 Q50 82 58 70" stroke="#E11D48" strokeWidth="2.5" fill="none" />
-                  <circle cx="50" cy="79" r="3" fill="#E11D48" />
+                  <path d="M42 70 Q50 82 58 70" stroke="#059669" strokeWidth="2.5" fill="none" />
+                  <circle cx="50" cy="79" r="3" fill="#059669" />
                   {/* Waving Arm */}
                   <path d="M72 72 Q88 60 84 45" stroke="#FFFFFF" strokeWidth="5" strokeLinecap="round" fill="none" />
-                  <circle cx="84" cy="45" r="4" fill="#FDA4AF" />
+                  <circle cx="84" cy="45" r="4" fill="#8FE3B8" />
                 </svg>
               </div>
             </div>
@@ -590,11 +590,11 @@ export function PatientDashboardView({
                   value={aiQuery}
                   onChange={(e) => setAiQuery(e.target.value)}
                   placeholder="Ask anything about your health..."
-                  className="w-full pl-4 pr-11 py-2.5 rounded-full bg-white/15 border border-white/25 hover:border-white/40 focus:border-white text-xs text-white placeholder-white/70 focus:outline-hidden focus:ring-2 focus:ring-pink-300/40 transition-all font-medium backdrop-blur-xs"
+                  className="w-full pl-4 pr-11 py-2.5 rounded-full bg-white/15 border border-white/25 hover:border-white/40 focus:border-white text-xs text-white placeholder-white/70 focus:outline-hidden focus:ring-2 focus:ring-emerald-300/40 transition-all font-medium backdrop-blur-xs"
                 />
                 <button
                   type="submit"
-                  className="absolute right-1.5 w-8 h-8 rounded-full bg-white text-[#881337] flex items-center justify-center hover:bg-pink-100 transition-colors shadow-xs cursor-pointer"
+                  className="absolute right-1.5 w-8 h-8 rounded-full bg-white text-[#064E3B] flex items-center justify-center hover:bg-[#E8F8F0] transition-colors shadow-xs cursor-pointer"
                   title="Submit Health Question"
                 >
                   <Send className="w-3.5 h-3.5 ml-0.5" />
@@ -628,7 +628,7 @@ export function PatientDashboardView({
             </div>
 
             {/* Ambient background glow */}
-            <div className="absolute -right-8 -bottom-8 w-32 h-32 rounded-full bg-pink-400/20 blur-2xl pointer-events-none" />
+            <div className="absolute -right-8 -bottom-8 w-32 h-32 rounded-full bg-emerald-400/20 blur-2xl pointer-events-none" />
           </div>
 
           {/* Card 2: Quick Actions (4 Columns) */}
@@ -735,19 +735,19 @@ export function PatientDashboardView({
                 </svg>
               </div>
               <div>
-                <p className="font-serif italic text-sm text-[#881337] leading-tight">
+                <p className="italic text-sm text-[#047857] leading-tight">
                   Take care
                 </p>
-                <p className="font-serif italic text-sm font-bold text-[#E11D48] leading-tight flex items-center gap-1">
+                <p className="italic text-sm font-bold text-[#064E3B] leading-tight flex items-center gap-1">
                   <span>of yourself</span>
-                  <span className="text-xs">♡</span>
+                  <span className="text-xs text-[#059669]">✓</span>
                 </p>
               </div>
             </div>
 
             <Link
               href="/patient/timeline"
-              className="px-3.5 py-1.5 rounded-full bg-white border border-[#FDA4AF] hover:border-[#E11D48] text-[11px] font-bold text-[#881337] hover:text-[#E11D48] transition-all shadow-2xs"
+              className="px-3.5 py-1.5 rounded-full bg-white border border-[#8FE3B8] hover:border-[#059669] hover:bg-[#059669] hover:text-white text-[11px] font-bold text-[#064E3B] transition-all shadow-2xs"
             >
               Health Log
             </Link>
@@ -762,12 +762,12 @@ export function PatientDashboardView({
       {/* ============================================================== */}
       {showAiModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 backdrop-blur-xs p-4 overflow-y-auto animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl border border-[#EFE8DE] shadow-2xl max-w-lg w-full overflow-hidden text-slate-800 relative my-auto animate-in zoom-in-95">
+          <div className="bg-white rounded-3xl border border-[#D6EDE1] shadow-2xl max-w-lg w-full overflow-hidden text-slate-800 relative my-auto animate-in zoom-in-95">
             
-            {/* Modal Header in Warm Terracotta */}
-            <div className="bg-gradient-to-r from-[#7A3D2F] to-[#5C2B1F] px-6 py-4.5 text-white flex items-center justify-between">
+            {/* Modal Header in Clinical Emerald */}
+            <div className="bg-gradient-to-r from-[#064E3B] to-[#047857] px-6 py-4.5 text-white flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="p-1.5 rounded-xl bg-white/10 text-amber-300">
+                <div className="p-1.5 rounded-xl bg-white/10 text-emerald-300">
                   <Sparkles className="w-4 h-4" />
                 </div>
                 <div>
@@ -779,7 +779,7 @@ export function PatientDashboardView({
               <button
                 type="button"
                 onClick={() => setShowAiModal(false)}
-                className="p-1 rounded-xl text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+                className="p-1 rounded-xl text-white/80 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -789,7 +789,7 @@ export function PatientDashboardView({
             <div className="p-6 space-y-4 text-xs">
               {isAiLoading ? (
                 <div className="py-8 text-center space-y-3">
-                  <div className="w-12 h-12 rounded-full border-3 border-amber-200 border-t-[#7A3D2F] animate-spin mx-auto" />
+                  <div className="w-12 h-12 rounded-full border-3 border-emerald-200 border-t-[#059669] animate-spin mx-auto" />
                   <p className="text-xs font-semibold text-slate-600 animate-pulse">
                     Synthesizing clinical insights and patient health records...
                   </p>
@@ -797,18 +797,18 @@ export function PatientDashboardView({
               ) : activeAiResponse ? (
                 <div className="space-y-4">
                   {/* Query Header */}
-                  <div className="p-3 bg-[#FAF7F2] rounded-2xl border border-[#EFE8DE]">
-                    <span className="text-[10px] font-bold text-[#A8988D] uppercase tracking-wider block">
+                  <div className="p-3 bg-[#F3FAF6] rounded-2xl border border-[#D6EDE1]">
+                    <span className="text-[10px] font-bold text-[#047857] uppercase tracking-wider block">
                       YOUR QUESTION
                     </span>
-                    <p className="font-extrabold text-[#2B231F] text-xs sm:text-sm mt-0.5">
+                    <p className="font-extrabold text-[#064E3B] text-xs sm:text-sm mt-0.5">
                       &ldquo;{activeAiResponse.query}&rdquo;
                     </p>
                   </div>
 
                   {/* AI Response Card */}
-                  <div className="p-4 bg-white rounded-2xl border border-[#E7DFD1] shadow-2xs space-y-2">
-                    <div className="flex items-center gap-1.5 text-[#B95535] font-bold text-xs">
+                  <div className="p-4 bg-white rounded-2xl border border-[#D6EDE1] shadow-2xs space-y-2">
+                    <div className="flex items-center gap-1.5 text-[#059669] font-bold text-xs">
                       <Bot className="w-4 h-4" />
                       <span>Clinical Assessment</span>
                     </div>
@@ -826,7 +826,7 @@ export function PatientDashboardView({
                     <ul className="space-y-1.5 pl-2">
                       {activeAiResponse.tips.map((tip, idx) => (
                         <li key={idx} className="flex items-start gap-2 text-slate-600 text-[11.5px]">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#B95535] mt-1.5 shrink-0" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#059669] mt-1.5 shrink-0" />
                           <span>{tip}</span>
                         </li>
                       ))}
@@ -834,8 +834,8 @@ export function PatientDashboardView({
                   </div>
 
                   {/* Clinical Disclaimer */}
-                  <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-[10.5px] text-amber-800 flex items-start gap-2">
-                    <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                  <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-[10.5px] text-emerald-900 flex items-start gap-2">
+                    <AlertCircle className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                     <span>
                       AI insights are intended for patient education and preparation. Always consult your attending physician before altering dosages or medical treatments.
                     </span>
@@ -848,7 +848,7 @@ export function PatientDashboardView({
                 <button
                   type="button"
                   onClick={() => setShowAiModal(false)}
-                  className="px-5 py-2 rounded-xl bg-[#2B231F] text-white font-bold text-xs hover:bg-slate-800 transition-colors cursor-pointer"
+                  className="px-5 py-2 rounded-xl bg-[#059669] text-white font-bold text-xs hover:bg-[#047857] transition-colors cursor-pointer"
                 >
                   Got It
                 </button>
@@ -864,26 +864,26 @@ export function PatientDashboardView({
       {/* ============================================================== */}
       {selectedRx && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 backdrop-blur-xs p-4 overflow-y-auto animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl border border-[#EFE8DE] shadow-2xl max-w-md w-full overflow-hidden text-slate-800 relative my-auto animate-in zoom-in-95">
-            <div className="bg-[#FAF4EF] px-6 py-4 border-b border-[#EFE8DE] flex items-center justify-between">
+          <div className="bg-white rounded-3xl border border-[#D6EDE1] shadow-2xl max-w-md w-full overflow-hidden text-slate-800 relative my-auto animate-in zoom-in-95">
+            <div className="bg-[#F3FAF6] px-6 py-4 border-b border-[#D6EDE1] flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Pill className="w-5 h-5 text-[#B95535]" />
-                <h3 className="font-extrabold text-sm text-[#2B231F]">Prescription Details</h3>
+                <Pill className="w-5 h-5 text-[#059669]" />
+                <h3 className="font-extrabold text-sm text-[#064E3B]">Prescription Details</h3>
               </div>
               <button
                 type="button"
                 onClick={() => setSelectedRx(null)}
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200"
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200 cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             <div className="p-6 space-y-4 text-xs">
-              <div className="p-4 bg-[#FAF7F2] rounded-2xl border border-[#EFE8DE] space-y-1">
-                <span className="text-[10px] font-bold text-[#A8988D] uppercase tracking-wider block">MEDICATION</span>
-                <div className="text-base font-extrabold text-[#2B231F]">{selectedRx.name}</div>
-                <div className="text-xs font-semibold text-[#B95535]">{selectedRx.dosage}</div>
+              <div className="p-4 bg-[#F3FAF6] rounded-2xl border border-[#D6EDE1] space-y-1">
+                <span className="text-[10px] font-bold text-[#047857] uppercase tracking-wider block">MEDICATION</span>
+                <div className="text-base font-extrabold text-[#064E3B]">{selectedRx.name}</div>
+                <div className="text-xs font-semibold text-[#059669]">{selectedRx.dosage}</div>
               </div>
 
               <div className="space-y-2">
@@ -910,7 +910,7 @@ export function PatientDashboardView({
                 <button
                   type="button"
                   onClick={() => setSelectedRx(null)}
-                  className="px-5 py-2 rounded-xl bg-[#2B231F] text-white font-bold text-xs hover:bg-slate-800 transition-colors cursor-pointer"
+                  className="px-5 py-2 rounded-xl bg-[#059669] text-white font-bold text-xs hover:bg-[#047857] transition-colors cursor-pointer"
                 >
                   Close
                 </button>

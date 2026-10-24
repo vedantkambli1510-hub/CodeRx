@@ -79,26 +79,26 @@ export function PatientSubscriptionView({
       {/* ============================================================== */}
       {/* 1. TOP HERO BANNER: SELECT YOUR PREFERRED CARE PLAN             */}
       {/* ============================================================== */}
-      <div className="rounded-3xl bg-gradient-to-r from-[#FFF0F5] via-[#FFE4ED] to-[#FCE7F0] border border-[#FDA4AF] p-6 sm:p-8 relative overflow-hidden shadow-xs">
+      <div className="rounded-3xl bg-gradient-to-r from-[#F0F8F5] via-[#E8F8F0] to-[#DCF5E7] border border-[#8FE3B8] p-6 sm:p-8 relative overflow-hidden shadow-xs">
         {/* Soft decorative background glow */}
-        <div className="absolute right-0 top-0 w-80 h-80 bg-pink-400/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute right-0 top-0 w-80 h-80 bg-emerald-400/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-white/80 border border-[#FDA4AF] text-[#E11D48] flex items-center gap-1.5 shadow-2xs">
+              <span className="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-white/80 border border-[#8FE3B8] text-[#059669] flex items-center gap-1.5 shadow-2xs">
                 <Crown className="w-3.5 h-3.5" />
                 <span>CodeRx Care Memberships</span>
               </span>
 
               {/* DEMO SWITCHER */}
-              <div className="inline-flex items-center gap-1 p-0.5 rounded-full bg-white/70 border border-[#FDA4AF] text-[10px] font-bold">
-                <span className="text-[#881337] px-2">Demo:</span>
+              <div className="inline-flex items-center gap-1 p-0.5 rounded-full bg-white/70 border border-[#8FE3B8] text-[10px] font-bold">
+                <span className="text-[#047857] px-2">Demo:</span>
                 <button
                   type="button"
                   onClick={() => updateSubscription(false)}
                   className={`px-2.5 py-0.5 rounded-full transition-all cursor-pointer ${
-                    !isSubscribed ? "bg-[#E11D48] text-white font-black" : "text-[#881337] hover:bg-pink-100"
+                    !isSubscribed ? "bg-[#059669] text-white font-black" : "text-[#047857] hover:bg-[#E8F8F0]"
                   }`}
                   title="Simulate unsubscribed locked state"
                 >
@@ -108,7 +108,7 @@ export function PatientSubscriptionView({
                   type="button"
                   onClick={() => updateSubscription(true, "INDIVIDUAL")}
                   className={`px-2.5 py-0.5 rounded-full transition-all cursor-pointer ${
-                    isSubscribed && plan === "INDIVIDUAL" ? "bg-[#E11D48] text-white font-black" : "text-[#881337] hover:bg-pink-100"
+                    isSubscribed && plan === "INDIVIDUAL" ? "bg-[#059669] text-white font-black" : "text-[#047857] hover:bg-[#E8F8F0]"
                   }`}
                   title="Simulate Basic (₹99)"
                 >
@@ -118,7 +118,7 @@ export function PatientSubscriptionView({
                   type="button"
                   onClick={() => updateSubscription(true, "FAMILY")}
                   className={`px-2.5 py-0.5 rounded-full transition-all cursor-pointer ${
-                    isSubscribed && (plan === "FAMILY" || plan === "PREMIUM") ? "bg-[#E11D48] text-white font-black" : "text-[#881337] hover:bg-pink-100"
+                    isSubscribed && (plan === "FAMILY" || plan === "PREMIUM") ? "bg-[#059669] text-white font-black" : "text-[#047857] hover:bg-[#E8F8F0]"
                   }`}
                   title="Simulate Family (₹199)"
                 >
@@ -127,26 +127,26 @@ export function PatientSubscriptionView({
               </div>
             </div>
 
-            <h1 className="text-2xl sm:text-4xl font-black text-[#4C0519] tracking-tight leading-tight">
+            <h1 className="text-2xl sm:text-4xl font-black text-[#064E3B] tracking-tight leading-tight">
               Select Your Preferred Care Plan
             </h1>
 
-            <p className="text-xs sm:text-sm text-[#881337] leading-relaxed font-medium">
+            <p className="text-xs sm:text-sm text-[#047857] leading-relaxed font-medium">
               Quality healthcare for you and your family, at your convenience.
             </p>
 
             {/* Badges: Trusted Doctors, Secure & Private, 24/7 Support */}
             <div className="flex flex-wrap items-center gap-3 pt-1">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/90 border border-[#FCE7F0] text-xs font-bold text-[#881337] shadow-2xs">
-                <ShieldCheck className="w-4 h-4 text-[#E11D48]" />
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/90 border border-[#D6EDE1] text-xs font-bold text-[#047857] shadow-2xs">
+                <ShieldCheck className="w-4 h-4 text-[#059669]" />
                 <span>Trusted Doctors</span>
               </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/90 border border-[#FCE7F0] text-xs font-bold text-[#881337] shadow-2xs">
-                <Lock className="w-3.5 h-3.5 text-[#E11D48]" />
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/90 border border-[#D6EDE1] text-xs font-bold text-[#047857] shadow-2xs">
+                <Lock className="w-3.5 h-3.5 text-[#059669]" />
                 <span>Secure &amp; Private</span>
               </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/90 border border-[#FCE7F0] text-xs font-bold text-[#881337] shadow-2xs">
-                <Clock className="w-4 h-4 text-[#E11D48]" />
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/90 border border-[#D6EDE1] text-xs font-bold text-[#047857] shadow-2xs">
+                <Clock className="w-4 h-4 text-[#059669]" />
                 <span>24/7 Support</span>
               </span>
             </div>
@@ -159,27 +159,27 @@ export function PatientSubscriptionView({
               <svg viewBox="0 0 200 120" className="w-full h-full opacity-90 drop-shadow-xs">
                 <path
                   d="M 30 20 Q 30 70 80 75 Q 130 80 150 45"
-                  stroke="#E11D48"
+                  stroke="#059669"
                   strokeWidth="5"
                   strokeLinecap="round"
                   fill="none"
                 />
-                <circle cx="30" cy="20" r="7" fill="#FDA4AF" />
-                <circle cx="50" cy="20" r="7" fill="#FDA4AF" />
+                <circle cx="30" cy="20" r="7" fill="#8FE3B8" />
+                <circle cx="50" cy="20" r="7" fill="#8FE3B8" />
                 <path
                   d="M 50 20 Q 50 60 80 75"
-                  stroke="#E11D48"
+                  stroke="#059669"
                   strokeWidth="5"
                   strokeLinecap="round"
                   fill="none"
                 />
                 {/* Bell / Diaphragm */}
-                <circle cx="160" cy="45" r="14" fill="#FFFFFF" stroke="#E11D48" strokeWidth="4" />
-                <circle cx="160" cy="45" r="6" fill="#FDA4AF" />
+                <circle cx="160" cy="45" r="14" fill="#FFFFFF" stroke="#059669" strokeWidth="4" />
+                <circle cx="160" cy="45" r="6" fill="#8FE3B8" />
 
                 {/* Heart Pulse Icon in Center */}
                 <g transform="translate(100, 15) scale(0.7)">
-                  <rect x="0" y="0" width="46" height="42" rx="12" fill="#E11D48" />
+                  <rect x="0" y="0" width="46" height="42" rx="12" fill="#059669" />
                   <path
                     d="M 8 21 L 16 21 L 20 10 L 26 32 L 30 21 L 38 21"
                     stroke="#FFFFFF"
@@ -193,12 +193,12 @@ export function PatientSubscriptionView({
 
               {/* Handwritten font callout */}
               <div className="absolute right-0 -bottom-1 text-right">
-                <p className="font-serif italic text-sm sm:text-base font-bold text-[#E11D48] rotate-[-4deg] tracking-tight">
+                <p className="italic text-sm sm:text-base font-bold text-[#059669] rotate-[-4deg] tracking-tight">
                   Your Health
                 </p>
-                <p className="font-serif italic text-sm sm:text-base font-bold text-[#881337] rotate-[-4deg] flex items-center justify-end gap-1">
+                <p className="italic text-sm sm:text-base font-bold text-[#047857] rotate-[-4deg] flex items-center justify-end gap-1">
                   <span>Matters</span>
-                  <span className="text-[#E11D48]">♡</span>
+                  <span className="text-[#059669]">✓</span>
                 </p>
               </div>
             </div>
@@ -214,44 +214,44 @@ export function PatientSubscriptionView({
         {/* ---------------------------------------------------------- */}
         {/* PLAN 1: BASIC (Essential Care - ₹99/mo)                   */}
         {/* ---------------------------------------------------------- */}
-        <div className="bg-white rounded-3xl border border-[#FCE7F0] shadow-sm p-7 sm:p-8 flex flex-col justify-between hover:shadow-md hover:border-[#FDA4AF] transition-all">
+        <div className="bg-white rounded-3xl border border-[#D6EDE1] shadow-sm p-7 sm:p-8 flex flex-col justify-between hover:shadow-md hover:border-[#8FE3B8] transition-all">
           <div className="space-y-5">
             <div>
-              <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-pink-100 text-[#BE123C] border border-pink-200">
+              <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-[#E8F8F0] text-[#047857] border border-[#BCE8D0]">
                 BASIC
               </span>
-              <h3 className="text-2xl font-black text-[#4C0519] mt-3">Essential Care</h3>
-              <p className="text-xs text-[#881337] font-medium mt-1">
+              <h3 className="text-2xl font-black text-[#064E3B] mt-3">Essential Care</h3>
+              <p className="text-xs text-[#047857] font-medium mt-1">
                 For your everyday health needs
               </p>
             </div>
 
             {/* Price */}
-            <div className="flex items-baseline gap-1.5 pt-1 pb-3 border-b border-[#FCE7F0]">
-              <span className="text-4xl font-black text-[#4C0519]">&#8377;99</span>
-              <span className="text-xs font-bold text-[#881337]">/month</span>
+            <div className="flex items-baseline gap-1.5 pt-1 pb-3 border-b border-[#D6EDE1]">
+              <span className="text-4xl font-black text-[#064E3B]">&#8377;99</span>
+              <span className="text-xs font-bold text-[#047857]">/month</span>
             </div>
 
             {/* Feature Checklist */}
-            <div className="space-y-3 text-xs sm:text-sm text-[#881337]">
+            <div className="space-y-3 text-xs sm:text-sm text-[#047857]">
               <div className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-[#E11D48] mt-0.5 shrink-0 stroke-[2.5]" />
-                <span className="font-semibold text-[#4C0519]">1 Upcoming Appointment</span>
+                <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
+                <span className="font-semibold text-[#064E3B]">1 Upcoming Appointment</span>
               </div>
               <div className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-[#E11D48] mt-0.5 shrink-0 stroke-[2.5]" />
+                <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
                 <span>Doctor Consultations (General)</span>
               </div>
               <div className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-[#E11D48] mt-0.5 shrink-0 stroke-[2.5]" />
+                <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
                 <span>Digital Prescriptions</span>
               </div>
               <div className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-[#E11D48] mt-0.5 shrink-0 stroke-[2.5]" />
+                <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
                 <span>Access to Medical Records</span>
               </div>
               <div className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-[#E11D48] mt-0.5 shrink-0 stroke-[2.5]" />
+                <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
                 <span>Health Tips &amp; Guidance</span>
               </div>
             </div>
@@ -263,8 +263,8 @@ export function PatientSubscriptionView({
               onClick={() => handleOpenCheckout("INDIVIDUAL")}
               className={`w-full py-3 px-4 rounded-2xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-2 shadow-2xs ${
                 isSubscribed && plan === "INDIVIDUAL"
-                  ? "bg-pink-100 text-[#E11D48] border border-[#FDA4AF]"
-                  : "bg-white text-[#4C0519] border border-[#FDA4AF] hover:bg-[#FFF5F8] hover:border-[#E11D48]"
+                  ? "bg-[#E8F8F0] text-[#059669] border border-[#8FE3B8]"
+                  : "bg-white text-[#064E3B] border border-[#8FE3B8] hover:bg-[#F3FAF6] hover:border-[#059669]"
               }`}
             >
               <span>{isSubscribed && plan === "INDIVIDUAL" ? "Current Plan" : "Choose Basic"}</span>
@@ -276,57 +276,57 @@ export function PatientSubscriptionView({
         {/* ---------------------------------------------------------- */}
         {/* PLAN 2: FAMILY (Family Health - ₹199/mo) - MOST POPULAR    */}
         {/* ---------------------------------------------------------- */}
-        <div className="bg-white rounded-3xl border-2 border-[#E11D48] shadow-lg p-7 sm:p-8 flex flex-col justify-between relative hover:shadow-xl transition-all scale-[1.02]">
+        <div className="bg-white rounded-3xl border-2 border-[#059669] shadow-lg p-7 sm:p-8 flex flex-col justify-between relative hover:shadow-xl transition-all scale-[1.02]">
           {/* MOST POPULAR TAG */}
-          <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#E11D48] text-white text-[11px] font-black uppercase tracking-wider shadow-sm flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-pink-200" />
+          <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#059669] text-white text-[11px] font-black uppercase tracking-wider shadow-sm flex items-center gap-1.5">
+            <Sparkles className="w-3.5 h-3.5 text-emerald-200" />
             <span>MOST POPULAR</span>
           </div>
 
           <div className="space-y-5">
             <div>
-              <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-pink-100 text-[#BE123C] border border-pink-200">
+              <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-[#E8F8F0] text-[#047857] border border-[#BCE8D0]">
                 FAMILY
               </span>
-              <h3 className="text-2xl font-black text-[#4C0519] mt-3">Family Health</h3>
-              <p className="text-xs text-[#881337] font-medium mt-1">
+              <h3 className="text-2xl font-black text-[#064E3B] mt-3">Family Health</h3>
+              <p className="text-xs text-[#047857] font-medium mt-1">
                 Complete care for your loved ones
               </p>
             </div>
 
             {/* Price & 20% OFF Tag */}
-            <div className="flex items-baseline gap-2 pt-1 pb-3 border-b border-[#FCE7F0]">
-              <span className="text-4xl font-black text-[#4C0519]">&#8377;199</span>
-              <span className="text-xs font-bold text-[#881337]">/month</span>
-              <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black bg-pink-100 text-[#E11D48] border border-pink-200 ml-auto">
+            <div className="flex items-baseline gap-2 pt-1 pb-3 border-b border-[#D6EDE1]">
+              <span className="text-4xl font-black text-[#064E3B]">&#8377;199</span>
+              <span className="text-xs font-bold text-[#047857]">/month</span>
+              <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black bg-[#E8F8F0] text-[#059669] border border-[#BCE8D0] ml-auto">
                 20% OFF
               </span>
             </div>
 
             {/* Feature Checklist */}
-            <div className="space-y-3 text-xs sm:text-sm text-[#881337]">
+            <div className="space-y-3 text-xs sm:text-sm text-[#047857]">
               <div className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-[#E11D48] mt-0.5 shrink-0 stroke-[2.5]" />
-                <span className="font-black text-[#4C0519]">Up to 4 Family Members</span>
+                <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
+                <span className="font-black text-[#064E3B]">Up to 4 Family Members</span>
               </div>
               <div className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-[#E11D48] mt-0.5 shrink-0 stroke-[2.5]" />
-                <span className="font-semibold text-[#4C0519]">Unlimited Consultations</span>
+                <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
+                <span className="font-semibold text-[#064E3B]">Unlimited Consultations</span>
               </div>
               <div className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-[#E11D48] mt-0.5 shrink-0 stroke-[2.5]" />
+                <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
                 <span>Digital Prescriptions</span>
               </div>
               <div className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-[#E11D48] mt-0.5 shrink-0 stroke-[2.5]" />
+                <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
                 <span>Lab Reports Access</span>
               </div>
               <div className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-[#E11D48] mt-0.5 shrink-0 stroke-[2.5]" />
-                <span className="font-bold text-[#E11D48]">Health Timeline (AI)</span>
+                <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
+                <span className="font-bold text-[#059669]">Health Timeline (AI)</span>
               </div>
               <div className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-[#E11D48] mt-0.5 shrink-0 stroke-[2.5]" />
+                <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
                 <span>Priority Support</span>
               </div>
             </div>
@@ -336,7 +336,7 @@ export function PatientSubscriptionView({
             <button
               type="button"
               onClick={() => handleOpenCheckout("FAMILY")}
-              className="w-full py-3 px-4 rounded-2xl bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md shadow-pink-500/25"
+              className="w-full py-3 px-4 rounded-2xl bg-[#059669] hover:bg-[#047857] text-white text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md shadow-emerald-500/25"
             >
               <span>{isSubscribed && (plan === "FAMILY" || plan === "PREMIUM") ? "Active Plan" : "Choose Family"}</span>
               <ArrowRight className="w-4 h-4" />
@@ -351,13 +351,13 @@ export function PatientSubscriptionView({
       {/* ============================================================== */}
       {showPaymentModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 backdrop-blur-xs p-4 overflow-y-auto animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl border border-[#FCE7F0] shadow-2xl max-w-md w-full p-6 space-y-5 animate-in zoom-in-95 my-auto">
-            <div className="flex items-center justify-between pb-3 border-b border-[#FCE7F0]">
+          <div className="bg-white rounded-3xl border border-[#D6EDE1] shadow-2xl max-w-md w-full p-6 space-y-5 animate-in zoom-in-95 my-auto">
+            <div className="flex items-center justify-between pb-3 border-b border-[#D6EDE1]">
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-pink-100 text-[#E11D48] flex items-center justify-center">
+                <div className="w-7 h-7 rounded-lg bg-[#E8F8F0] text-[#059669] flex items-center justify-center">
                   <Crown className="w-4 h-4" />
                 </div>
-                <h3 className="text-base font-black text-[#4C0519]">
+                <h3 className="text-base font-black text-[#064E3B]">
                   {getPlanTitle(selectedPlan)} Checkout
                 </h3>
               </div>
@@ -371,24 +371,24 @@ export function PatientSubscriptionView({
             </div>
 
             {/* Plan Summary Banner */}
-            <div className="p-4 rounded-2xl bg-[#FFF5F8] border border-[#FCE7F0] space-y-2 text-xs">
+            <div className="p-4 rounded-2xl bg-[#F3FAF6] border border-[#D6EDE1] space-y-2 text-xs">
               <div className="flex justify-between items-center">
-                <span className="text-[#881337] font-medium">Selected Plan:</span>
-                <span className="font-black text-[#4C0519]">
+                <span className="text-[#047857] font-medium">Selected Plan:</span>
+                <span className="font-black text-[#064E3B]">
                   CodeRx {getPlanTitle(selectedPlan)} Plan
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-[#881337] font-medium">Billing Term:</span>
-                <span className="font-semibold text-[#4C0519]">Monthly Auto-Renew</span>
+                <span className="text-[#047857] font-medium">Billing Term:</span>
+                <span className="font-semibold text-[#064E3B]">Monthly Auto-Renew</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-[#881337] font-medium">Clinical Security Setup:</span>
+                <span className="text-[#047857] font-medium">Clinical Security Setup:</span>
                 <span className="text-emerald-700 font-bold">FREE (₹0.00)</span>
               </div>
-              <div className="pt-2 border-t border-[#FCE7F0] flex justify-between items-center text-sm font-black text-[#4C0519]">
+              <div className="pt-2 border-t border-[#D6EDE1] flex justify-between items-center text-sm font-black text-[#064E3B]">
                 <span>Total Amount to Pay:</span>
-                <span className="text-[#E11D48] text-base">₹{getPlanPrice(selectedPlan)}.00</span>
+                <span className="text-[#059669] text-base">₹{getPlanPrice(selectedPlan)}.00</span>
               </div>
             </div>
 
@@ -400,7 +400,7 @@ export function PatientSubscriptionView({
                     onClick={() => setSelectedPaymentApp("gpay")}
                     className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer ${
                       selectedPaymentApp === "gpay"
-                        ? "border-[#E11D48] bg-pink-50 font-bold text-[#E11D48] shadow-xs"
+                        ? "border-[#059669] bg-[#E8F8F0] font-bold text-[#064E3B] shadow-xs"
                         : "border-slate-200 hover:border-slate-300 text-slate-600 text-xs"
                     }`}
                   >
@@ -413,7 +413,7 @@ export function PatientSubscriptionView({
                     onClick={() => setSelectedPaymentApp("phonepe")}
                     className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer ${
                       selectedPaymentApp === "phonepe"
-                        ? "border-[#E11D48] bg-pink-50 font-bold text-[#E11D48] shadow-xs"
+                        ? "border-[#059669] bg-[#E8F8F0] font-bold text-[#064E3B] shadow-xs"
                         : "border-slate-200 hover:border-slate-300 text-slate-600 text-xs"
                     }`}
                   >
@@ -426,11 +426,11 @@ export function PatientSubscriptionView({
                     onClick={() => setSelectedPaymentApp("qr")}
                     className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer ${
                       selectedPaymentApp === "qr"
-                        ? "border-[#E11D48] bg-pink-50 font-bold text-[#E11D48] shadow-xs"
+                        ? "border-[#059669] bg-[#E8F8F0] font-bold text-[#064E3B] shadow-xs"
                         : "border-slate-200 hover:border-slate-300 text-slate-600 text-xs"
                     }`}
                   >
-                    <QrCode className="w-4 h-4 mx-auto text-[#E11D48] mb-0.5" />
+                    <QrCode className="w-4 h-4 mx-auto text-[#059669] mb-0.5" />
                     <span className="text-[10px] block font-bold">UPI QR</span>
                   </button>
                 </div>
@@ -457,7 +457,7 @@ export function PatientSubscriptionView({
                       type="text"
                       value={upiIdInput}
                       onChange={(e) => setUpiIdInput(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-mono font-medium focus:outline-hidden focus:ring-2 focus:ring-pink-500"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-mono font-medium focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
                       placeholder="name@okaxis"
                     />
                     <p className="text-[10px] text-slate-400">
@@ -469,7 +469,7 @@ export function PatientSubscriptionView({
                 <button
                   type="button"
                   onClick={handleConfirmPayment}
-                  className="w-full py-3 rounded-xl bg-[#E11D48] hover:bg-[#BE123C] text-white font-bold text-xs shadow-md shadow-pink-500/25 flex items-center justify-center gap-2 cursor-pointer transition-all"
+                  className="w-full py-3 rounded-xl bg-[#059669] hover:bg-[#047857] text-white font-bold text-xs shadow-md shadow-emerald-500/25 flex items-center justify-center gap-2 cursor-pointer transition-all"
                 >
                   <Lock className="w-3.5 h-3.5" />
                   <span>Pay ₹{getPlanPrice(selectedPlan)}.00 &amp; Activate Plan</span>
@@ -479,7 +479,7 @@ export function PatientSubscriptionView({
 
             {paymentStep === "PROCESSING" && (
               <div className="py-8 text-center space-y-3">
-                <div className="w-10 h-10 border-4 border-[#E11D48] border-t-transparent rounded-full animate-spin mx-auto" />
+                <div className="w-10 h-10 border-4 border-[#059669] border-t-transparent rounded-full animate-spin mx-auto" />
                 <h4 className="text-sm font-bold text-slate-900">
                   Processing Payment Handshake...
                 </h4>
@@ -514,10 +514,10 @@ export function PatientSubscriptionView({
       {/* ============================================================== */}
       {showReceiptModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 backdrop-blur-xs p-4 overflow-y-auto animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl border border-[#FCE7F0] shadow-2xl max-w-md w-full p-6 space-y-4 animate-in zoom-in-95 my-auto">
+          <div className="bg-white rounded-3xl border border-[#D6EDE1] shadow-2xl max-w-md w-full p-6 space-y-4 animate-in zoom-in-95 my-auto">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="flex items-center gap-2">
-                <Receipt className="w-5 h-5 text-[#E11D48]" />
+                <Receipt className="w-5 h-5 text-[#059669]" />
                 <h3 className="text-base font-bold text-slate-900">Official Tax Invoice</h3>
               </div>
               <button

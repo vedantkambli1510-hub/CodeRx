@@ -379,8 +379,8 @@ export function PatientFamilyPortalView() {
   if (!isLoaded) {
     return (
       <div className="py-20 text-center space-y-3">
-        <div className="w-10 h-10 border-4 border-[#E11D48] border-t-transparent rounded-full animate-spin mx-auto" />
-        <p className="text-xs text-[#881337] font-medium">Checking Family Pass authorization...</p>
+        <div className="w-10 h-10 border-4 border-[#059669] border-t-transparent rounded-full animate-spin mx-auto" />
+        <p className="text-xs text-[#047857] font-medium">Checking Family Pass authorization...</p>
       </div>
     );
   }
@@ -390,35 +390,35 @@ export function PatientFamilyPortalView() {
   // ========================================================
   if (!isFamilyUnlocked) {
     return (
-      <div className="space-y-6 max-w-4xl mx-auto pb-16 animate-in fade-in duration-300 text-[#4C0519]">
+      <div className="space-y-6 max-w-4xl mx-auto pb-16 animate-in fade-in duration-300 text-[#064E3B]">
         
-        {/* Locked Hero Banner in Soft Pink / Rose Palette */}
-        <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-[#FFF0F5] via-[#FFE4ED] to-[#FCE7F0] text-[#4C0519] border-2 border-[#FDA4AF] shadow-md relative overflow-hidden">
-          <div className="absolute right-0 top-0 w-96 h-96 bg-pink-400/10 rounded-full blur-3xl pointer-events-none" />
+        {/* Locked Hero Banner in Soft Mint / Emerald Palette */}
+        <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-[#F0F8F5] via-[#E8F8F0] to-[#DCF5E7] text-[#064E3B] border-2 border-[#8FE3B8] shadow-md relative overflow-hidden">
+          <div className="absolute right-0 top-0 w-96 h-96 bg-emerald-400/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="relative z-10 max-w-2xl space-y-4">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 border border-[#FDA4AF] text-[#E11D48] text-xs font-black shadow-2xs">
-                <Lock className="w-3.5 h-3.5 text-[#E11D48]" />
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 border border-[#8FE3B8] text-[#059669] text-xs font-black shadow-2xs">
+                <Lock className="w-3.5 h-3.5 text-[#059669]" />
                 <span>
                   {isSoloPlan ? "SOLO AI PASS ACTIVE • FAMILY PORTAL LOCKED" : "CODE-RX FAMILY PASS • LOCKED"}
                 </span>
               </span>
 
               {isSoloPlan && (
-                <span className="px-2.5 py-1 rounded-full bg-pink-100 text-[#BE123C] border border-pink-200 text-xs font-bold">
+                <span className="px-2.5 py-1 rounded-full bg-[#E8F8F0] text-[#047857] border border-[#BCE8D0] text-xs font-bold">
                   1 Individual Profile (Rajesh Sharma)
                 </span>
               )}
             </div>
 
-            <h1 className="text-2xl sm:text-4xl font-black text-[#4C0519] tracking-tight leading-tight">
+            <h1 className="text-2xl sm:text-4xl font-black text-[#064E3B] tracking-tight leading-tight">
               {isSoloPlan
                 ? "Upgrade to Unlock Segregated AI Timelines for All Family Members"
                 : "Centralized Family Health Vault & Segregated AI Timelines"}
             </h1>
 
-            <p className="text-xs sm:text-sm text-[#881337] leading-relaxed font-medium">
+            <p className="text-xs sm:text-sm text-[#047857] leading-relaxed font-medium">
               {isSoloPlan ? (
                 <span>
                   Your <strong>Solo AI Pass (₹99 / mo)</strong> is active for <strong>Rajesh Sharma (1 Person Only)</strong>. To view and track <strong>segregated AI Timelines for Sunita, Rohan, and Kamla</strong>, plus access the consolidated Family Vault and hereditary risk map, upgrade to the <strong>Family Health Pass</strong>.
@@ -430,8 +430,8 @@ export function PatientFamilyPortalView() {
               )}
             </p>
 
-            <div className="p-3.5 rounded-2xl bg-white/70 border border-[#FDA4AF] flex items-start gap-2.5 text-xs text-[#881337]">
-              <ShieldAlert className="w-4 h-4 text-[#E11D48] shrink-0 mt-0.5" />
+            <div className="p-3.5 rounded-2xl bg-white/70 border border-[#8FE3B8] flex items-start gap-2.5 text-xs text-[#047857]">
+              <ShieldAlert className="w-4 h-4 text-[#059669] shrink-0 mt-0.5" />
               <span>
                 <strong>Family Pass Required (₹199 / mo):</strong> Individual patient privacy and segregated multi-member AI accounts require a Family Health Pass. All real family data remains encrypted until unlocked.
               </span>
@@ -440,22 +440,22 @@ export function PatientFamilyPortalView() {
             <div className="pt-2 flex flex-col sm:flex-row sm:items-center gap-3">
               <Link
                 href="/patient/subscription"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-[#E11D48] hover:bg-[#BE123C] text-white font-black text-xs shadow-md shadow-pink-500/25 transition-all cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-[#059669] hover:bg-[#047857] text-white font-black text-xs shadow-md shadow-emerald-500/25 transition-all cursor-pointer"
               >
-                <Crown className="w-4 h-4 text-pink-200" />
+                <Crown className="w-4 h-4 text-emerald-200" />
                 <span>{isSoloPlan ? "Upgrade to Family Health Pass (₹199 / mo) →" : "Unlock Family Health Pass (₹199 / mo) →"}</span>
               </Link>
 
               {isSoloPlan ? (
                 <Link
                   href="/patient/timeline"
-                  className="px-4 py-3.5 rounded-2xl bg-white hover:bg-[#FFF5F8] text-[#881337] font-bold text-xs border border-[#FDA4AF] flex items-center justify-center gap-1.5 transition-all text-center shadow-2xs"
+                  className="px-4 py-3.5 rounded-2xl bg-white hover:bg-[#F3FAF6] text-[#047857] font-bold text-xs border border-[#8FE3B8] flex items-center justify-center gap-1.5 transition-all text-center shadow-2xs"
                 >
                   <span>Open Rajesh&apos;s Solo AI Story</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               ) : (
-                <span className="text-xs text-[#881337] font-medium text-center sm:text-left">
+                <span className="text-xs text-[#047857] font-medium text-center sm:text-left">
                   Covers up to 6 Family Members &bull; Segregated AI for All
                 </span>
               )}
@@ -464,43 +464,43 @@ export function PatientFamilyPortalView() {
         </div>
 
         {/* FROSTED REDACTED FAMILY TEASER */}
-        <div className="relative rounded-3xl border border-[#FCE7F0] bg-white shadow-xs p-6 sm:p-8 overflow-hidden select-none">
+        <div className="relative rounded-3xl border border-[#D6EDE1] bg-white shadow-xs p-6 sm:p-8 overflow-hidden select-none">
           
           {/* Blurred Background Family Mockup */}
           <div className="filter blur-md opacity-30 pointer-events-none space-y-6">
-            <div className="h-6 w-1/3 bg-pink-200 rounded-lg" />
+            <div className="h-6 w-1/3 bg-emerald-200 rounded-lg" />
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <div className="h-28 bg-pink-100 rounded-2xl p-3 space-y-2">
-                <div className="w-8 h-8 rounded-full bg-pink-400" />
-                <div className="h-3 w-3/4 bg-pink-300 rounded" />
+              <div className="h-28 bg-emerald-100 rounded-2xl p-3 space-y-2">
+                <div className="w-8 h-8 rounded-full bg-emerald-400" />
+                <div className="h-3 w-3/4 bg-emerald-300 rounded" />
               </div>
-              <div className="h-28 bg-pink-50 rounded-2xl p-3 space-y-2">
-                <div className="w-8 h-8 rounded-full bg-pink-300" />
-                <div className="h-3 w-3/4 bg-pink-200 rounded" />
+              <div className="h-28 bg-emerald-50 rounded-2xl p-3 space-y-2">
+                <div className="w-8 h-8 rounded-full bg-emerald-300" />
+                <div className="h-3 w-3/4 bg-emerald-200 rounded" />
               </div>
-              <div className="h-28 bg-pink-50 rounded-2xl p-3 space-y-2">
-                <div className="w-8 h-8 rounded-full bg-pink-300" />
-                <div className="h-3 w-3/4 bg-pink-200 rounded" />
+              <div className="h-28 bg-emerald-50 rounded-2xl p-3 space-y-2">
+                <div className="w-8 h-8 rounded-full bg-emerald-300" />
+                <div className="h-3 w-3/4 bg-emerald-200 rounded" />
               </div>
-              <div className="h-28 bg-pink-50 rounded-2xl p-3 space-y-2">
-                <div className="w-8 h-8 rounded-full bg-pink-300" />
-                <div className="h-3 w-3/4 bg-pink-200 rounded" />
+              <div className="h-28 bg-emerald-50 rounded-2xl p-3 space-y-2">
+                <div className="w-8 h-8 rounded-full bg-emerald-300" />
+                <div className="h-3 w-3/4 bg-emerald-200 rounded" />
               </div>
             </div>
-            <div className="h-36 bg-pink-50/50 rounded-2xl" />
+            <div className="h-36 bg-emerald-50/50 rounded-2xl" />
           </div>
 
           {/* Centered Lock Overlay */}
           <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-white/75 backdrop-blur-xs">
-            <div className="w-14 h-14 rounded-2xl bg-[#FFF5F8] text-[#E11D48] flex items-center justify-center shadow-md border border-[#FDA4AF] mb-3">
+            <div className="w-14 h-14 rounded-2xl bg-[#E8F8F0] text-[#059669] flex items-center justify-center shadow-md border border-[#8FE3B8] mb-3">
               <Users className="w-7 h-7" />
             </div>
 
-            <h3 className="text-base sm:text-lg font-black text-[#4C0519]">
+            <h3 className="text-base sm:text-lg font-black text-[#064E3B]">
               {isSoloPlan ? "Family Segregated AI Portals Locked" : "Family Member Records & AI Segregation Encrypted"}
             </h3>
 
-            <p className="text-xs text-[#881337] max-w-md mt-1 mb-4 leading-relaxed font-medium">
+            <p className="text-xs text-[#047857] max-w-md mt-1 mb-4 leading-relaxed font-medium">
               {isSoloPlan
                 ? "Your Solo plan includes AI analysis for 1 profile only. Upgrade to unlock individual segregated AI tracking for your spouse, children, and parents."
                 : "Household diagnostic archives, doctor cohort sync, and individual AI health timelines are locked until Family Pass subscription."}
@@ -508,7 +508,7 @@ export function PatientFamilyPortalView() {
 
             <Link
               href="/patient/subscription"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-[#E11D48] hover:bg-[#BE123C] text-white font-bold text-xs shadow-md shadow-pink-500/20 transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-[#059669] hover:bg-[#047857] text-white font-bold text-xs shadow-md shadow-emerald-500/20 transition-all cursor-pointer"
             >
               <span>{isSoloPlan ? "Upgrade to Family Pass (₹199)" : "Subscribe to Family Pass (₹199)"}</span>
               <ArrowRight className="w-4 h-4" />
@@ -580,38 +580,38 @@ export function PatientFamilyPortalView() {
   }
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto pb-16 text-[#4C0519]">
+    <div className="space-y-6 max-w-6xl mx-auto pb-16 text-[#064E3B]">
       
-      {/* 1. FAMILY VAULT HERO HEADER IN LIGHT PINK */}
-      <div className="rounded-3xl bg-gradient-to-br from-[#FFF0F5] via-[#FFE4ED] to-[#FCE7F0] text-[#4C0519] p-6 sm:p-8 relative overflow-hidden shadow-xs border border-[#FDA4AF]">
-        <div className="absolute right-0 top-0 w-80 h-80 bg-pink-400/10 rounded-full blur-3xl pointer-events-none" />
+      {/* 1. FAMILY VAULT HERO HEADER IN CLINICAL EMERALD */}
+      <div className="rounded-3xl bg-gradient-to-br from-[#F0F8F5] via-[#E8F8F0] to-[#DCF5E7] text-[#064E3B] p-6 sm:p-8 relative overflow-hidden shadow-xs border border-[#8FE3B8]">
+        <div className="absolute right-0 top-0 w-80 h-80 bg-emerald-400/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
             <div className="flex flex-wrap items-center gap-2.5">
-              <span className="px-3 py-1 rounded-full text-xs font-black bg-white/80 text-[#E11D48] border border-[#FDA4AF] flex items-center gap-1.5 shadow-2xs">
-                <Crown className="w-3.5 h-3.5 text-[#E11D48]" />
+              <span className="px-3 py-1 rounded-full text-xs font-black bg-white/80 text-[#059669] border border-[#8FE3B8] flex items-center gap-1.5 shadow-2xs">
+                <Crown className="w-3.5 h-3.5 text-[#059669]" />
                 <span>PREMIUM FAMILY HEALTH PASS &bull; ACTIVE</span>
               </span>
-              <span className="px-3 py-1 rounded-full text-xs font-bold bg-pink-100 text-[#BE123C] border border-pink-200 font-mono">
+              <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#E8F8F0] text-[#047857] border border-[#BCE8D0] font-mono">
                 SEGREGATED AI TIMELINES ACTIVE
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-black text-[#4C0519] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-black text-[#064E3B] tracking-tight">
               Sharma Family Centralized Health Vault
             </h1>
 
-            <p className="text-xs sm:text-sm text-[#881337] leading-relaxed font-medium">
+            <p className="text-xs sm:text-sm text-[#047857] leading-relaxed font-medium">
               Consolidated medical records, active prescriptions, and <strong>segregated AI Health Timelines for all members</strong>. Synchronized in real time with <strong>Dr. Aarav Mehta&apos;s OPD Consultation Cockpit</strong>.
             </p>
 
-            <div className="pt-1 flex flex-wrap items-center gap-4 text-xs text-[#881337]">
+            <div className="pt-1 flex flex-wrap items-center gap-4 text-xs text-[#047857]">
               <span className="flex items-center gap-1.5 font-semibold">
-                <Users className="w-4 h-4 text-[#E11D48]" />
+                <Users className="w-4 h-4 text-[#059669]" />
                 <span>{familyMembers.length} of 6 Family Profiles Enrolled</span>
               </span>
-              <span className="text-pink-300">&bull;</span>
+              <span className="text-emerald-300">&bull;</span>
               <span className="flex items-center gap-1.5 font-semibold text-emerald-700">
                 <ShieldCheck className="w-4 h-4 text-emerald-600" />
                 <span>All Member AI Stories Segregated &amp; Protected</span>
@@ -623,7 +623,7 @@ export function PatientFamilyPortalView() {
             <button
               type="button"
               onClick={() => setShowAddMemberModal(true)}
-              className="px-5 py-2.5 rounded-2xl bg-[#E11D48] hover:bg-[#BE123C] text-white font-bold text-xs shadow-md shadow-pink-500/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
+              className="px-5 py-2.5 rounded-2xl bg-[#059669] hover:bg-[#047857] text-white font-bold text-xs shadow-md shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>Add Family Member</span>
@@ -631,9 +631,9 @@ export function PatientFamilyPortalView() {
 
             <Link
               href="/patient/subscription"
-              className="px-4 py-2 rounded-2xl bg-white hover:bg-pink-50 text-[#881337] text-xs font-bold border border-[#FDA4AF] flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
+              className="px-4 py-2 rounded-2xl bg-white hover:bg-[#E8F8F0] text-[#047857] text-xs font-bold border border-[#8FE3B8] flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
             >
-              <Crown className="w-3.5 h-3.5 text-[#E11D48]" />
+              <Crown className="w-3.5 h-3.5 text-[#059669]" />
               <span>Manage Plan (₹199 / mo)</span>
             </Link>
           </div>
@@ -643,11 +643,11 @@ export function PatientFamilyPortalView() {
       {/* 2. FAMILY MEMBERS SWITCHER CARDS */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-black text-[#4C0519] uppercase tracking-wider flex items-center gap-2">
-            <Users className="w-4 h-4 text-[#E11D48]" />
+          <h2 className="text-sm font-black text-[#064E3B] uppercase tracking-wider flex items-center gap-2">
+            <Users className="w-4 h-4 text-[#059669]" />
             <span>Select Family Member to View Their Segregated AI Timeline</span>
           </h2>
-          <span className="text-xs text-[#BE123C] font-bold bg-pink-100 px-2.5 py-1 rounded-full border border-pink-200">
+          <span className="text-xs text-[#047857] font-bold bg-[#E8F8F0] px-2.5 py-1 rounded-full border border-[#BCE8D0]">
             Segregated AI Active
           </span>
         </div>
@@ -665,42 +665,42 @@ export function PatientFamilyPortalView() {
                 }}
                 className={`p-4 rounded-2xl border-2 transition-all cursor-pointer relative ${
                   isSelected
-                    ? "bg-white border-[#E11D48] shadow-md ring-2 ring-pink-500/20"
-                    : "bg-white/90 border-[#FCE7F0] hover:border-[#FDA4AF] shadow-2xs"
+                    ? "bg-white border-[#059669] shadow-md ring-2 ring-emerald-500/20"
+                    : "bg-white/90 border-[#D6EDE1] hover:border-[#8FE3B8] shadow-2xs"
                 }`}
               >
                 {isSelected && (
-                  <span className="absolute top-3 right-3 w-2.5 h-2.5 rounded-full bg-[#E11D48] animate-pulse" />
+                  <span className="absolute top-3 right-3 w-2.5 h-2.5 rounded-full bg-[#059669] animate-pulse" />
                 )}
 
                 <div className="flex items-start gap-3">
                   <div
                     className={`w-11 h-11 rounded-2xl flex items-center justify-center font-black text-sm shrink-0 shadow-xs ${
                       isSelected
-                        ? "bg-[#E11D48] text-white"
-                        : "bg-pink-50 text-[#881337] border border-pink-100"
+                        ? "bg-[#059669] text-white"
+                        : "bg-[#E8F8F0] text-[#064E3B] border border-[#BCE8D0]"
                     }`}
                   >
                     {member.name.charAt(0)}
                   </div>
 
                   <div className="min-w-0 flex-1">
-                    <h3 className="font-black text-sm text-[#4C0519] truncate">
+                    <h3 className="font-black text-sm text-[#064E3B] truncate">
                       {member.name}
                     </h3>
-                    <p className="text-[11px] text-[#E11D48] font-bold truncate">
+                    <p className="text-[11px] text-[#059669] font-bold truncate">
                       {member.relationship}
                     </p>
-                    <p className="text-[11px] text-[#881337] mt-0.5">
+                    <p className="text-[11px] text-[#047857] mt-0.5">
                       {member.age} Yrs &bull; {member.gender} &bull; {member.bloodGroup}
                     </p>
                   </div>
                 </div>
 
-                <div className="mt-3 pt-2.5 border-t border-[#FCE7F0] flex items-center justify-between text-[11px]">
-                  <span className="text-[#881337] font-medium">AI Timeline:</span>
-                  <span className="font-bold text-[#E11D48] flex items-center gap-1">
-                    <Sparkles className="w-3 h-3 text-[#E11D48]" />
+                <div className="mt-3 pt-2.5 border-t border-[#D6EDE1] flex items-center justify-between text-[11px]">
+                  <span className="text-[#047857] font-medium">AI Timeline:</span>
+                  <span className="font-bold text-[#059669] flex items-center gap-1">
+                    <Sparkles className="w-3 h-3 text-[#059669]" />
                     <span>{member.timelineEvents.length} Events</span>
                   </span>
                 </div>
@@ -711,42 +711,42 @@ export function PatientFamilyPortalView() {
       </div>
 
       {/* 3. ACTIVE MEMBER HEALTH CONSOLE */}
-      <div className="rounded-3xl border border-[#FCE7F0] bg-white shadow-sm overflow-hidden space-y-6">
+      <div className="rounded-3xl border border-[#D6EDE1] bg-white shadow-sm overflow-hidden space-y-6">
         
         {/* Active Member Bar */}
-        <div className="p-5 sm:p-6 bg-[#FFF5F8] border-b border-[#FCE7F0] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="p-5 sm:p-6 bg-[#F3FAF6] border-b border-[#D6EDE1] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-[#E11D48] text-white flex items-center justify-center font-black text-base shadow-xs">
+            <div className="w-12 h-12 rounded-2xl bg-[#059669] text-white flex items-center justify-center font-black text-base shadow-xs">
               {activeMember.name.charAt(0)}
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-lg font-black text-[#4C0519]">{activeMember.name}</h3>
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-pink-100 text-[#BE123C] border border-pink-200">
+                <h3 className="text-lg font-black text-[#064E3B]">{activeMember.name}</h3>
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#E8F8F0] text-[#047857] border border-[#BCE8D0]">
                   {activeMember.relationship}
                 </span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-pink-50 text-[#E11D48] border border-pink-200">
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-[#E8F8F0] text-[#059669] border border-[#BCE8D0]">
                   SEGREGATED PROFILE
                 </span>
               </div>
-              <p className="text-xs text-[#881337] mt-0.5">
+              <p className="text-xs text-[#047857] mt-0.5">
                 {activeMember.age} Yrs &bull; Gender: {activeMember.gender} &bull; Blood Group: <strong>{activeMember.bloodGroup}</strong>
               </p>
             </div>
           </div>
 
           {/* Navigation Tabs for Active Member */}
-          <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-2xl bg-white/80 border border-[#FCE7F0] text-xs font-bold shadow-2xs">
+          <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-2xl bg-white/80 border border-[#D6EDE1] text-xs font-bold shadow-2xs">
             <button
               type="button"
               onClick={() => setActiveTab("ai-story")}
               className={`px-3.5 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
                 activeTab === "ai-story"
-                  ? "bg-[#E11D48] text-white shadow-xs font-black"
-                  : "text-[#881337] hover:text-[#4C0519]"
+                  ? "bg-[#059669] text-white shadow-xs font-black"
+                  : "text-[#047857] hover:text-[#064E3B]"
               }`}
             >
-              <Sparkles className="w-3.5 h-3.5 text-pink-200" />
+              <Sparkles className="w-3.5 h-3.5 text-emerald-200" />
               <span>AI Health Timeline ({activeMember.timelineEvents.length})</span>
             </button>
 
@@ -755,8 +755,8 @@ export function PatientFamilyPortalView() {
               onClick={() => setActiveTab("overview")}
               className={`px-3.5 py-2 rounded-xl transition-all cursor-pointer ${
                 activeTab === "overview"
-                  ? "bg-[#FFF5F8] text-[#E11D48] border border-[#FDA4AF] shadow-2xs font-black"
-                  : "text-[#881337] hover:text-[#4C0519]"
+                  ? "bg-[#E8F8F0] text-[#059669] border border-[#8FE3B8] shadow-2xs font-black"
+                  : "text-[#047857] hover:text-[#064E3B]"
               }`}
             >
               Overview &amp; Vitals
@@ -767,8 +767,8 @@ export function PatientFamilyPortalView() {
               onClick={() => setActiveTab("records")}
               className={`px-3.5 py-2 rounded-xl transition-all cursor-pointer ${
                 activeTab === "records"
-                  ? "bg-[#FFF5F8] text-[#E11D48] border border-[#FDA4AF] shadow-2xs font-black"
-                  : "text-[#881337] hover:text-[#4C0519]"
+                  ? "bg-[#E8F8F0] text-[#059669] border border-[#8FE3B8] shadow-2xs font-black"
+                  : "text-[#047857] hover:text-[#064E3B]"
               }`}
             >
               Records ({activeMember.recentRecords.length})
@@ -779,8 +779,8 @@ export function PatientFamilyPortalView() {
               onClick={() => setActiveTab("meds")}
               className={`px-3.5 py-2 rounded-xl transition-all cursor-pointer ${
                 activeTab === "meds"
-                  ? "bg-[#FFF5F8] text-[#E11D48] border border-[#FDA4AF] shadow-2xs font-black"
-                  : "text-[#881337] hover:text-[#4C0519]"
+                  ? "bg-[#E8F8F0] text-[#059669] border border-[#8FE3B8] shadow-2xs font-black"
+                  : "text-[#047857] hover:text-[#064E3B]"
               }`}
             >
               Prescriptions ({activeMember.activeMedications.length})
@@ -796,14 +796,14 @@ export function PatientFamilyPortalView() {
             <div className="space-y-6">
               
               {/* Segregated AI Header Notice */}
-              <div className="p-4 rounded-2xl bg-[#FFF5F8] border border-[#FDA4AF] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+              <div className="p-4 rounded-2xl bg-[#E8F8F0] border border-[#8FE3B8] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
                 <div className="flex items-center gap-2.5">
-                  <Sparkles className="w-4 h-4 text-teal-700 shrink-0" />
-                  <span className="text-teal-950 font-medium">
+                  <Sparkles className="w-4 h-4 text-emerald-700 shrink-0" />
+                  <span className="text-emerald-950 font-medium">
                     <strong>Segregated Timeline:</strong> This AI Timeline reflects clinical trends exclusively for <strong>{activeMember.name}</strong> ({activeMember.relationship}), completely isolated from other family records.
                   </span>
                 </div>
-                <span className="px-2.5 py-1 rounded-full bg-teal-600 text-white font-black text-[10px] shrink-0 w-fit">
+                <span className="px-2.5 py-1 rounded-full bg-emerald-600 text-white font-black text-[10px] shrink-0 w-fit">
                   Dr. Mehta Verified
                 </span>
               </div>
