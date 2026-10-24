@@ -12,7 +12,6 @@ import {
   AlertTriangle,
   RotateCcw,
   Layers,
-  Upload,
 } from "lucide-react";
 import {
   INITIAL_REPORTS,
@@ -24,7 +23,6 @@ import { SummaryCards } from "@/components/reports/SummaryCard";
 import { FilterControls, FilterState } from "@/components/reports/FilterPanel";
 import { ReportTable } from "@/components/reports/ReportTable";
 import { ReportAnalysisDetailModal } from "@/components/reports/ReportAnalysisDetailModal";
-import { PatientUploadModal } from "@/components/reports/PatientUploadModal";
 import { PatientProfileModal } from "@/components/reports/PatientProfileModal";
 import { ToastNotification } from "@/components/reports/ToastNotification";
 
@@ -48,7 +46,6 @@ export function DoctorReportsClient() {
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
   const [selectedReport, setSelectedReport] = useState<PatientReport | null>(null);
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const pageSize = 10;
@@ -243,12 +240,6 @@ export function DoctorReportsClient() {
     setToastMessage(`Report status updated to "${readableStatus}"`);
   }
 
-  function handleReportUploaded(newReport: PatientReport) {
-    setReports((prev) => [newReport, ...prev]);
-    setSelectedReport(newReport);
-    setToastMessage(`Report "${newReport.reportName}" uploaded and analyzed by 3 AI models.`);
-  }
-
   function handleSelectReportById(reportId: string) {
     const target = reports.find((r) => r.id === reportId);
     if (target) {
@@ -276,14 +267,6 @@ export function DoctorReportsClient() {
 
         {/* Header Right Actions */}
         <div className="flex items-center gap-2.5">
-          <button
-            onClick={() => setIsUploadModalOpen(true)}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-[#059669] hover:bg-[#047857] text-white text-xs font-bold shadow-xs hover:shadow-md transition-all cursor-pointer"
-          >
-            <Upload className="w-3.5 h-3.5" />
-            <span>Upload Report</span>
-          </button>
-
           <Link
             href="/doctor/notifications"
             className="p-2 rounded-2xl border border-[#D6EDE1] bg-white hover:bg-[#E8F8F0] text-slate-700 hover:text-[#064E3B] transition-colors shadow-2xs relative"
@@ -337,7 +320,6 @@ export function DoctorReportsClient() {
           isPanelOpen={isFilterPanelOpen}
           onTogglePanel={() => setIsFilterPanelOpen(!isFilterPanelOpen)}
           totalFilteredCount={filteredAndSortedReports.length}
-          onOpenUploadModal={() => setIsUploadModalOpen(true)}
         />
 
         {/* Table List & Mobile Cards (Sections 11-13, 25, 26) */}
@@ -368,13 +350,6 @@ export function DoctorReportsClient() {
           onShowToast={(msg) => setToastMessage(msg)}
         />
       )}
-
-      {/* Patient Upload Modal (Sections 1 & 2) */}
-      <PatientUploadModal
-        isOpen={isUploadModalOpen}
-        onClose={() => setIsUploadModalOpen(false)}
-        onReportCreated={handleReportUploaded}
-      />
 
       {/* Patient Profile Modal (Section 39) */}
       {selectedPatientId && (

@@ -43,7 +43,6 @@ interface FilterPanelProps {
   isPanelOpen: boolean;
   onTogglePanel: () => void;
   totalFilteredCount: number;
-  onOpenUploadModal?: () => void;
 }
 
 export function FilterControls({
@@ -54,7 +53,6 @@ export function FilterControls({
   isPanelOpen,
   onTogglePanel,
   totalFilteredCount,
-  onOpenUploadModal,
 }: FilterPanelProps) {
   const categories: Array<ReportCategory | "all"> = [
     "all",
@@ -121,15 +119,6 @@ export function FilterControls({
             </button>
           ))}
         </div>
-
-        {onOpenUploadModal && (
-          <button
-            onClick={onOpenUploadModal}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold shadow-xs transition-colors shrink-0"
-          >
-            <span>+ Upload Medical Report</span>
-          </button>
-        )}
       </div>
 
       {/* Top Search & Primary Filters Bar */}
