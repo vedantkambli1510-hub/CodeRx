@@ -257,87 +257,50 @@ export function DoctorReportsClient() {
   }
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto pb-16">
+    <div className="space-y-6 max-w-7xl mx-auto pb-16 font-['Quicksand',sans-serif] pt-2 sm:pt-4">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-300">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-[#D6EDE1]">
         <div>
           <div className="flex items-center gap-2.5">
-            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-black text-[#064E3B] tracking-tight">
               Patient Reports
             </h1>
-            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-sky-100 text-sky-800 border border-sky-300">
+            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#E8F8F0] text-[#059669] border border-[#BCE8D0]">
               Clinical Inbox
             </span>
           </div>
-          <p className="text-xs sm:text-sm text-slate-600 mt-1">
-            Review and manage reports from your patients with multi-model AI decision support
+          <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
+            Review and manage diagnostic laboratory tests, pathology reports, and imaging scans with AI decision support.
           </p>
         </div>
 
         {/* Header Right Actions */}
-        <div className="flex items-center gap-3">
-          <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold bg-slate-200 text-slate-800 border border-slate-300">
-            <ShieldCheck className="w-3.5 h-3.5 text-sky-700" />
-            <span>Demo Clinical Environment</span>
-          </div>
-
+        <div className="flex items-center gap-2.5">
           <button
             onClick={() => setIsUploadModalOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold shadow-xs transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-[#059669] hover:bg-[#047857] text-white text-xs font-bold shadow-xs hover:shadow-md transition-all cursor-pointer"
           >
             <Upload className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Upload Report</span>
+            <span>Upload Report</span>
           </button>
 
           <Link
             href="/doctor/notifications"
-            className="p-2 rounded-xl border border-slate-300 bg-slate-200 hover:bg-slate-300 text-slate-700 hover:text-slate-900 transition-colors shadow-2xs relative"
+            className="p-2 rounded-2xl border border-[#D6EDE1] bg-white hover:bg-[#E8F8F0] text-slate-700 hover:text-[#064E3B] transition-colors shadow-2xs relative"
             title="Notifications"
           >
             <Bell className="w-4 h-4" />
-            <span className="w-2 h-2 rounded-full bg-sky-600 absolute top-1.5 right-1.5" />
+            <span className="w-2 h-2 rounded-full bg-[#059669] absolute top-1.5 right-1.5" />
           </Link>
 
           <Link
             href="/doctor/settings"
-            className="p-2 rounded-xl border border-slate-300 bg-slate-200 hover:bg-slate-300 text-slate-700 hover:text-slate-900 transition-colors shadow-2xs"
+            className="p-2 rounded-2xl border border-[#D6EDE1] bg-white hover:bg-[#E8F8F0] text-slate-700 hover:text-[#064E3B] transition-colors shadow-2xs"
             title="Help and Integration Status"
           >
             <HelpCircle className="w-4 h-4" />
           </Link>
         </div>
-      </div>
-
-      {/* Demo Report Quick Banner */}
-      <div className="bg-gradient-to-r from-slate-200 via-slate-100 to-sky-100 rounded-2xl p-4 sm:p-5 text-slate-900 shadow-xs border border-sky-200/90 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300">
-              Featured Demo Report
-            </span>
-            <span className="text-xs text-sky-800 font-bold flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5" />
-              Three-AI Analysis (GPT-4o + Claude 3.5 + Gemini 2.5)
-            </span>
-          </div>
-          <h3 className="text-sm sm:text-base font-bold text-slate-900">
-            Asthma on X-ray — Before & After Comparison
-          </h3>
-          <p className="text-xs text-slate-600 max-w-2xl leading-relaxed">
-            Patient Sarah Johnson (PT-1024). Dual-panel comparative radiograph with interactive image overlays (diaphragms, hyperinflation, fluid-fluid text label), model consensus, and clinical considerations.
-          </p>
-        </div>
-
-        <button
-          onClick={() => {
-            const demoRpt = reports.find((r) => r.id === "RPT-DEMO-ASTHMA");
-            if (demoRpt) setSelectedReport(demoRpt);
-          }}
-          className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold shadow-xs transition-all shrink-0 cursor-pointer"
-        >
-          <Sparkles className="w-4 h-4" />
-          <span>Open Asthma Demo Analysis</span>
-        </button>
       </div>
 
       {/* 4 Report Summary Cards */}
