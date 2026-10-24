@@ -21,9 +21,9 @@ export default async function PatientLayout({
   const patientName = user.name || "Aarav Mehta";
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gradient-to-br from-[#FFF5F8] via-[#FFF0F5] to-[#FDE8F0] text-slate-900 font-sans antialiased">
+    <div className="flex h-screen overflow-hidden bg-gradient-to-br from-[#F0F8F5] via-[#F8FCFA] to-[#EBF6F1] text-slate-900 font-sans antialiased">
       <PatientSidebar patientName={patientName} patientEmail={user.email} />
-      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden bg-gradient-to-br from-[#FFF5F8] via-[#FFF0F5] to-[#FDE8F0]">
+      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden bg-gradient-to-br from-[#F0F8F5] via-[#F8FCFA] to-[#EBF6F1]">
         <PatientHeader patientName={patientName} patientEmail={user.email} />
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
           {children}

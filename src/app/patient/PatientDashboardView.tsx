@@ -182,63 +182,63 @@ export function PatientDashboardView({
       {/* ============================================================== */}
       {/* 1. TOP ROW: WELCOME BANNER + MOTIVATION CARD                    */}
       {/* ============================================================== */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch font-['Quicksand',sans-serif]">
         
         {/* Left: Warm Cozy Morning Welcome Banner (8 Cols) */}
-        <div className="lg:col-span-8 bg-gradient-to-r from-[#FFF5F8] via-[#FFE4E6]/80 to-[#FECDD3]/30 border border-[#FDA4AF]/60 rounded-3xl p-6 sm:p-7 relative overflow-hidden flex flex-col justify-between shadow-xs">
+        <div className="lg:col-span-8 bg-gradient-to-r from-[#F0F8F5] via-[#E4F5ED]/90 to-[#D4F4E4]/40 border border-[#A5E3C3]/70 rounded-3xl p-6 sm:p-7 relative overflow-hidden flex flex-col justify-between shadow-xs">
           
           {/* Subtle Window & Plant Illustration Artwork Background */}
           <div className="absolute right-0 top-0 bottom-0 w-2/5 sm:w-1/2 pointer-events-none opacity-50 overflow-hidden">
             <svg viewBox="0 0 400 300" fill="none" className="w-full h-full object-cover">
               {/* Window Frame with Sunlight */}
-              <rect x="180" y="20" width="180" height="240" rx="8" fill="#FFFBF5" stroke="#FDA4AF" strokeWidth="2.5" />
-              <line x1="270" y1="20" x2="270" y2="260" stroke="#FDA4AF" strokeWidth="2" />
-              <line x1="180" y1="140" x2="360" y2="140" stroke="#FDA4AF" strokeWidth="2" />
+              <rect x="180" y="20" width="180" height="240" rx="8" fill="#FFFBF5" stroke="#A5E3C3" strokeWidth="2.5" />
+              <line x1="270" y1="20" x2="270" y2="260" stroke="#A5E3C3" strokeWidth="2" />
+              <line x1="180" y1="140" x2="360" y2="140" stroke="#A5E3C3" strokeWidth="2" />
               {/* Warm Sun Rays */}
-              <path d="M220 20 L360 160 L360 20 Z" fill="#FECDD3" opacity="0.45" />
+              <path d="M220 20 L360 160 L360 20 Z" fill="#BBF7D0" opacity="0.45" />
               {/* Potted Plant */}
-              <path d="M130 190 L170 190 L165 240 L135 240 Z" fill="#E11D48" />
+              <path d="M130 190 L170 190 L165 240 L135 240 Z" fill="#059669" />
               <circle cx="150" cy="180" r="16" fill="#15803D" opacity="0.8" />
               <circle cx="140" cy="165" r="12" fill="#22C55E" opacity="0.85" />
               <circle cx="160" cy="165" r="12" fill="#16A34A" opacity="0.9" />
               {/* Coffee Cup with Heart */}
-              <rect x="220" y="210" width="24" height="26" rx="4" fill="#FFFFFF" stroke="#FECDD3" strokeWidth="1.5" />
-              <path d="M244 216 Q252 223 244 230" stroke="#FECDD3" strokeWidth="1.5" fill="none" />
-              <path d="M232 222 Q234 220 236 222 Q236 226 232 229 Q228 226 228 222 Q230 220 232 222 Z" fill="#E11D48" />
+              <rect x="220" y="210" width="24" height="26" rx="4" fill="#FFFFFF" stroke="#A5E3C3" strokeWidth="1.5" />
+              <path d="M244 216 Q252 223 244 230" stroke="#A5E3C3" strokeWidth="1.5" fill="none" />
+              <path d="M232 222 Q234 220 236 222 Q236 226 232 229 Q228 226 228 222 Q230 220 232 222 Z" fill="#059669" />
               {/* Wall Frame Quote: Good Health Takes Time */}
-              <rect x="280" y="50" width="55" height="75" rx="3" fill="#FFF5F8" stroke="#FDA4AF" strokeWidth="1.5" />
-              <text x="307" y="75" textAnchor="middle" fontSize="6.5" fontStyle="italic" fill="#881337" fontFamily="serif">Good</text>
-              <text x="307" y="85" textAnchor="middle" fontSize="6.5" fontStyle="italic" fill="#881337" fontFamily="serif">Health</text>
-              <text x="307" y="95" textAnchor="middle" fontSize="6.5" fontStyle="italic" fill="#881337" fontFamily="serif">Takes</text>
-              <text x="307" y="105" textAnchor="middle" fontSize="6.5" fontStyle="italic" fill="#E11D48" fontFamily="serif">Time ♡</text>
+              <rect x="280" y="50" width="55" height="75" rx="3" fill="#F0F8F5" stroke="#A5E3C3" strokeWidth="1.5" />
+              <text x="307" y="75" textAnchor="middle" fontSize="6.5" fontStyle="italic" fill="#064E3B" fontFamily="sans-serif">Good</text>
+              <text x="307" y="85" textAnchor="middle" fontSize="6.5" fontStyle="italic" fill="#064E3B" fontFamily="sans-serif">Health</text>
+              <text x="307" y="95" textAnchor="middle" fontSize="6.5" fontStyle="italic" fill="#064E3B" fontFamily="sans-serif">Takes</text>
+              <text x="307" y="105" textAnchor="middle" fontSize="6.5" fontStyle="italic" fill="#059669" fontFamily="sans-serif">Time ♡</text>
             </svg>
           </div>
 
           {/* Left Content Area */}
           <div className="space-y-3 z-10 max-w-md">
             <div>
-              <p className="text-xs sm:text-sm font-medium text-[#9F1239]/80">
+              <p className="text-xs sm:text-sm font-bold text-[#047857]/90">
                 Good morning,
               </p>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#4C0519] tracking-tight flex items-center gap-2 mt-0.5">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#064E3B] tracking-tight flex items-center gap-2 mt-0.5">
                 <span>{patientName}</span>
                 <span className="text-amber-500 text-xl sm:text-2xl">☀️</span>
               </h1>
             </div>
 
-            <p className="text-xs sm:text-sm text-[#881337] leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#134E39] leading-relaxed font-medium">
               Your health journey matters. Let&apos;s keep moving forward!
             </p>
           </div>
 
           {/* Meta Tags Row */}
           <div className="flex flex-wrap items-center gap-2.5 pt-6 z-10 text-xs">
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-[#FCE7F0] text-[#881337] font-semibold shadow-2xs">
-              <Calendar className="w-3.5 h-3.5 text-[#E11D48]" />
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-[#D6EDE1] text-[#064E3B] font-semibold shadow-2xs">
+              <Calendar className="w-3.5 h-3.5 text-[#059669]" />
               <span>Today, 22 Oct 2026</span>
             </div>
             {patient?.bloodGroup && (
-              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-[#FCE7F0] text-[#881337] font-semibold shadow-2xs">
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-[#D6EDE1] text-[#064E3B] font-semibold shadow-2xs">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                 <span>Blood Group: {patient.bloodGroup}</span>
               </div>
@@ -247,12 +247,12 @@ export function PatientDashboardView({
         </div>
 
         {/* Right: Inspirational Patient Care Card (4 Cols) */}
-        <div className="lg:col-span-4 bg-gradient-to-br from-[#FFF5F8] via-[#FFE4E6] to-[#FECDD3]/40 border border-[#FDA4AF]/60 rounded-3xl p-6 flex flex-col justify-between shadow-xs relative overflow-hidden">
+        <div className="lg:col-span-4 bg-gradient-to-br from-[#F0F8F5] via-[#E4F5ED] to-[#D4F4E4]/50 border border-[#A5E3C3]/70 rounded-3xl p-6 flex flex-col justify-between shadow-xs relative overflow-hidden">
           <div className="space-y-1.5 z-10">
-            <h3 className="text-base font-extrabold text-[#4C0519] leading-snug">
+            <h3 className="text-base font-extrabold text-[#064E3B] leading-snug">
               Your health<br />is in safe hands
             </h3>
-            <p className="text-xs text-[#9F1239]/85 font-medium">
+            <p className="text-xs text-[#047857]/90 font-semibold">
               Stay consistent, stay healthier.
             </p>
           </div>
@@ -402,18 +402,18 @@ export function PatientDashboardView({
               {displayedAppointments.map((apt) => (
                 <div
                   key={apt.id}
-                  className="p-4 rounded-2xl border border-[#FCE7F0] hover:border-[#FDA4AF] hover:bg-[#FFF5F8]/50 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                  className="p-4 rounded-2xl border border-[#D6EDE1] hover:border-[#8FE3B8] hover:bg-[#F3FAF6]/60 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                 >
                   <div className="flex items-center gap-3.5">
                     {/* Date Pill Box */}
-                    <div className="w-14 h-14 rounded-2xl bg-[#FFF0F4] border border-[#FCE7F0] flex flex-col items-center justify-center shrink-0">
-                      <span className="text-[10px] font-bold text-[#9F1239] uppercase leading-tight">
+                    <div className="w-14 h-14 rounded-2xl bg-[#EAF7F0] border border-[#D6EDE1] flex flex-col items-center justify-center shrink-0">
+                      <span className="text-[10px] font-bold text-[#047857] uppercase leading-tight">
                         {apt.dateStr.split(" ")[0]}
                       </span>
-                      <span className="text-sm font-black text-[#4C0519] leading-tight">
+                      <span className="text-sm font-black text-[#064E3B] leading-tight">
                         {apt.dateStr.split(" ")[1]}
                       </span>
-                      <span className="text-[9px] font-bold text-[#881337] uppercase leading-tight">
+                      <span className="text-[9px] font-bold text-[#134E39] uppercase leading-tight">
                         {apt.dateStr.split(" ")[2]}
                       </span>
                     </div>
@@ -632,57 +632,57 @@ export function PatientDashboardView({
           </div>
 
           {/* Card 2: Quick Actions (4 Columns) */}
-          <div className="bg-white rounded-3xl border border-[#FCE7F0] shadow-xs p-5 space-y-3">
-            <h3 className="text-xs font-black uppercase text-[#881337] tracking-wider flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#E11D48]" />
+          <div className="bg-white rounded-3xl border border-[#D6EDE1] shadow-xs p-5 space-y-3">
+            <h3 className="text-xs font-black uppercase text-[#064E3B] tracking-wider flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#059669]" />
               <span>Quick Actions</span>
             </h3>
 
             <div className="grid grid-cols-4 gap-2">
               <Link
                 href="/patient/doctors"
-                className="p-2.5 rounded-2xl bg-[#FFF5F8] hover:bg-[#FFE4ED] border border-[#FCE7F0] text-center space-y-1.5 transition-all group shadow-2xs"
+                className="p-2.5 rounded-2xl bg-[#F3FAF6] hover:bg-[#E4F5ED] border border-[#D6EDE1] text-center space-y-1.5 transition-all group shadow-2xs"
               >
-                <div className="w-8 h-8 rounded-xl bg-white text-[#E11D48] flex items-center justify-center mx-auto shadow-2xs group-hover:scale-110 transition-transform">
+                <div className="w-8 h-8 rounded-xl bg-white text-[#059669] flex items-center justify-center mx-auto shadow-2xs group-hover:scale-110 transition-transform">
                   <Calendar className="w-4 h-4" />
                 </div>
-                <span className="text-[10px] font-bold text-[#881337] block leading-tight">
+                <span className="text-[10px] font-bold text-[#064E3B] block leading-tight">
                   Book Appointment
                 </span>
               </Link>
 
               <Link
                 href="/patient/records"
-                className="p-2.5 rounded-2xl bg-[#FFF5F8] hover:bg-[#FFE4ED] border border-[#FCE7F0] text-center space-y-1.5 transition-all group shadow-2xs"
+                className="p-2.5 rounded-2xl bg-[#F3FAF6] hover:bg-[#E4F5ED] border border-[#D6EDE1] text-center space-y-1.5 transition-all group shadow-2xs"
               >
-                <div className="w-8 h-8 rounded-xl bg-white text-[#16A34A] flex items-center justify-center mx-auto shadow-2xs group-hover:scale-110 transition-transform">
+                <div className="w-8 h-8 rounded-xl bg-white text-[#059669] flex items-center justify-center mx-auto shadow-2xs group-hover:scale-110 transition-transform">
                   <Upload className="w-4 h-4" />
                 </div>
-                <span className="text-[10px] font-bold text-[#881337] block leading-tight">
+                <span className="text-[10px] font-bold text-[#064E3B] block leading-tight">
                   Upload Report
                 </span>
               </Link>
 
               <Link
                 href="/patient/prescriptions"
-                className="p-2.5 rounded-2xl bg-[#FFF5F8] hover:bg-[#FFE4ED] border border-[#FCE7F0] text-center space-y-1.5 transition-all group shadow-2xs"
+                className="p-2.5 rounded-2xl bg-[#F3FAF6] hover:bg-[#E4F5ED] border border-[#D6EDE1] text-center space-y-1.5 transition-all group shadow-2xs"
               >
-                <div className="w-8 h-8 rounded-xl bg-white text-[#9333EA] flex items-center justify-center mx-auto shadow-2xs group-hover:scale-110 transition-transform">
+                <div className="w-8 h-8 rounded-xl bg-white text-[#059669] flex items-center justify-center mx-auto shadow-2xs group-hover:scale-110 transition-transform">
                   <Pill className="w-4 h-4" />
                 </div>
-                <span className="text-[10px] font-bold text-[#881337] block leading-tight">
+                <span className="text-[10px] font-bold text-[#064E3B] block leading-tight">
                   Request Rx
                 </span>
               </Link>
 
               <Link
                 href="/patient/appointments"
-                className="p-2.5 rounded-2xl bg-[#FFF5F8] hover:bg-[#FFE4ED] border border-[#FCE7F0] text-center space-y-1.5 transition-all group shadow-2xs"
+                className="p-2.5 rounded-2xl bg-[#F3FAF6] hover:bg-[#E4F5ED] border border-[#D6EDE1] text-center space-y-1.5 transition-all group shadow-2xs"
               >
-                <div className="w-8 h-8 rounded-xl bg-white text-[#E11D48] flex items-center justify-center mx-auto shadow-2xs group-hover:scale-110 transition-transform">
+                <div className="w-8 h-8 rounded-xl bg-white text-[#059669] flex items-center justify-center mx-auto shadow-2xs group-hover:scale-110 transition-transform">
                   <Clock className="w-4 h-4" />
                 </div>
-                <span className="text-[10px] font-bold text-[#881337] block leading-tight">
+                <span className="text-[10px] font-bold text-[#064E3B] block leading-tight">
                   Calendar
                 </span>
               </Link>
@@ -690,32 +690,32 @@ export function PatientDashboardView({
           </div>
 
           {/* Card 2.5: AI Health Story (Pehle vs Abhi) Banner */}
-          <div className="bg-gradient-to-br from-[#FFF5F8] via-[#FFE4ED] to-[#FCE7F0] border border-[#FDA4AF] rounded-3xl p-5 space-y-3 shadow-xs">
+          <div className="bg-gradient-to-br from-[#E8F8F0] via-[#D8F3E5] to-[#C6EFD9] border border-[#9AE5BF] rounded-3xl p-5 space-y-3 shadow-xs">
             <div className="flex items-center justify-between">
-              <span className="text-[10.5px] font-black uppercase tracking-wider text-[#9F1239] flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-[#E11D48]" />
+              <span className="text-[10.5px] font-black uppercase tracking-wider text-[#064E3B] flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-[#059669]" />
                 <span>AI Health Story</span>
               </span>
-              <span className="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-[#E11D48] text-white shadow-2xs">
+              <span className="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-[#059669] text-white shadow-2xs">
                 ₹99/mo &bull; Pehle vs Abhi
               </span>
             </div>
 
-            <p className="text-xs text-[#881337] leading-relaxed font-medium">
+            <p className="text-xs text-[#134E39] leading-relaxed font-medium">
               See how your condition evolved over time (<strong>pehle condition kaisi thi vs ab kaisi hai</strong>): HbA1c, kidney filtration, and 60-second audio summary.
             </p>
 
             <div className="flex items-center gap-2 pt-0.5">
               <Link
                 href="/patient/timeline"
-                className="flex-1 py-2 px-3 rounded-xl bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-black flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer"
+                className="flex-1 py-2 px-3 rounded-xl bg-[#059669] hover:bg-[#047857] text-white text-xs font-black flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer"
               >
                 <span>Open AI Timeline</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
               <Link
                 href="/patient/family"
-                className="py-2 px-3 rounded-xl bg-white hover:bg-[#FFF5F8] text-[#9F1239] text-xs font-extrabold border border-[#FDA4AF] flex items-center justify-center transition-all shadow-2xs cursor-pointer"
+                className="py-2 px-3 rounded-xl bg-white hover:bg-[#E4F5ED] text-[#064E3B] text-xs font-extrabold border border-[#8FE3B8] flex items-center justify-center transition-all shadow-2xs cursor-pointer"
                 title="Family Health Portal"
               >
                 Family Pass
@@ -724,11 +724,11 @@ export function PatientDashboardView({
           </div>
 
           {/* Card 3: Take Care of Yourself Botanical Card */}
-          <div className="bg-[#FFF5F8] border border-[#FCE7F0] rounded-3xl p-5 flex items-center justify-between shadow-2xs">
+          <div className="bg-[#F3FAF6] border border-[#D6EDE1] rounded-3xl p-5 flex items-center justify-between shadow-2xs">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 shrink-0 text-[#16A34A]">
+              <div className="w-10 h-10 shrink-0 text-[#059669]">
                 <svg viewBox="0 0 50 60" fill="none" className="w-full h-full">
-                  <path d="M10 50 Q 25 35 35 10" stroke="#16A34A" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M10 50 Q 25 35 35 10" stroke="#059669" strokeWidth="2" strokeLinecap="round" />
                   <path d="M35 10 Q 45 5 40 0 Q 30 5 35 10 Z" fill="#86EFAC" opacity="0.85" />
                   <path d="M28 22 Q 40 20 38 12 Q 28 15 28 22 Z" fill="#4ADE80" opacity="0.85" />
                   <path d="M22 34 Q 10 26 12 18 Q 22 22 22 34 Z" fill="#22C55E" opacity="0.75" />

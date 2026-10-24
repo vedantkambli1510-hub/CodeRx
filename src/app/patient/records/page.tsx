@@ -60,12 +60,12 @@ export default function PatientRecordsPage() {
   }
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto pb-12">
+    <div className="space-y-6 max-w-5xl mx-auto pb-12 font-['Quicksand',sans-serif]">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-[#D6EDE1]">
         <div>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
-            <FileText className="w-7 h-7 text-teal-600" />
+            <FileText className="w-7 h-7 text-[#059669]" />
             <span>Medical Records &amp; Uploads</span>
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
@@ -77,7 +77,7 @@ export default function PatientRecordsPage() {
           <button
             type="button"
             onClick={() => setShowUploadModal(true)}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-teal-600 hover:bg-teal-500 shadow-sm cursor-pointer transition-all"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-bold text-white bg-[#059669] hover:bg-[#047857] shadow-sm cursor-pointer transition-all"
           >
             <Upload className="w-4 h-4" />
             <span>Upload Medical Report</span>
@@ -86,9 +86,9 @@ export default function PatientRecordsPage() {
       </div>
 
       {/* SECURITY & DATA PROTECTION PROTOCOL GUARANTEE */}
-      <div className="rounded-2xl border border-teal-200/80 bg-gradient-to-r from-teal-50/90 via-white to-slate-50 p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="rounded-3xl border border-[#BCE8D0] bg-gradient-to-r from-[#EAF7F0] via-white to-[#F2FAF5] p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3.5">
-          <div className="w-10 h-10 rounded-2xl bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+          <div className="w-10 h-10 rounded-2xl bg-[#059669] text-white flex items-center justify-center shrink-0 shadow-xs">
             <ShieldCheck className="w-5 h-5 text-white" />
           </div>
           <div>
@@ -96,11 +96,11 @@ export default function PatientRecordsPage() {
               <h3 className="text-sm font-black text-slate-900">
                 Encrypted Data Protection &amp; Confidentiality Guarantee
               </h3>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-teal-100 text-teal-800 border border-teal-300">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-[#D1F2E2] text-[#064E3B] border border-[#8FE3B8]">
                 AES-256 Bit E2E
               </span>
             </div>
-            <p className="text-xs text-slate-600 mt-0.5">
+            <p className="text-xs text-slate-600 mt-0.5 font-medium">
               Strictly confidential between you and Dr. Aarav Mehta. Every report upload requires explicit informed consent before processing.
             </p>
           </div>
@@ -110,16 +110,16 @@ export default function PatientRecordsPage() {
           <button
             type="button"
             onClick={() => setShowPrivacyModal(true)}
-            className="text-xs font-bold text-teal-700 hover:text-teal-900 hover:underline flex items-center gap-1 cursor-pointer px-3 py-1.5 rounded-xl border border-teal-200 bg-white"
+            className="text-xs font-bold text-[#064E3B] hover:text-[#047857] hover:underline flex items-center gap-1 cursor-pointer px-3 py-1.5 rounded-xl border border-[#8FE3B8] bg-white shadow-2xs"
           >
-            <Info className="w-3.5 h-3.5" />
+            <Info className="w-3.5 h-3.5 text-[#059669]" />
             <span>Privacy Charter</span>
           </button>
 
           <button
             type="button"
             onClick={() => setShowUploadModal(true)}
-            className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl text-xs font-bold text-white bg-teal-600 hover:bg-teal-500 transition-all cursor-pointer shadow-xs"
+            className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl text-xs font-bold text-white bg-[#059669] hover:bg-[#047857] transition-all cursor-pointer shadow-xs"
           >
             <Upload className="w-3.5 h-3.5" />
             <span>Upload Report</span>
@@ -128,13 +128,13 @@ export default function PatientRecordsPage() {
       </div>
 
       {/* AI STANDARDIZED REPORT FORMATTER NOTICE (NO AUTONOMOUS DIAGNOSIS) */}
-      <div className="p-4 rounded-2xl bg-sky-50/70 border border-sky-200 text-sky-950 text-xs flex items-start gap-3">
-        <Sparkles className="w-5 h-5 text-sky-600 mt-0.5 shrink-0" />
+      <div className="p-4 rounded-3xl bg-[#EAF7F0]/80 border border-[#BCE8D0] text-[#064E3B] text-xs flex items-start gap-3">
+        <Sparkles className="w-5 h-5 text-[#059669] mt-0.5 shrink-0" />
         <div className="space-y-1">
-          <span className="font-bold text-sky-950 block">
+          <span className="font-bold text-[#064E3B] block">
             AI Report Digitizer &amp; Standardized Formatter:
           </span>
-          <p className="text-sky-900 leading-relaxed">
+          <p className="text-[#134E39] leading-relaxed font-medium">
             When you upload any lab report, CodeRx AI extracts and organizes all test numbers, reference intervals, and dates into a clean, standardized format so you can easily review and download it. <strong>AI does not perform diagnosis;</strong> clinical diagnosis and medical decision-making remain strictly with your consulting doctor.
           </p>
         </div>
@@ -180,7 +180,7 @@ export default function PatientRecordsPage() {
                   <tr key={rec.id} className="hover:bg-slate-50/80 transition-colors">
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-xl bg-teal-50 text-teal-800 font-bold flex items-center justify-center shrink-0 border border-teal-200">
+                        <div className="w-8 h-8 rounded-xl bg-[#EAF7F0] text-[#064E3B] font-bold flex items-center justify-center shrink-0 border border-[#BCE8D0]">
                           PDF
                         </div>
                         <div>
@@ -205,8 +205,8 @@ export default function PatientRecordsPage() {
                     </td>
 
                     <td className="px-5 py-4">
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
-                        <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#EAF7F0] text-[#064E3B] border border-[#BCE8D0]">
+                        <CheckCircle2 className="w-3 h-3 text-[#059669]" />
                         AI Formatted &amp; Digitized
                       </span>
                     </td>
@@ -217,7 +217,7 @@ export default function PatientRecordsPage() {
                         <button
                           type="button"
                           onClick={() => setSelectedRecordForModal(rec)}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-teal-800 bg-teal-50 hover:bg-teal-600 hover:text-white border border-teal-200 transition-all cursor-pointer shadow-2xs"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-[#064E3B] bg-[#EAF7F0] hover:bg-[#059669] hover:text-white border border-[#BCE8D0] transition-all cursor-pointer shadow-2xs"
                         >
                           <Eye className="w-3.5 h-3.5" />
                           <span>View Formatted Report</span>
