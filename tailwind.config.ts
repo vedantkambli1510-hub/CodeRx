@@ -36,8 +36,8 @@ const config: Config = {
       },
       fontFamily: {
         sans: [
-          '"Quicksand"',
           '"Plus Jakarta Sans"',
+          '"Inter"',
           "-apple-system",
           "BlinkMacSystemFont",
           '"Segoe UI"',

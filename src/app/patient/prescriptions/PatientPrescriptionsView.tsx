@@ -522,9 +522,9 @@ export function PatientPrescriptionsView({
   };
 
   return (
-    <div className="space-y-5 max-w-5xl mx-auto text-slate-900 pb-20 font-['Quicksand',sans-serif]">
+    <div className="space-y-5 max-w-5xl mx-auto text-slate-900 pb-20 font-sans">
       {/* 1. TOP CONTROLS & TIME-BASED DROPDOWN (Hidden during Print) */}
-      <div className="print:hidden bg-white p-4 rounded-3xl border border-slate-200/80 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4 font-['Quicksand',sans-serif]">
+      <div className="print:hidden bg-white p-4 rounded-3xl border border-slate-200/80 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4 font-sans">
         {/* Prescription Date / Visit Dropdown */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 flex-1">
           <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5 shrink-0">
@@ -614,7 +614,7 @@ export function PatientPrescriptionsView({
       </div>
 
       {/* 2. REFINED MEDICINE REFILL BANNER (CLEAN & SLEEK) */}
-      <div className="print:hidden bg-white border border-slate-200/90 rounded-3xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xs font-['Quicksand',sans-serif]">
+      <div className="print:hidden bg-white border border-slate-200/90 rounded-3xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xs font-sans">
         <div className="flex items-center gap-3.5">
           <div className="w-11 h-11 rounded-2xl bg-sky-50 text-sky-700 border border-sky-100 flex items-center justify-center shrink-0 text-xl shadow-2xs">
             🛵
@@ -656,7 +656,7 @@ export function PatientPrescriptionsView({
       </div>
 
       {/* 3. THE OFFICIAL PRESCRIPTION DOCUMENT (CUTE, SOFT & PROPER MEDICAL SLIP!) */}
-      <div className="bg-[#FAFDFE] rounded-3xl border border-[#D0E2EF] shadow-lg p-6 sm:p-8 space-y-6 print:border-none print:shadow-none print:p-0 font-['Quicksand',sans-serif]">
+      <div className="bg-[#FAFDFE] rounded-3xl border border-[#D0E2EF] shadow-lg p-6 sm:p-8 space-y-6 print:border-none print:shadow-none print:p-0 font-sans">
         {/* HEADER: Doctor Identity & Clinic Branding */}
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-2 border-b border-[#E1EDF5]">
           <div className="flex items-start gap-4">
@@ -816,7 +816,7 @@ export function PatientPrescriptionsView({
 
           {/* Table Container */}
           <div className="overflow-x-auto rounded-2xl border border-[#D6E6F2] bg-white shadow-2xs">
-            <table className="w-full text-left text-xs border-collapse font-['Quicksand',sans-serif]">
+            <table className="w-full text-left text-xs border-collapse font-sans">
               <thead>
                 <tr className="bg-[#EAF3FA] text-[#1C5B8C] font-bold text-xs border-b border-[#D6E6F2]">
                   <th className="py-3.5 px-3.5 w-10 text-center">#</th>
@@ -917,7 +917,7 @@ export function PatientPrescriptionsView({
         </div>
 
         {/* BOTTOM MOTIVATIONAL NOTE & AUTHENTIC DOCTOR SIGNATURE (MATCHES IMAGE!) */}
-        <div className="pt-4 border-t border-[#E1EDF5] flex flex-col sm:flex-row sm:items-center justify-between gap-6 font-['Quicksand',sans-serif]">
+        <div className="pt-4 border-t border-[#E1EDF5] flex flex-col sm:flex-row sm:items-center justify-between gap-6 font-sans">
           {/* Left: Friendly note */}
           <div className="flex items-center gap-2">
             <Heart className="w-4 h-4 fill-[#FF8093] text-[#FF8093] shrink-0" />
@@ -973,7 +973,7 @@ export function PatientPrescriptionsView({
       {/* 4. SLEEK, HIGH-END MEDICINE REFILL MODAL (ONLINE & LOCAL AREA CHEMISTS) */}
       {refillModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl max-w-xl w-full border border-slate-200/90 shadow-2xl p-5 sm:p-6 space-y-4 relative my-6 font-['Quicksand',sans-serif]">
+          <div className="bg-white rounded-3xl max-w-xl w-full border border-slate-200/90 shadow-2xl p-5 sm:p-6 space-y-4 relative my-6 font-sans">
             {/* Close Button */}
             <button
               type="button"

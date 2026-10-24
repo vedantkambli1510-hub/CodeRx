@@ -339,7 +339,7 @@ export function DoctorPrescriptionsView({
   });
 
   return (
-    <div className="space-y-5 max-w-7xl mx-auto pb-16 font-['Quicksand',sans-serif] text-slate-800 antialiased">
+    <div className="space-y-5 max-w-7xl mx-auto pb-16 font-sans text-slate-800 antialiased">
       {/* Toast Notification */}
       {successToast && (
         <div className="p-4 rounded-2xl bg-[#E8F8F0] border-2 border-[#059669] text-[#064E3B] font-bold flex items-center justify-between shadow-lg animate-in fade-in slide-in-from-top-2">

@@ -66,7 +66,7 @@ export function PatientHeader({
   };
 
   return (
-    <header className="h-18 px-6 lg:px-8 bg-[#F3FAF6] border-b border-[#D6EDE1] flex items-center justify-between gap-4 select-none shrink-0 shadow-2xs font-['Quicksand',sans-serif]">
+    <header className="h-18 px-6 lg:px-8 bg-[#F3FAF6] border-b border-[#D6EDE1] flex items-center justify-between gap-4 select-none shrink-0 shadow-2xs font-sans">
       
       {/* Search Input Bar (Center/Left pill) */}
       <form onSubmit={handleSearch} className="flex-1 max-w-xl">

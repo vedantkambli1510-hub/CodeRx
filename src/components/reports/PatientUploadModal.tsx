@@ -270,7 +270,7 @@ export function PatientUploadModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto animate-in fade-in duration-200">
-      <div className="bg-white rounded-[32px] max-w-3xl w-full shadow-2xl border border-slate-200/90 overflow-hidden my-6 font-['Quicksand',sans-serif]">
+      <div className="bg-white rounded-[32px] max-w-3xl w-full shadow-2xl border border-slate-200/90 overflow-hidden my-6 font-sans">
         
         {/* ------------------------------------------------------------------ */}
         {/* 1. TOP HEADER BANNER (WARM PASTEL WITH 3D SHIELD & ENCRYPTED BADGE) */}

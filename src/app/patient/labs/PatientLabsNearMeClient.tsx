@@ -351,7 +351,7 @@ export function PatientLabsNearMeClient({
   }
 
   return (
-    <div className="space-y-5 max-w-4xl mx-auto pb-16 font-['Quicksand',sans-serif]">
+    <div className="space-y-5 max-w-4xl mx-auto pb-16 font-sans">
       {/* 1. SIMPLE CLEAN HEADER */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#D6EDE1]">
         <div>

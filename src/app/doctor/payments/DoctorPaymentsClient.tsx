@@ -117,7 +117,7 @@ export function DoctorPaymentsClient({
   };
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto text-slate-800 pb-16 font-['Quicksand',sans-serif] antialiased pt-2 sm:pt-4">
+    <div className="space-y-6 max-w-7xl mx-auto text-slate-800 pb-16 font-sans antialiased pt-2 sm:pt-4">
       {/* 1. CLEAN ORGANIZED HEADER */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-[#D6EDE1]">
         <div>

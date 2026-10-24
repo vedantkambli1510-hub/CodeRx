@@ -63,7 +63,7 @@ export default function PatientRecordsPage() {
   }
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto pb-12 font-['Quicksand',sans-serif]">
+    <div className="space-y-6 max-w-5xl mx-auto pb-12 font-sans">
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-[#D6EDE1]">
         <div>

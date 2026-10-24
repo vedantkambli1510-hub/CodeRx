@@ -248,7 +248,7 @@ export function DoctorReportsClient() {
   }
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto pb-16 font-['Quicksand',sans-serif] pt-2 sm:pt-4">
+    <div className="space-y-6 max-w-7xl mx-auto pb-16 font-sans pt-2 sm:pt-4">
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-[#D6EDE1]">
         <div>

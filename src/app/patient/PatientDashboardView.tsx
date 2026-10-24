@@ -183,7 +183,7 @@ export function PatientDashboardView({
       {/* ============================================================== */}
       {/* 1. TOP ROW: WELCOME BANNER + MOTIVATION CARD                    */}
       {/* ============================================================== */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch font-['Quicksand',sans-serif]">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch font-sans">
         
         {/* Left: Warm Cozy Morning Welcome Banner (8 Cols) */}
         <div className="lg:col-span-8 bg-gradient-to-r from-[#F0F8F5] via-[#E4F5ED]/90 to-[#D4F4E4]/40 border border-[#A5E3C3]/70 rounded-3xl p-6 sm:p-7 relative overflow-hidden flex flex-col justify-between shadow-xs">

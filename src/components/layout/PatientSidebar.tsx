@@ -157,7 +157,7 @@ export function PatientSidebar({
   ];
 
   return (
-    <aside className="w-64 shrink-0 bg-[#F3FAF6] border-r border-[#D6EDE1] flex flex-col justify-between select-none h-screen text-slate-800 font-['Quicksand',sans-serif] shadow-xs">
+    <aside className="w-64 shrink-0 bg-[#F3FAF6] border-r border-[#D6EDE1] flex flex-col justify-between select-none h-screen text-slate-800 font-sans shadow-xs">
       
       {/* Top Branding Section */}
       <div className="flex-1 flex flex-col min-h-0">
@@ -189,7 +189,7 @@ export function PatientSidebar({
             </div>
 
             <div>
-              <div className="font-extrabold text-xl tracking-tight text-[#064E3B] font-['Quicksand',sans-serif]">
+              <div className="font-extrabold text-xl tracking-tight text-[#064E3B] font-sans">
                 Code<span className="text-[#059669]">Rx</span>
               </div>
               <div className="text-[10px] font-semibold text-[#047857]/80 tracking-wide">
