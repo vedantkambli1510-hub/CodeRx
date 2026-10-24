@@ -23,7 +23,6 @@ import {
   Heart,
   Settings,
   Mail,
-  Activity,
   Stethoscope,
 } from "lucide-react";
 
@@ -164,12 +163,6 @@ export function DoctorSidebar({
       label: "Medical Records",
       href: "/doctor/records",
       icon: FileText,
-      badge: null,
-    },
-    {
-      label: "Lab Reports",
-      href: "/doctor/records?type=lab",
-      icon: Activity,
       badge: null,
     },
     {
