@@ -130,6 +130,18 @@ export function PatientSubscriptionView({
                 <span>24/7 Support</span>
               </span>
             </div>
+
+            {isSubscribed && (
+              <div className="pt-2">
+                <Link
+                  href="/patient/timeline"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#059669] hover:bg-[#047857] text-white font-extrabold text-xs shadow-md shadow-emerald-600/30 transition-all cursor-pointer"
+                >
+                  <Sparkles className="w-4 h-4 text-emerald-200" />
+                  <span>Care Pass Active &bull; Open AI Health Timeline &rarr;</span>
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* Right Header Graphic: Stethoscope + Handwritten "Your Health Matters ♡" */}

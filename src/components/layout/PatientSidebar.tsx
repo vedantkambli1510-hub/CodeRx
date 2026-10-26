@@ -17,6 +17,7 @@ import {
   Sparkles,
   Heart,
 } from "lucide-react";
+import { useSubscription } from "@/lib/subscription";
 
 interface PatientSidebarProps {
   patientName?: string;
@@ -37,6 +38,7 @@ export function PatientSidebar({
 
   const [unreadMessages, setUnreadMessages] = useState<number>(initialUnreadCount);
   const [unreadReminders, setUnreadReminders] = useState<number>(initialRemindersCount);
+  const { isSubscribed } = useSubscription();
 
   // Sync state with current path and localStorage
   useEffect(() => {
@@ -125,15 +127,20 @@ export function PatientSidebar({
       badgeColor: null,
       onClick: undefined,
     },
-    {
-      label: "Health Timeline",
-      href: "/patient/timeline",
-      icon: Activity,
-      exact: false,
-      badge: null,
-      badgeColor: null,
-      onClick: undefined,
-    },
+    // Only show Health Timeline once purchased!
+    ...(isSubscribed
+      ? [
+          {
+            label: "Health Timeline",
+            href: "/patient/timeline",
+            icon: Activity,
+            exact: false,
+            badge: "AI Active",
+            badgeColor: "bg-emerald-400/20 text-emerald-300 border border-emerald-400/30",
+            onClick: undefined,
+          },
+        ]
+      : []),
     {
       label: "Doctors Near Me",
       href: "/patient/doctors",
@@ -198,8 +205,10 @@ export function PatientSidebar({
       href: "/patient/subscription",
       icon: Sparkles,
       exact: false,
-      badge: "₹149/mo",
-      badgeColor: "bg-amber-400/20 text-amber-300 border border-amber-400/30",
+      badge: isSubscribed ? "Active" : "₹149/mo",
+      badgeColor: isSubscribed
+        ? "bg-emerald-400/20 text-emerald-300 border border-emerald-400/30"
+        : "bg-amber-400/20 text-amber-300 border border-amber-400/30",
       onClick: undefined,
     },
     {

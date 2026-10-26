@@ -32,6 +32,7 @@ import {
   Clock,
 } from "lucide-react";
 import { usePatientAvatar } from "@/lib/avatar";
+import { useSubscription } from "@/lib/subscription";
 
 interface PatientDashboardViewProps {
   user: any;
@@ -56,6 +57,7 @@ export function PatientDashboardView({
 }: PatientDashboardViewProps) {
   const patientName = user?.name || "Rajesh Sharma";
   const { avatarUrl, setAvatar } = usePatientAvatar();
+  const { isSubscribed } = useSubscription();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Filter state for records (All, Reports, Prescriptions)
@@ -517,15 +519,29 @@ export function PatientDashboardView({
               <Crown className="w-3 h-3 text-amber-300" />
               <span>Care Pass ₹149/mo</span>
             </div>
-            <span className="text-xs font-bold text-emerald-200">Active</span>
+            <span
+              className={`text-[10.5px] font-bold px-2 py-0.5 rounded-full ${
+                isSubscribed
+                  ? "bg-emerald-500/30 text-emerald-200 border border-emerald-400/40"
+                  : "bg-amber-400/20 text-amber-200 border border-amber-400/30"
+              }`}
+            >
+              {isSubscribed ? "Active" : "Locked"}
+            </span>
           </div>
 
           <p className="text-[11px] text-emerald-100/90 leading-tight">
-            Family timeline tracking, multi-doctor correlation and 3D biomarker differential comparison.
+            {isSubscribed
+              ? "Longitudinal AI Health Timeline and 3D biomarker trajectory analysis unlocked."
+              : "Unlock AI Longitudinal Timeline, 3D biomarker shifts & organ health story."}
           </p>
 
-          <Link href="/patient/subscription" className="text-xs font-bold text-emerald-300 hover:text-white flex items-center justify-between pt-1 border-t border-emerald-800/80">
-            <span>Manage Plan</span>
+          <Link
+            href={isSubscribed ? "/patient/timeline" : "/patient/subscription"}
+            prefetch={true}
+            className="text-xs font-bold text-emerald-300 hover:text-white flex items-center justify-between pt-1 border-t border-emerald-800/80 cursor-pointer"
+          >
+            <span>{isSubscribed ? "Open AI Timeline" : "Unlock for ₹149"}</span>
             <span>&rarr;</span>
           </Link>
         </div>
