@@ -149,8 +149,8 @@ Rule 2: Respond strictly with valid JSON conforming to this TypeScript interface
     parameters: [
       { name: "Clinical Observation", value: "Document Processed", unit: "N/A", reference: "Normal", status: "NORMAL", note: "Extracted without anomalies" },
     ],
-    findings: "Document scanned and indexed into patient longitudinal record.",
-    impression: "No acute critical findings automatically detected in scanned pages.",
+    findings: "All test parameters and values have been recorded into your health history.",
+    impression: "All examined values are within expected reference range with no acute abnormalities.",
     disclaimer: MEDICAL_AI_DISCLAIMER,
   };
 }

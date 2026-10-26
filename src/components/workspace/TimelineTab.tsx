@@ -264,15 +264,15 @@ export function TimelineTab({ timelines, onOpenReportModal }: TimelineTabProps) 
                       <div className="pt-3 space-y-3 text-xs">
                         <p className="text-slate-700 leading-relaxed">{evt.summary}</p>
 
-                        {/* Important Clinical Findings (Section 14) */}
+                        {/* Important Clinical Findings */}
                         {evt.importantFindings && (
-                          <div className="p-3 rounded-xl bg-white border border-slate-300 text-slate-800 shadow-2xs">
+                          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/90 text-slate-800 shadow-2xs">
                             <span className="font-bold text-slate-900 block mb-1">
                               Important Findings:
                             </span>
-                            <span className="font-mono text-slate-700">
+                            <p className="text-slate-700 leading-relaxed font-sans">
                               {evt.importantFindings}
-                            </span>
+                            </p>
                           </div>
                         )}
 

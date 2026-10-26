@@ -550,9 +550,6 @@ export function PatientPrescriptionsView({
                   {currentRx.doctor?.qualification || "MBBS, MD (Medicine), DM (Endocrinology)"}
                 </span>
               </p>
-              <p className="text-[11px] text-slate-500 font-medium pt-0.5">
-                AIIMS New Delhi | CodeRx Specialty Health Hub • OPD Suite 402, Cyber City Medical Center
-              </p>
             </div>
           </div>
 
