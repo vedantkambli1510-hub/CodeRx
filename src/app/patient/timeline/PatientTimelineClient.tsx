@@ -22,12 +22,14 @@ interface PatientTimelineClientProps {
   timelines: any[];
   comparison: any;
   defaultTab?: "ai" | "history";
+  isDemoAccount?: boolean;
 }
 
 export function PatientTimelineClient({
   timelines,
   comparison,
   defaultTab = "ai",
+  isDemoAccount = false,
 }: PatientTimelineClientProps) {
   const [activeTab, setActiveTab] = useState<"ai" | "history">(defaultTab);
   const { isSubscribed, plan, isLoaded, updateSubscription } = useSubscription();
@@ -35,12 +37,12 @@ export function PatientTimelineClient({
   return (
     <div className="space-y-6 max-w-5xl mx-auto pb-16 animate-in fade-in duration-200 text-[#064E3B]">
       
-      {/* 1. TOP HEADER WITH TITLE & 3-WAY DEMO TOGGLE */}
+      {/* 1. TOP HEADER WITH TITLE & CONDITIONAL DEMO TOGGLE */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[#D6EDE1]">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="px-2.5 py-0.5 rounded-full text-[10.5px] font-black bg-[#E8F8F0] text-[#059669] border border-[#BCE8D0]">
-              {isSubscribed ? "✨ CARE PASS ACTIVE" : "🔒 ₹99/MO CARE FEATURE"}
+              {isSubscribed ? "✨ CARE PASS ACTIVE" : "🔒 ₹149/MO CARE FEATURE"}
             </span>
             <span className="text-xs text-[#047857] font-bold">
               Longitudinal Clinical Intelligence
@@ -57,33 +59,44 @@ export function PatientTimelineClient({
           </p>
         </div>
 
-        {/* DEMO SWITCHER */}
-        <div className="flex items-center gap-2 bg-white border border-[#D6EDE1] p-1.5 rounded-2xl shadow-2xs self-start md:self-auto">
-          <span className="text-[11px] font-bold text-[#047857] px-2">Demo:</span>
-          <button
-            type="button"
-            onClick={() => updateSubscription(false)}
-            className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-              !isSubscribed
-                ? "bg-[#059669] text-white shadow-xs font-black"
-                : "text-[#047857] hover:bg-[#E8F8F0]"
-            }`}
-            title="Simulate unsubscribed locked state"
+        {/* DEMO SWITCHER & CARE PASS BUTTON - ALWAYS VISIBLE FOR DEMO/TESTING */}
+        <div className="flex flex-wrap items-center gap-2.5 self-start md:self-auto">
+          <div className="flex items-center gap-2 bg-white border border-[#D6EDE1] p-1.5 rounded-2xl shadow-2xs">
+            <span className="text-[11px] font-bold text-[#047857] px-2">Demo:</span>
+            <button
+              type="button"
+              onClick={() => updateSubscription(false)}
+              className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                !isSubscribed
+                  ? "bg-[#059669] text-white shadow-xs font-black"
+                  : "text-[#047857] hover:bg-[#E8F8F0]"
+              }`}
+              title="Simulate unsubscribed locked state"
+            >
+              🔒 Lock
+            </button>
+            <button
+              type="button"
+              onClick={() => updateSubscription(true, "FAMILY")}
+              className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                isSubscribed
+                  ? "bg-[#059669] text-white shadow-xs font-black"
+                  : "bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs"
+              }`}
+              title="Simulate Care Pass (₹149) - Unlocks AI Before vs Now Timeline"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Care Pass (₹149)</span>
+            </button>
+          </div>
+
+          <Link
+            href="/patient/subscription"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-emerald-50 text-[#064E3B] text-xs font-bold border border-[#BCE8D0] shadow-2xs transition-all cursor-pointer"
           >
-            🔒 Lock
-          </button>
-          <button
-            type="button"
-            onClick={() => updateSubscription(true, "INDIVIDUAL")}
-            className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-              isSubscribed
-                ? "bg-[#059669] text-white shadow-xs font-black"
-                : "text-[#047857] hover:bg-[#E8F8F0]"
-            }`}
-            title="Simulate Care Pass (₹99) - Unlocks AI Before vs Now Timeline"
-          >
-            ⚡ Care Pass (₹99)
-          </button>
+            <Crown className="w-3.5 h-3.5 text-[#059669]" />
+            <span>Manage Plan &amp; Perks</span>
+          </Link>
         </div>
       </div>
 
@@ -109,7 +122,7 @@ export function PatientTimelineClient({
                   : "bg-[#059669] text-white"
               }`}
             >
-              {isSubscribed ? "ACTIVE" : "₹99/MO"}
+              {isSubscribed ? "ACTIVE" : "₹149/MO"}
             </span>
           </button>
 
@@ -137,14 +150,18 @@ export function PatientTimelineClient({
           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#E8F8F0] hover:bg-[#D4F4E4] text-[#064E3B] text-xs font-black border border-[#8FE3B8] transition-all cursor-pointer"
         >
           <Crown className="w-3.5 h-3.5 text-[#059669]" />
-          <span>{isSubscribed ? "Manage Plan & Perks" : "View Packages (from ₹99/mo) →"}</span>
+          <span>{isSubscribed ? "Manage Plan & Perks" : "View Packages (from ₹149/mo) →"}</span>
         </Link>
       </div>
 
       {/* 3. ACTIVE TAB CONTENT */}
       {activeTab === "ai" ? (
         <div className="space-y-4">
-          <PatientCompareClient comparison={comparison} />
+          <PatientCompareClient
+            comparison={comparison}
+            isDemoAccount={isDemoAccount}
+            hideHeaderBanner={true}
+          />
         </div>
       ) : (
         <div className="space-y-4">

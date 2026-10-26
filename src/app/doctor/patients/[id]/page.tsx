@@ -23,6 +23,7 @@ export default async function PatientWorkspacePage({ params }: PatientWorkspaceP
     include: {
       user: true,
       medicalRecords: {
+        where: { doctorConsent: true },
         orderBy: { createdAt: "desc" },
       },
       timelines: {
@@ -58,6 +59,7 @@ export default async function PatientWorkspacePage({ params }: PatientWorkspaceP
       include: {
         user: true,
         medicalRecords: {
+          where: { doctorConsent: true },
           orderBy: { createdAt: "desc" },
         },
         timelines: {
@@ -86,6 +88,7 @@ export default async function PatientWorkspacePage({ params }: PatientWorkspaceP
       include: {
         user: true,
         medicalRecords: {
+          where: { doctorConsent: true },
           orderBy: { createdAt: "desc" },
         },
         timelines: {

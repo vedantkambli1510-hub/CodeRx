@@ -17,6 +17,7 @@ export default async function DoctorReviewsStudioPage() {
     include: {
       user: true,
       medicalRecords: {
+        where: { doctorConsent: true },
         orderBy: { createdAt: "desc" },
       },
     },

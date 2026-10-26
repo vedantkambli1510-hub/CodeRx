@@ -12,6 +12,11 @@ export default async function PatientComparePage() {
 
   const comparison = await getPatientComparison(user.userId);
 
+  const isDemoAccount = Boolean(
+    user.email?.toLowerCase().includes("demo") ||
+    user.email === "patient@coderx.local"
+  );
+
   return (
     <div className="space-y-6 max-w-5xl mx-auto pb-12">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-[#EFE8DE]">
@@ -37,7 +42,7 @@ export default async function PatientComparePage() {
         </div>
       </div>
 
-      <PatientCompareClient comparison={comparison} />
+      <PatientCompareClient comparison={comparison} isDemoAccount={isDemoAccount} />
     </div>
   );
 }

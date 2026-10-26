@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   Calendar,
   Clock,
@@ -14,6 +15,10 @@ import {
   X,
   CheckCircle2,
   Search,
+  MapPin,
+  ExternalLink,
+  Bell,
+  Check,
 } from "lucide-react";
 import { StatusBadge } from "@/components/common/StatusBadge";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
@@ -32,6 +37,7 @@ interface AppointmentItem {
     user: { name: string; email?: string };
     specialization: string;
     upiId?: string;
+    clinicInfo?: string;
   };
   payment?: {
     id: string;
@@ -53,6 +59,17 @@ interface AppointmentItem {
 }
 
 export default function PatientAppointmentsPage() {
+  return (
+    <Suspense fallback={<LoadingSpinner label="Loading your appointments..." size="lg" />}>
+      <PatientAppointmentsInner />
+    </Suspense>
+  );
+}
+
+function PatientAppointmentsInner() {
+  const searchParams = useSearchParams();
+  const isRemindersTab = searchParams.get("tab") === "reminders";
+
   const [loading, setLoading] = useState(true);
   const [appointments, setAppointments] = useState<AppointmentItem[]>([]);
   const [filter, setFilter] = useState<"ALL" | "SCHEDULED" | "COMPLETED" | "CANCELLED">("SCHEDULED");
@@ -60,6 +77,20 @@ export default function PatientAppointmentsPage() {
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
   const [selectedReceipt, setSelectedReceipt] = useState<PaymentReceiptData | null>(null);
+  const [checklist, setChecklist] = useState([
+    { id: "c1", text: "Dr. Meera Nair consultation on 24 Oct (10:30 AM)", done: false },
+    { id: "c2", text: "Keep recent CBC blood report and MRI scan handy", done: false },
+    { id: "c3", text: "Take evening Metformin 500mg with meal", done: true },
+  ]);
+
+  useEffect(() => {
+    if (isRemindersTab) {
+      window.dispatchEvent(new Event("reminders-read"));
+      try {
+        localStorage.setItem("coderx_reminders_viewed", "true");
+      } catch {}
+    }
+  }, [isRemindersTab]);
 
   useEffect(() => {
     fetchAppointments();
@@ -125,6 +156,51 @@ export default function PatientAppointmentsPage() {
           <span>Book New Appointment</span>
         </Link>
       </div>
+
+      {/* Reminders / Pre-Visit Checklist Section */}
+      {isRemindersTab && (
+        <div className="bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-50 border border-emerald-200/90 rounded-2xl p-5 shadow-2xs space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-xs">
+                <Bell className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-emerald-950">Active Pre-Visit Reminders & Checklist</h3>
+                <p className="text-xs text-emerald-700/80">Check off items as you prepare for your upcoming doctor consultation.</p>
+              </div>
+            </div>
+            <span className="text-[11px] font-bold text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-full border border-emerald-200">
+              {checklist.filter((c) => !c.done).length} Pending
+            </span>
+          </div>
+
+          <div className="space-y-2 pt-1">
+            {checklist.map((item) => (
+              <div
+                key={item.id}
+                onClick={() =>
+                  setChecklist((prev) =>
+                    prev.map((c) => (c.id === item.id ? { ...c, done: !c.done } : c))
+                  )
+                }
+                className="p-3 rounded-xl bg-white/90 hover:bg-white border border-emerald-200/60 flex items-center gap-3 cursor-pointer transition-all shadow-2xs"
+              >
+                <div
+                  className={`w-4 h-4 rounded-md border flex items-center justify-center transition-colors ${
+                    item.done ? "bg-emerald-600 border-emerald-600 text-white" : "border-slate-300 bg-white"
+                  }`}
+                >
+                  {item.done && <Check className="w-3 h-3 stroke-[3]" />}
+                </div>
+                <span className={`text-xs font-semibold ${item.done ? "line-through text-slate-400" : "text-slate-800"}`}>
+                  {item.text}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {actionError && (
         <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-300 text-rose-800 text-xs sm:text-sm shadow-2xs">
@@ -242,6 +318,22 @@ export default function PatientAppointmentsPage() {
                         ({apt.doctor.specialization})
                       </span>
                     </h3>
+                  </div>
+
+                  {/* Doctor Clinic Address Venue */}
+                  <div className="flex items-center gap-1.5 text-xs text-slate-700 bg-white/80 px-3 py-1.5 rounded-xl border border-slate-200/90 w-fit">
+                    <MapPin className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <span className="font-bold text-slate-500">Clinic Venue:</span>
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(apt.doctor.clinicInfo || "CodeRx Advanced Health Hub, Floor 4, Cyber City")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-bold text-slate-900 hover:text-emerald-700 hover:underline inline-flex items-center gap-1 transition-colors"
+                      title="Open in Google Maps"
+                    >
+                      <span>{apt.doctor.clinicInfo || "CodeRx Advanced Health Hub, Floor 4, Cyber City"}</span>
+                      <ExternalLink className="w-3 h-3 text-slate-400" />
+                    </a>
                   </div>
 
                   <div className="flex flex-wrap items-center gap-4 text-xs text-slate-600">

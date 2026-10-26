@@ -13,6 +13,7 @@ export default async function DoctorPatientsListPage() {
     include: {
       user: true,
       medicalRecords: {
+        where: { doctorConsent: true },
         orderBy: { createdAt: "desc" },
         take: 1,
       },

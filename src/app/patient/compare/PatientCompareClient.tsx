@@ -25,9 +25,15 @@ import { useSubscription } from "@/lib/subscription";
 
 interface PatientCompareClientProps {
   comparison: any;
+  isDemoAccount?: boolean;
+  hideHeaderBanner?: boolean;
 }
 
-export function PatientCompareClient({ comparison }: PatientCompareClientProps) {
+export function PatientCompareClient({
+  comparison,
+  isDemoAccount = false,
+  hideHeaderBanner = false,
+}: PatientCompareClientProps) {
   const { isSubscribed, plan, isLoaded, updateSubscription } = useSubscription();
   const [showInvoiceModal, setShowInvoiceModal] = useState<boolean>(false);
 
@@ -48,67 +54,71 @@ export function PatientCompareClient({ comparison }: PatientCompareClientProps) 
     return (
       <div className="space-y-6 max-w-4xl mx-auto pb-16 animate-in fade-in duration-300">
         
-        {/* Locked Hero Banner in Soft Mint / Emerald Palette */}
-        <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-[#F0F8F5] via-[#E8F8F0] to-[#DCF5E7] text-[#064E3B] border-2 border-[#8FE3B8] shadow-md relative overflow-hidden">
-          <div className="absolute right-0 top-0 w-96 h-96 bg-emerald-400/10 rounded-full blur-3xl pointer-events-none" />
+        {/* Only show locked hero banner if not nested under timeline */}
+        {!hideHeaderBanner && (
+          <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-[#F0F8F5] via-[#E8F8F0] to-[#DCF5E7] text-[#064E3B] border-2 border-[#8FE3B8] shadow-md relative overflow-hidden">
+            <div className="absolute right-0 top-0 w-96 h-96 bg-emerald-400/10 rounded-full blur-3xl pointer-events-none" />
 
-          <div className="relative z-10 max-w-3xl space-y-4">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 border border-[#8FE3B8] text-[#059669] text-xs font-black shadow-2xs">
-                <Lock className="w-3.5 h-3.5 text-[#059669]" />
-                <span>PREMIUM CLINICAL AI FEATURE &bull; LOCKED (₹99 / mo)</span>
+            <div className="relative z-10 max-w-3xl space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 border border-[#8FE3B8] text-[#059669] text-xs font-black shadow-2xs">
+                  <Lock className="w-3.5 h-3.5 text-[#059669]" />
+                  <span>PREMIUM CLINICAL AI FEATURE &bull; LOCKED (₹149 / mo)</span>
+                </div>
+
+                {/* Demo Switcher - Only visible on demo accounts */}
+                {isDemoAccount && (
+                  <div className="inline-flex items-center gap-1 p-1 rounded-2xl bg-white/70 border border-[#8FE3B8] text-[11px] font-bold">
+                    <span className="text-[#047857] px-2">Demo:</span>
+                    <button
+                      type="button"
+                      onClick={() => updateSubscription(false)}
+                      className="px-2.5 py-1 rounded-xl bg-[#059669] text-white font-black shadow-xs cursor-pointer"
+                    >
+                      🔒 Locked
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => updateSubscription(true, "INDIVIDUAL")}
+                      className="px-2.5 py-1 rounded-xl text-[#047857] hover:bg-[#E8F8F0] cursor-pointer"
+                    >
+                      ⚡ Care Pass (₹149)
+                    </button>
+                  </div>
+                )}
               </div>
 
-              {/* Demo Switcher */}
-              <div className="inline-flex items-center gap-1 p-1 rounded-2xl bg-white/70 border border-[#8FE3B8] text-[11px] font-bold">
-                <span className="text-[#047857] px-2">Demo:</span>
-                <button
-                  type="button"
-                  onClick={() => updateSubscription(false)}
-                  className="px-2.5 py-1 rounded-xl bg-[#059669] text-white font-black shadow-xs cursor-pointer"
-                >
-                  🔒 Locked
-                </button>
-                <button
-                  type="button"
-                  onClick={() => updateSubscription(true, "INDIVIDUAL")}
-                  className="px-2.5 py-1 rounded-xl text-[#047857] hover:bg-[#E8F8F0] cursor-pointer"
-                >
-                  ⚡ Care Pass (₹99)
-                </button>
+              <h1 className="text-2xl sm:text-4xl font-black text-[#064E3B] tracking-tight leading-tight">
+                My Health Story &amp; AI Differential Engine
+              </h1>
+
+              <p className="text-xs sm:text-sm text-[#047857] leading-relaxed font-medium">
+                This feature autonomously analyzes your baseline and recent lab reports, calculates longitudinal biomarker shifts, and generates a 60-second layman plain-English translation with audio explanation.
+              </p>
+
+              <div className="p-3.5 rounded-2xl bg-white/70 border border-[#8FE3B8] flex items-center gap-2.5 text-xs text-[#047857]">
+                <ShieldAlert className="w-4 h-4 text-[#059669] shrink-0" />
+                <span>
+                  <strong>Subscription Required:</strong> Longitudinal delta analysis, kidney/sugar organ tracking, and layman explainer are locked to preserve clinical data integrity.
+                </span>
               </div>
-            </div>
 
-            <h1 className="text-2xl sm:text-4xl font-black text-[#064E3B] tracking-tight leading-tight">
-              My Health Story &amp; AI Differential Engine
-            </h1>
+              <div className="pt-2 flex flex-col sm:flex-row sm:items-center gap-3">
+                <Link
+                  href="/patient/subscription"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-[#059669] hover:bg-[#047857] text-white font-black text-xs shadow-md shadow-emerald-500/25 transition-all cursor-pointer"
+                >
+                  <Sparkles className="w-4 h-4 text-emerald-200" />
+                  <span>Unlock Care Pass (₹149/mo) &rarr;</span>
+                </Link>
 
-            <p className="text-xs sm:text-sm text-[#047857] leading-relaxed font-medium">
-              This feature autonomously analyzes your baseline and recent lab reports, calculates longitudinal biomarker shifts, and generates a 60-second layman plain-English translation with audio explanation.
-            </p>
-
-            <div className="p-3.5 rounded-2xl bg-white/70 border border-[#8FE3B8] flex items-center gap-2.5 text-xs text-[#047857]">
-              <ShieldAlert className="w-4 h-4 text-[#059669] shrink-0" />
-              <span>
-                <strong>Subscription Required:</strong> Longitudinal delta analysis, kidney/sugar organ tracking, and layman explainer are locked to preserve clinical data integrity.
-              </span>
-            </div>
-
-            <div className="pt-2 flex flex-col sm:flex-row sm:items-center gap-3">
-              <Link
-                href="/patient/subscription"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-[#059669] hover:bg-[#047857] text-white font-black text-xs shadow-md shadow-emerald-500/25 transition-all cursor-pointer"
-              >
-                <Sparkles className="w-4 h-4 text-emerald-200" />
-                <span>Unlock Care Pass (₹99/mo) &rarr;</span>
-              </Link>
-
-              <span className="text-xs text-[#047857] font-medium text-center sm:text-left">
-                Instant digital activation &bull; Cancel anytime
-              </span>
+                <span className="text-xs text-[#047857] font-medium text-center sm:text-left">
+                  Instant digital activation &bull; Cancel anytime
+                </span>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* FROSTED REDACTED TEASER GRID (HIDES LEGIT INFO) */}
         <div className="relative rounded-3xl border border-[#D6EDE1] bg-white shadow-xs p-6 sm:p-8 overflow-hidden select-none">
@@ -155,7 +165,7 @@ export function PatientCompareClient({ comparison }: PatientCompareClientProps) 
               href="/patient/subscription"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-[#059669] hover:bg-[#047857] text-white font-bold text-xs shadow-md shadow-emerald-500/20 transition-all cursor-pointer"
             >
-              <span>Unlock Care Pass (₹99/mo)</span>
+              <span>Unlock Care Pass (₹149/mo)</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -170,62 +180,66 @@ export function PatientCompareClient({ comparison }: PatientCompareClientProps) 
   // ========================================================
   return (
     <div className="space-y-6">
-      {/* Active Subscription Status Banner in Light Mint / Green */}
-      <div className="p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-[#F0F8F5] via-[#E8F8F0] to-[#DCF5E7] text-[#064E3B] border border-[#8FE3B8] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex items-center gap-3.5">
-          <div className="w-11 h-11 rounded-2xl bg-white border border-[#8FE3B8] text-[#059669] flex items-center justify-center font-black shadow-2xs shrink-0">
-            <Crown className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="font-black text-sm sm:text-base text-[#064E3B] tracking-tight">
-                CodeRx Clinical Pro &bull; AI Health Story Engine Active
-              </span>
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-[#E8F8F0] text-[#059669] border border-[#BCE8D0]">
-                CARE PASS ACTIVE
-              </span>
+      {/* Standalone Status Banner - Only shown if not nested inside timeline header */}
+      {!hideHeaderBanner && (
+        <div className="p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-[#F0F8F5] via-[#E8F8F0] to-[#DCF5E7] text-[#064E3B] border border-[#8FE3B8] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-center gap-3.5">
+            <div className="w-11 h-11 rounded-2xl bg-white border border-[#8FE3B8] text-[#059669] flex items-center justify-center font-black shadow-2xs shrink-0">
+              <Crown className="w-5 h-5" />
             </div>
-            <p className="text-xs text-[#047857] mt-0.5 font-medium">
-              Longitudinal biomarker analysis unlocked &bull; Synchronized with Dr. Aarav Mehta&apos;s OPD clinical orders.
-            </p>
-          </div>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-          {/* Quick Demo Switcher */}
-          <div className="inline-flex items-center gap-1 p-1 rounded-2xl bg-white/70 border border-[#8FE3B8] text-[11px] font-bold mr-1">
-            <span className="text-[#047857] px-1.5 text-[10px]">Demo:</span>
-            <button
-              type="button"
-              onClick={() => updateSubscription(false)}
-              className="px-2 py-0.5 rounded-lg text-[#047857] hover:bg-[#E8F8F0] cursor-pointer text-[10px]"
-              title="Simulate unsubscribed locked state"
-            >
-              🔒 Lock
-            </button>
-            <button
-              type="button"
-              onClick={() => updateSubscription(true, "INDIVIDUAL")}
-              className={`px-2 py-0.5 rounded-lg transition-all cursor-pointer text-[10px] ${
-                isSubscribed
-                  ? "bg-[#059669] text-white font-black"
-                  : "text-[#047857] hover:bg-[#E8F8F0]"
-              }`}
-            >
-              ⚡ ₹99
-            </button>
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-black text-sm sm:text-base text-[#064E3B] tracking-tight">
+                  CodeRx Clinical Pro &bull; AI Health Story Engine Active
+                </span>
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-[#E8F8F0] text-[#059669] border border-[#BCE8D0]">
+                  CARE PASS ACTIVE
+                </span>
+              </div>
+              <p className="text-xs text-[#047857] mt-0.5 font-medium">
+                Longitudinal biomarker analysis unlocked &bull; Synchronized with Dr. Aarav Mehta&apos;s OPD clinical orders.
+              </p>
+            </div>
           </div>
 
-          <Link
-            href="/patient/subscription"
-            className="px-4 py-2 rounded-xl bg-[#059669] hover:bg-[#047857] text-white text-xs font-bold shadow-xs flex items-center gap-1.5 transition-all cursor-pointer"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-emerald-200" />
-            <span>Manage Plan</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+            {/* Quick Demo Switcher - Only visible on demo accounts */}
+            {isDemoAccount && (
+              <div className="inline-flex items-center gap-1 p-1 rounded-2xl bg-white/70 border border-[#8FE3B8] text-[11px] font-bold mr-1">
+                <span className="text-[#047857] px-1.5 text-[10px]">Demo:</span>
+                <button
+                  type="button"
+                  onClick={() => updateSubscription(false)}
+                  className="px-2 py-0.5 rounded-lg text-[#047857] hover:bg-[#E8F8F0] cursor-pointer text-[10px]"
+                  title="Simulate unsubscribed locked state"
+                >
+                  🔒 Lock
+                </button>
+                <button
+                  type="button"
+                  onClick={() => updateSubscription(true, "INDIVIDUAL")}
+                  className={`px-2 py-0.5 rounded-lg transition-all cursor-pointer text-[10px] ${
+                    isSubscribed
+                      ? "bg-[#059669] text-white font-black"
+                      : "text-[#047857] hover:bg-[#E8F8F0]"
+                  }`}
+                >
+                  ⚡ ₹149
+                </button>
+              </div>
+            )}
+
+            <Link
+              href="/patient/subscription"
+              className="px-4 py-2 rounded-xl bg-[#059669] hover:bg-[#047857] text-white text-xs font-bold shadow-xs flex items-center gap-1.5 transition-all cursor-pointer"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-emerald-200" />
+              <span>Manage Plan</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Main Longitudinal Comparison & Layman Explainer Content */}
       <WhatChangedTab comparison={comparison} />
@@ -257,7 +271,7 @@ export function PatientCompareClient({ comparison }: PatientCompareClientProps) 
               </div>
               <div className="flex justify-between">
                 <span className="text-[#047857]">Amount Paid:</span>
-                <strong className="text-[#059669]">₹99.00 / month</strong>
+                <strong className="text-[#059669]">₹149.00 / month</strong>
               </div>
               <div className="flex justify-between">
                 <span className="text-[#047857]">Payment Mode:</span>

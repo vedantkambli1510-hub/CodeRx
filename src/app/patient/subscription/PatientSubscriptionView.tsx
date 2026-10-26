@@ -60,7 +60,7 @@ export function PatientSubscriptionView({
   };
 
   const getPlanPrice = (type: "INDIVIDUAL" | "FAMILY") => {
-    return "99";
+    return "149";
   };
 
   return (
@@ -100,9 +100,9 @@ export function PatientSubscriptionView({
                   className={`px-2.5 py-0.5 rounded-full transition-all cursor-pointer ${
                     isSubscribed ? "bg-[#059669] text-white font-black" : "text-[#047857] hover:bg-[#E8F8F0]"
                   }`}
-                  title="Simulate Active (₹99)"
+                  title="Simulate Active (₹149)"
                 >
-                  ✨ Active (₹99)
+                  ✨ Active (₹149)
                 </button>
               </div>
             </div>
@@ -210,7 +210,7 @@ export function PatientSubscriptionView({
 
             {/* Price */}
             <div className="flex items-baseline gap-2 pt-1 pb-3 border-b border-[#D6EDE1]">
-              <span className="text-4xl font-black text-[#064E3B]">&#8377;99</span>
+              <span className="text-4xl font-black text-[#064E3B]">&#8377;149</span>
               <span className="text-xs font-bold text-[#047857]">/month</span>
               <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black bg-[#E8F8F0] text-[#059669] border border-[#BCE8D0] ml-auto">
                 POPULAR
@@ -221,27 +221,15 @@ export function PatientSubscriptionView({
             <div className="space-y-3 text-xs sm:text-sm text-[#047857]">
               <div className="flex items-start gap-2.5">
                 <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
-                <span className="font-bold text-[#064E3B]">AI Health Story (Pehle vs Abhi Timeline)</span>
+                <span className="font-bold text-[#064E3B]">Family members up to 2 can access AI-based timeline for report health updates</span>
               </div>
               <div className="flex items-start gap-2.5">
                 <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
-                <span className="font-semibold text-[#064E3B]">Longitudinal Biomarker Shifts (HbA1c, eGFR)</span>
+                <span className="font-semibold text-[#064E3B]">AI Health Story (Pehle vs Abhi Longitudinal Timeline)</span>
               </div>
               <div className="flex items-start gap-2.5">
                 <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
-                <span>Doctor OPD Consultations &amp; Appointments</span>
-              </div>
-              <div className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
-                <span>Digital Prescriptions &amp; Pharmacy Refills</span>
-              </div>
-              <div className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
-                <span>Diagnostic Lab Reports Access</span>
-              </div>
-              <div className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-[#059669] mt-0.5 shrink-0 stroke-[2.5]" />
-                <span>24/7 AI Health Assistant Insights</span>
+                <span className="font-semibold text-[#064E3B]">Longitudinal Biomarker Shifts (HbA1c, eGFR, BP)</span>
               </div>
             </div>
           </div>
@@ -252,7 +240,7 @@ export function PatientSubscriptionView({
               onClick={() => handleOpenCheckout("INDIVIDUAL")}
               className="w-full py-3.5 px-4 rounded-2xl bg-[#059669] hover:bg-[#047857] text-white text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md shadow-emerald-500/25"
             >
-              <span>{isSubscribed ? "Active Plan" : "Subscribe Now (₹99/mo)"}</span>
+              <span>{isSubscribed ? "Active Plan" : "Subscribe Now (₹149/mo)"}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

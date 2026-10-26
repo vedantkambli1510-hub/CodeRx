@@ -1,14 +1,30 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { User, Phone, Heart, Shield, CheckCircle2, AlertCircle, Save } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import {
+  User,
+  Phone,
+  Heart,
+  Shield,
+  CheckCircle2,
+  AlertCircle,
+  Save,
+  Camera,
+  Upload,
+  Trash2,
+  Sparkles,
+} from "lucide-react";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
+import { usePatientAvatar } from "@/lib/avatar";
 
 export default function PatientProfilePage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+
+  const { avatarUrl, isCustom, setAvatar, removeAvatar } = usePatientAvatar();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -18,6 +34,32 @@ export default function PatientProfilePage() {
   const [bloodGroup, setBloodGroup] = useState("");
   const [emergencyContactName, setEmergencyContactName] = useState("");
   const [emergencyContactPhone, setEmergencyContactPhone] = useState("");
+
+  const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setError("Please select a valid image file (PNG, JPG, WebP)");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setError("Image size should be less than 5MB");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const result = event.target?.result as string;
+      if (result) {
+        setAvatar(result);
+        setSuccess("Profile photo updated successfully!");
+        setError(null);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
 
   useEffect(() => {
     async function loadProfile() {
@@ -85,7 +127,7 @@ export default function PatientProfilePage() {
           Patient Profile
         </h1>
         <p className="text-sm text-slate-600 mt-1">
-          Optional health background details used to prefill your pre-visit consultations
+          Manage your personal details, consultation prefill info, and profile photo
         </p>
       </div>
 
@@ -101,6 +143,78 @@ export default function PatientProfilePage() {
           <span>{success}</span>
         </div>
       )}
+
+      {/* Profile Photo Upload Section */}
+      <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+        <div className="flex items-center gap-4">
+          <div className="relative group">
+            <img
+              src={avatarUrl}
+              alt={name || "Patient"}
+              className="w-20 h-20 sm:w-22 sm:h-22 rounded-full object-cover border-2 border-emerald-500 shadow-sm"
+            />
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="absolute inset-0 rounded-full bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-[10px] font-semibold cursor-pointer"
+            >
+              <Camera className="w-5 h-5 mb-0.5" />
+              <span>Change</span>
+            </button>
+          </div>
+
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <h3 className="text-sm sm:text-base font-bold text-slate-900">
+                Profile Photo
+              </h3>
+              {isCustom && (
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                  Custom
+                </span>
+              )}
+            </div>
+            <p className="text-xs text-slate-500 leading-relaxed max-w-sm">
+              Upload a clear face photo. Supports PNG, JPG or WebP (max 5MB).
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2.5 shrink-0 self-start sm:self-center">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handlePhotoSelect}
+            className="hidden"
+            aria-label="Upload profile photo"
+          />
+
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-2xs cursor-pointer"
+          >
+            <Upload className="w-3.5 h-3.5" />
+            <span>Upload Photo</span>
+          </button>
+
+          {isCustom && (
+            <button
+              type="button"
+              onClick={() => {
+                removeAvatar();
+                setSuccess("Custom photo removed. Default avatar restored.");
+              }}
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-600 text-xs font-semibold transition-all cursor-pointer border border-slate-200"
+              title="Reset to default photo"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Reset</span>
+            </button>
+          )}
+        </div>
+      </div>
 
       <form onSubmit={handleSave} className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
         {/* Account Details */}

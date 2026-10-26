@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import {
   Search,
   Bell,
@@ -13,7 +13,9 @@ import {
   Calendar,
   Pill,
   Sparkles,
+  Check,
 } from "lucide-react";
+import { usePatientAvatar } from "@/lib/avatar";
 
 interface PatientHeaderProps {
   patientName: string;
@@ -23,17 +25,57 @@ interface PatientHeaderProps {
 }
 
 export function PatientHeader({
-  patientName = "Aarav Mehta",
+  patientName = "Rajesh Sharma",
   patientEmail,
-  avatarUrl,
-  unreadCount = 2,
+  avatarUrl: customAvatarUrl,
+  unreadCount = 0,
 }: PatientHeaderProps) {
   const router = useRouter();
+  const pathname = usePathname();
+  const { avatarUrl: persistentAvatarUrl } = usePatientAvatar();
+  const avatarUrl = customAvatarUrl || persistentAvatarUrl;
+
   const [searchQuery, setSearchQuery] = useState("");
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [currentUnreadCount, setCurrentUnreadCount] = useState<number>(unreadCount);
+
   const userMenuRef = useRef<HTMLDivElement>(null);
   const notifRef = useRef<HTMLDivElement>(null);
+
+  // Sync unread count with current route and localStorage
+  useEffect(() => {
+    if (pathname === "/patient/notifications") {
+      setCurrentUnreadCount(0);
+      try {
+        localStorage.setItem("coderx_messages_viewed", "true");
+      } catch {}
+    } else {
+      try {
+        const viewed = localStorage.getItem("coderx_messages_viewed");
+        if (viewed === "true") {
+          setCurrentUnreadCount(0);
+        } else {
+          setCurrentUnreadCount(unreadCount);
+        }
+      } catch {
+        setCurrentUnreadCount(unreadCount);
+      }
+    }
+  }, [pathname, unreadCount]);
+
+  // Listen to global notifications-read event
+  useEffect(() => {
+    function handleRead() {
+      setCurrentUnreadCount(0);
+      try {
+        localStorage.setItem("coderx_messages_viewed", "true");
+      } catch {}
+    }
+
+    window.addEventListener("notifications-read", handleRead);
+    return () => window.removeEventListener("notifications-read", handleRead);
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -55,6 +97,19 @@ export function PatientHeader({
     }
   };
 
+  const handleClearNotifications = () => {
+    setCurrentUnreadCount(0);
+    try {
+      localStorage.setItem("coderx_messages_viewed", "true");
+    } catch {}
+    window.dispatchEvent(new Event("notifications-read"));
+    fetch("/api/notifications", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({}),
+    }).catch(() => {});
+  };
+
   const handleLogout = async () => {
     try {
       await fetch("/api/auth/logout", { method: "POST" });
@@ -66,38 +121,36 @@ export function PatientHeader({
   };
 
   return (
-    <header className="h-18 px-6 lg:px-8 bg-[#F3FAF6] border-b border-[#D6EDE1] flex items-center justify-between gap-4 select-none shrink-0 shadow-2xs font-sans">
+    <header className="h-16 px-6 lg:px-8 bg-[#F2FAF6] border-b border-[#D8EDE2] flex items-center justify-between gap-4 select-none shrink-0 font-sans z-20">
       
       {/* Search Input Bar (Center/Left pill) */}
       <form onSubmit={handleSearch} className="flex-1 max-w-xl">
         <div className="relative flex items-center">
-          <Search className="w-4 h-4 text-[#059669]/70 absolute left-4 pointer-events-none" />
+          <Search className="w-4 h-4 text-emerald-700/60 absolute left-4 pointer-events-none" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search doctors, symptoms, or anything..."
-            className="w-full pl-11 pr-4 py-2.5 rounded-full bg-white border border-[#CDEBDC] hover:border-[#8FE3B8] focus:border-[#059669] text-xs font-semibold text-slate-800 placeholder-[#164E3D]/50 focus:outline-hidden focus:ring-3 focus:ring-[#059669]/15 transition-all shadow-2xs"
+            placeholder="Search reports, medicines, doctors, or anything..."
+            className="w-full pl-11 pr-4 py-2 rounded-full bg-white border border-[#CDE5D8] hover:border-emerald-400 focus:border-emerald-600 focus:bg-white text-xs font-normal text-slate-800 placeholder-slate-400 focus:outline-hidden focus:ring-2 focus:ring-emerald-500/20 transition-all shadow-2xs"
           />
         </div>
       </form>
 
       {/* Right Controls: Notifications & User Profile */}
-      <div className="flex items-center gap-3.5">
+      <div className="flex items-center gap-4">
         
         {/* Notification Bell */}
         <div className="relative" ref={notifRef}>
           <button
             type="button"
             onClick={() => setShowNotifications(!showNotifications)}
-            className="relative p-2.5 rounded-full bg-white border border-[#D6EDE1] hover:bg-[#E4F5ED] text-slate-700 transition-colors shadow-2xs cursor-pointer"
+            className="relative p-2 rounded-full hover:bg-emerald-100/60 text-slate-700 transition-colors cursor-pointer"
             title="Notifications"
           >
-            <Bell className="w-4 h-4 text-[#059669]" />
-            {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#059669] text-white text-[9px] font-black flex items-center justify-center border-2 border-[#F3FAF6] shadow-xs">
-                {unreadCount}
-              </span>
+            <Bell className="w-4 h-4 text-slate-700" />
+            {currentUnreadCount > 0 && (
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-white" />
             )}
           </button>
 
@@ -105,40 +158,55 @@ export function PatientHeader({
           {showNotifications && (
             <div className="absolute right-0 mt-2.5 w-80 bg-white rounded-2xl shadow-xl border border-slate-200 py-3 px-4 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
               <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                <span className="text-xs font-black text-slate-900">Notifications</span>
-                <Link
-                  href="/patient/notifications"
-                  onClick={() => setShowNotifications(false)}
-                  className="text-[11px] font-bold text-[#059669] hover:underline"
-                >
-                  View all
-                </Link>
+                <span className="text-xs font-bold text-slate-900">Notifications</span>
+                <div className="flex items-center gap-2">
+                  {currentUnreadCount > 0 && (
+                    <button
+                      type="button"
+                      onClick={handleClearNotifications}
+                      className="text-[10px] font-semibold text-slate-500 hover:text-emerald-700 cursor-pointer"
+                    >
+                      Clear
+                    </button>
+                  )}
+                  <Link
+                    href="/patient/notifications"
+                    prefetch={true}
+                    onClick={() => {
+                      setShowNotifications(false);
+                      handleClearNotifications();
+                    }}
+                    className="text-[11px] font-semibold text-emerald-600 hover:underline"
+                  >
+                    View all
+                  </Link>
+                </div>
               </div>
 
               <div className="divide-y divide-slate-100 text-xs">
                 <div className="py-2.5 space-y-1">
                   <div className="flex items-center justify-between">
-                    <span className="font-extrabold text-slate-800 flex items-center gap-1.5">
-                      <Calendar className="w-3.5 h-3.5 text-[#059669]" />
-                      <span>Follow-up in 3 Weeks</span>
+                    <span className="font-semibold text-slate-800 flex items-center gap-1.5">
+                      <Calendar className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Upcoming Doctor Visit</span>
                     </span>
                     <span className="text-[10px] text-slate-400">Just now</span>
                   </div>
                   <p className="text-[11px] text-slate-600">
-                    Dr. Aarav Mehta scheduled your repeat Kidney Function Test (KFT).
+                    Dr. Meera Nair consultation on 24 Oct 2026 at Apollo Clinic, Mumbai.
                   </p>
                 </div>
 
                 <div className="py-2.5 space-y-1">
                   <div className="flex items-center justify-between">
-                    <span className="font-extrabold text-slate-800 flex items-center gap-1.5">
-                      <Pill className="w-3.5 h-3.5 text-[#059669]" />
-                      <span>Refill Reminder</span>
+                    <span className="font-semibold text-slate-800 flex items-center gap-1.5">
+                      <Pill className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Take Metformin 500mg</span>
                     </span>
-                    <span className="text-[10px] text-slate-400">2h ago</span>
+                    <span className="text-[10px] text-slate-400">Today, 8:00 PM</span>
                   </div>
                   <p className="text-[11px] text-slate-600">
-                    Your Metformin 500mg supply has 7 days remaining.
+                    1 tablet after dinner as per prescription.
                   </p>
                 </div>
               </div>
@@ -151,30 +219,24 @@ export function PatientHeader({
           <button
             type="button"
             onClick={() => setShowUserMenu(!showUserMenu)}
-            className="flex items-center gap-2.5 p-1.5 pl-2.5 rounded-full bg-white border border-[#D6EDE1] hover:border-[#8FE3B8] hover:bg-[#E4F5ED]/60 transition-all shadow-2xs cursor-pointer group"
+            className="flex items-center gap-2.5 p-1 rounded-full hover:bg-emerald-100/50 transition-all cursor-pointer group"
           >
-            {avatarUrl ? (
-              <img
-                src={avatarUrl}
-                alt={patientName}
-                className="w-7 h-7 rounded-full object-cover border border-[#8FE3B8]"
-              />
-            ) : (
-              <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-[#D1F2E2] to-[#A7F3D0] border border-[#8FE3B8] flex items-center justify-center text-[#064E3B] font-black text-xs">
-                {patientName.charAt(0)}
-              </div>
-            )}
+            <img
+              src={avatarUrl}
+              alt={patientName}
+              className="w-8 h-8 rounded-full object-cover border border-emerald-300 shadow-2xs"
+            />
 
             <div className="text-left hidden sm:block pr-1">
-              <div className="text-xs font-extrabold text-slate-900 group-hover:text-[#064E3B] transition-colors leading-tight">
+              <div className="text-xs font-bold text-slate-900 group-hover:text-emerald-700 transition-colors leading-tight">
                 {patientName}
               </div>
-              <div className="text-[10px] font-semibold text-[#059669] leading-tight">
-                Patient
+              <div className="text-[10px] font-medium text-slate-500 leading-tight">
+                Patient ID: CRX-45872
               </div>
             </div>
 
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#059669] transition-transform" />
+            <ChevronDown className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-700 transition-transform" />
           </button>
 
           {/* User Menu Dropdown */}
@@ -190,6 +252,7 @@ export function PatientHeader({
               <div className="py-1 text-xs">
                 <Link
                   href="/patient/profile"
+                  prefetch={true}
                   onClick={() => setShowUserMenu(false)}
                   className="flex items-center gap-2 px-3 py-2 text-slate-700 hover:bg-[#E4F5ED] hover:text-[#064E3B] transition-colors"
                 >
@@ -199,6 +262,7 @@ export function PatientHeader({
 
                 <Link
                   href="/patient/subscription"
+                  prefetch={true}
                   onClick={() => setShowUserMenu(false)}
                   className="flex items-center gap-2 px-3 py-2 text-slate-700 hover:bg-[#E4F5ED] hover:text-[#064E3B] transition-colors"
                 >
@@ -208,6 +272,7 @@ export function PatientHeader({
 
                 <Link
                   href="/patient/settings"
+                  prefetch={true}
                   onClick={() => setShowUserMenu(false)}
                   className="flex items-center gap-2 px-3 py-2 text-slate-700 hover:bg-[#E4F5ED] hover:text-[#064E3B] transition-colors"
                 >

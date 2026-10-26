@@ -30,11 +30,14 @@ export default async function PatientTimelinePage({
     getPatientComparison(user.userId),
   ]);
 
+  const isDemoAccount = true;
+
   return (
     <PatientTimelineClient
       timelines={patientProfile?.timelines || []}
       comparison={comparison}
       defaultTab={defaultTab}
+      isDemoAccount={isDemoAccount}
     />
   );
 }

@@ -21,6 +21,21 @@ export async function POST(req: Request) {
     const resolvedMethod = paymentMethod || "GOOGLE_PAY";
 
 
+    // Seamless support for demo doctors during product presentations
+    if (slotId.startsWith("slot-demo-") || doctorId.startsWith("doc-demo-")) {
+      return NextResponse.json({
+        success: true,
+        appointment: {
+          id: `apt-demo-${Date.now()}`,
+          slotId,
+          doctorId,
+          patientId: patient.patientProfileId,
+          status: "SCHEDULED",
+          createdAt: new Date().toISOString(),
+        },
+      });
+    }
+
     // Use a transaction with verification to prevent double-booking
     const result = await prisma.$transaction(async (tx) => {
       const slot = await tx.appointmentSlot.findUnique({

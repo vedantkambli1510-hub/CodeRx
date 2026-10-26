@@ -21,16 +21,16 @@ export default async function RootLayout({
   const currentUser = await getCurrentUser();
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@400;500;600;700&family=Caveat:wght@600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen flex flex-col bg-gradient-to-br from-[#F0F6F8] via-white to-[#EAF3F6] text-[#0B1928] font-sans antialiased selection:bg-teal-600 selection:text-white relative">
+      <body className="min-h-screen flex flex-col bg-gradient-to-br from-[#F0F6F8] via-white to-[#EAF3F6] text-[#0B1928] font-sans antialiased selection:bg-teal-600 selection:text-white relative" suppressHydrationWarning>
         <LanguageProvider>
           <div id="google_translate_element" style={{ display: "none" }} />
           <Script id="google-translate-init" strategy="afterInteractive">

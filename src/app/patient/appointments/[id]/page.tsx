@@ -16,9 +16,12 @@ import {
   FileText,
   Download,
   AlertCircle,
+  MapPin,
+  ExternalLink,
 } from "lucide-react";
 import { StatusBadge } from "@/components/common/StatusBadge";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
+import { PatientUploadModal } from "@/components/reports/PatientUploadModal";
 
 export default function PatientAppointmentDetailPage() {
   const params = useParams();
@@ -30,6 +33,7 @@ export default function PatientAppointmentDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [showUploadModal, setShowUploadModal] = useState(false);
 
   useEffect(() => {
     loadAppointment();
@@ -127,13 +131,32 @@ export default function PatientAppointmentDetailPage() {
       )}
 
       {/* Appointment Information Card */}
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="space-y-1">
           <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
             Doctor & Specialty
           </span>
           <p className="text-base font-bold text-slate-900">{appointment.doctor.user.name}</p>
           <p className="text-xs font-medium text-brand-700">{appointment.doctor.specialization}</p>
+        </div>
+
+        <div className="space-y-1">
+          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
+            Clinic & Appointment Venue
+          </span>
+          <p className="text-xs font-bold text-slate-900 flex items-start gap-1">
+            <MapPin className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+            <span>{appointment.doctor.clinicInfo || "CodeRx Advanced Health Hub, Floor 4, Cyber City Medical Center"}</span>
+          </p>
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(appointment.doctor.clinicInfo || "CodeRx Advanced Health Hub, Cyber City")}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[11px] font-bold text-emerald-700 hover:text-emerald-800 hover:underline inline-flex items-center gap-1 pt-0.5"
+          >
+            <span>Open Directions</span>
+            <ExternalLink className="w-3 h-3" />
+          </a>
         </div>
 
         <div className="space-y-1">
@@ -251,17 +274,15 @@ export default function PatientAppointmentDetailPage() {
           </div>
 
           <div>
-            <label className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-brand-700 bg-brand-50 hover:bg-brand-100 border border-brand-200 cursor-pointer transition-colors">
+            <button
+              type="button"
+              onClick={() => setShowUploadModal(true)}
+              disabled={appointment.medicalRecords.length >= 5}
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-brand-700 bg-brand-50 hover:bg-brand-100 border border-brand-200 cursor-pointer transition-colors"
+            >
               <Upload className="w-3.5 h-3.5" />
-              <span>{uploading ? "Uploading..." : "Upload Document"}</span>
-              <input
-                type="file"
-                accept=".pdf,.jpg,.jpeg,.png"
-                onChange={handleFileUpload}
-                disabled={uploading || appointment.medicalRecords.length >= 5}
-                className="hidden"
-              />
-            </label>
+              <span>Upload Document</span>
+            </button>
           </div>
         </div>
 
@@ -303,6 +324,19 @@ export default function PatientAppointmentDetailPage() {
           </div>
         )}
       </div>
+      <PatientUploadModal
+        isOpen={showUploadModal}
+        onClose={() => setShowUploadModal(false)}
+        appointmentId={appointmentId}
+        doctorId={appointment.doctorId}
+        doctorName={appointment.doctor?.user?.name || "Dr. Aarav Mehta"}
+        doctorClinic={appointment.doctor?.clinicInfo || "CodeRx Specialty Health Hub"}
+        patientName={appointment.patient?.user?.name}
+        patientId={appointment.patient?.id}
+        onReportCreated={() => {
+          loadAppointment();
+        }}
+      />
     </div>
   );
 }

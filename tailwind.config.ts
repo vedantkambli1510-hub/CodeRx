@@ -38,12 +38,16 @@ const config: Config = {
         sans: [
           '"Plus Jakarta Sans"',
           '"Inter"',
+          '"Outfit"',
           "-apple-system",
           "BlinkMacSystemFont",
           '"Segoe UI"',
           "Roboto",
+          '"Helvetica Neue"',
+          "Arial",
           "sans-serif",
         ],
+        handwriting: ['"Caveat"', "cursive"],
         serif: [
           '"Newsreader"',
           "Georgia",

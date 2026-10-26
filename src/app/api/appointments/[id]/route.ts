@@ -52,6 +52,18 @@ export async function GET(
       return NextResponse.json({ appointment: sanitizedAppointment });
     }
 
+    if (isDoctor) {
+      const authorizedRecords = (appointment.medicalRecords || []).filter(
+        (rec: any) => rec.doctorConsent === true
+      );
+      return NextResponse.json({
+        appointment: {
+          ...appointment,
+          medicalRecords: authorizedRecords,
+        },
+      });
+    }
+
     return NextResponse.json({ appointment });
   } catch (error) {
     console.error("[Get Appointment Error]:", error);

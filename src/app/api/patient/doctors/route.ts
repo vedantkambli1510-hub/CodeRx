@@ -4,6 +4,295 @@ import { getDoctorUpiVpa } from "@/lib/payment/upi";
 
 export const dynamic = "force-dynamic";
 
+// Rich demonstration doctors registry to showcase full clinical diversity
+const DEMO_DOCTORS_BASE = [
+  {
+    id: "doc-demo-aarav",
+    userId: "usr-demo-aarav",
+    name: "Dr. Aarav Mehta",
+    email: "aarav.mehta@coderx.health",
+    specialization: "Internal Medicine & Diabetology",
+    qualification: "MBBS, MD (Medicine), DM (Endocrinology) AIIMS New Delhi",
+    designation: "Director & Senior Consultant",
+    experience: 14,
+    consultationFee: 800,
+    clinicInfo: "CodeRx Advanced Health Hub, Floor 4, Cyber City Medical Center",
+    visitingHospitals: "Max Super Speciality Hospital, Apollo Indraprastha",
+    area: "Cyber City, Gurugram",
+    city: "Delhi NCR",
+    rating: 4.9,
+    reviewsCount: 184,
+    licenseNumber: "MCI/2018/98421",
+    bio: "Renowned diabetologist & internal medicine consultant specializing in renal-sparing protocols, CGM insulin dynamics, and complex metabolic syndrome.",
+  },
+  {
+    id: "doc-demo-neha",
+    userId: "usr-demo-neha",
+    name: "Dr. Neha Kapoor",
+    email: "neha.kapoor@coderx.health",
+    specialization: "Pediatrician (Child Specialist)",
+    qualification: "MBBS, MD (Pediatrics, KEM Mumbai), DCH",
+    designation: "Senior Pediatric Consultant",
+    experience: 12,
+    consultationFee: 700,
+    clinicInfo: "Little Wonders Child Health Pavilion, Hill Road",
+    visitingHospitals: "Lilavati Hospital, Surya Child Care Hospital",
+    area: "Bandra West, Mumbai",
+    city: "Mumbai",
+    rating: 4.9,
+    reviewsCount: 210,
+    licenseNumber: "MMC/2012/04581",
+    bio: "Gold medalist pediatrician focusing on infant immunity, asthma in children, newborn nutritional guidance, and pediatric developmental milestones.",
+  },
+  {
+    id: "doc-demo-rohan",
+    userId: "usr-demo-rohan",
+    name: "Dr. Rohan Deshmukh",
+    email: "rohan.deshmukh@coderx.health",
+    specialization: "Cardiologist (Heart Specialist)",
+    qualification: "MBBS, MD (Medicine), DM (Cardiology, AIIMS New Delhi)",
+    designation: "Chief Interventional Cardiologist",
+    experience: 16,
+    consultationFee: 1200,
+    clinicInfo: "Apex Heart & Vascular Institute, 100 Ft Road",
+    visitingHospitals: "Manipal Hospital, Narayana Health Heart City",
+    area: "Indiranagar, Bengaluru",
+    city: "Bengaluru",
+    rating: 4.8,
+    reviewsCount: 145,
+    licenseNumber: "KMC/2008/11290",
+    bio: "Senior interventional cardiologist with 16+ years experience in preventive coronary care, early plaque detection, hypertension management, and Doppler ECG.",
+  },
+  {
+    id: "doc-demo-sunita",
+    userId: "usr-demo-sunita",
+    name: "Dr. Sunita Rao",
+    email: "sunita.rao@coderx.health",
+    specialization: "Dermatologist (Skin & Hair)",
+    qualification: "MBBS, MD (DVL, PGIMER Chandigarh)",
+    designation: "Senior Consultant Dermatologist & Trichologist",
+    experience: 11,
+    consultationFee: 900,
+    clinicInfo: "Aura Skin & Hair Specialty Clinic, Community Centre",
+    visitingHospitals: "Max Smart Super Speciality Hospital Saket",
+    area: "Saket, South Delhi",
+    city: "Delhi NCR",
+    rating: 5.0,
+    reviewsCount: 278,
+    licenseNumber: "DMC/2013/88219",
+    bio: "Board-certified clinical dermatologist with international fellowships in laser medicine, chronic eczema, refractory acne therapy, and scalp health.",
+  },
+  {
+    id: "doc-demo-vikram",
+    userId: "usr-demo-vikram",
+    name: "Dr. Vikram Singhania",
+    email: "vikram.singhania@coderx.health",
+    specialization: "Orthopedic Surgeon (Bones & Joints)",
+    qualification: "MBBS, MS (Orthopedics, CMC Vellore), M.Ch (UK)",
+    designation: "Head of Joint Reconstruction & Trauma",
+    experience: 15,
+    consultationFee: 1000,
+    clinicInfo: "CodeRx Ortho Pavilion, DLF Cyber City Phase 2",
+    visitingHospitals: "Fortis Memorial Research Institute, Artemis Hospital",
+    area: "Cyber City, Gurugram",
+    city: "Delhi NCR",
+    rating: 4.8,
+    reviewsCount: 162,
+    licenseNumber: "MCI/2009/44120",
+    bio: "Pioneer in robotic knee arthroplasty, meniscus restoration, sports ligament reconstructions, and minimally invasive bone trauma surgery.",
+  },
+  {
+    id: "doc-demo-ananya",
+    userId: "usr-demo-ananya",
+    name: "Dr. Ananya Sen",
+    email: "ananya.sen@coderx.health",
+    specialization: "Neurologist (Brain & Nerve)",
+    qualification: "MBBS, MD (General Medicine), DM (Neurology, NIMHANS)",
+    designation: "Senior Consultant Neurologist",
+    experience: 13,
+    consultationFee: 1100,
+    clinicInfo: "NeuroHealth Brain & Spine Center, HAL 2nd Stage",
+    visitingHospitals: "Manipal Hospital Old Airport Road, Aster CMI",
+    area: "Old Airport Road, Bengaluru",
+    city: "Bengaluru",
+    rating: 4.9,
+    reviewsCount: 193,
+    licenseNumber: "KMC/2011/76211",
+    bio: "Renowned neurologist specializing in chronic migraine management, stroke recovery, neuropathy, vertigo diagnostics, and epilepsy management.",
+  },
+  {
+    id: "doc-demo-rajesh",
+    userId: "usr-demo-rajesh",
+    name: "Dr. Rajesh Kulkarni",
+    email: "rajesh.kulkarni@coderx.health",
+    specialization: "General Physician (GP & Family Medicine)",
+    qualification: "MBBS, MRCGP (London), DNB (Family Medicine)",
+    designation: "Senior Family Care Physician",
+    experience: 18,
+    consultationFee: 600,
+    clinicInfo: "CareRx Neighborhood Primary Clinic, Sector 44",
+    visitingHospitals: "Artemis Hospital Gurugram, Paras Hospital",
+    area: "Sector 44, Gurugram",
+    city: "Delhi NCR",
+    rating: 4.9,
+    reviewsCount: 156,
+    licenseNumber: "MCI/2006/19442",
+    bio: "Empathetic family doctor providing comprehensive primary care, seasonal fever triage, adult vaccinations, and long-term preventive health checkups.",
+  },
+  {
+    id: "doc-demo-meera",
+    userId: "usr-demo-meera",
+    name: "Dr. Meera Nambiar",
+    email: "meera.nambiar@coderx.health",
+    specialization: "Gynecologist & Obstetrician (Women's Health)",
+    qualification: "MBBS, MS (OBG, Grant Medical College), DNB",
+    designation: "Senior Obstetrician & Gynecologist",
+    experience: 14,
+    consultationFee: 850,
+    clinicInfo: "Matrika Women's Health & Wellness Suite, Opera House",
+    visitingHospitals: "Sir H.N. Reliance Foundation Hospital, Saifee Hospital",
+    area: "Girgaon, Mumbai",
+    city: "Mumbai",
+    rating: 4.9,
+    reviewsCount: 224,
+    licenseNumber: "MMC/2010/33890",
+    bio: "Specialist in holistic PCOS/PCOD reversal, high-risk pregnancy management, hormonal rebalancing, and compassionate adolescent gynecological care.",
+  },
+  {
+    id: "doc-demo-tariq",
+    userId: "usr-demo-tariq",
+    name: "Dr. Tariq Alvi",
+    email: "tariq.alvi@coderx.health",
+    specialization: "Pulmonologist (Lungs & Chest)",
+    qualification: "MBBS, MD (Respiratory Medicine, VMMC Safdarjung)",
+    designation: "Consultant Pulmonologist & Sleep Specialist",
+    experience: 12,
+    consultationFee: 750,
+    clinicInfo: "BreatheEasy Chest & Sleep Care, Press Enclave Road",
+    visitingHospitals: "Max Super Speciality Hospital Saket",
+    area: "Saket, South Delhi",
+    city: "Delhi NCR",
+    rating: 4.8,
+    reviewsCount: 138,
+    licenseNumber: "DMC/2012/66540",
+    bio: "Clinical expert in adult bronchial asthma, chronic post-viral cough, environmental allergies, COPD management, and sleep apnea polysomnography.",
+  },
+  {
+    id: "doc-demo-priya",
+    userId: "usr-demo-priya",
+    name: "Dr. Priya Malhotra",
+    email: "priya.malhotra@coderx.health",
+    specialization: "Pediatrician (Child Specialist)",
+    qualification: "MBBS, DNB (Pediatrics), Fellowship in Neonatology",
+    designation: "Consultant Neonatologist & Pediatrician",
+    experience: 9,
+    consultationFee: 650,
+    clinicInfo: "Child First Pediatric Hub, Near Subhash Chowk",
+    visitingHospitals: "Medanta - The Medicity, Cloudnine Hospital",
+    area: "Sector 38, Gurugram",
+    city: "Delhi NCR",
+    rating: 4.8,
+    reviewsCount: 112,
+    licenseNumber: "HN/2015/09841",
+    bio: "Gentle child specialist dedicated to infant developmental screenings, childhood allergy assessments, vaccination regimens, and growth tracking.",
+  },
+  {
+    id: "doc-demo-alok",
+    userId: "usr-demo-alok",
+    name: "Dr. Alok Verma",
+    email: "alok.verma@coderx.health",
+    specialization: "Diabetologist & Endocrinologist",
+    qualification: "MBBS, MD (Medicine), PG Dip. Diabetes (Boston)",
+    designation: "Consultant Diabetologist & Metabolic Physician",
+    experience: 15,
+    consultationFee: 800,
+    clinicInfo: "Metabolic Care Center, Turner Road",
+    visitingHospitals: "Hinduja Healthcare Surgical, Holy Family Hospital",
+    area: "Bandra West, Mumbai",
+    city: "Mumbai",
+    rating: 4.9,
+    reviewsCount: 175,
+    licenseNumber: "MMC/2009/88142",
+    bio: "Specializing in early-onset Type 2 Diabetes, insulin pump optimization, continuous glucose monitoring (CGM), and diabetic peripheral neuropathy.",
+  },
+  {
+    id: "doc-demo-siddharth",
+    userId: "usr-demo-siddharth",
+    name: "Dr. Siddharth Joshi",
+    email: "siddharth.joshi@coderx.health",
+    specialization: "Orthopedic Surgeon (Sports Medicine)",
+    qualification: "MBBS, DNB (Orthopedics, Lilavati), Fellowship in Arthroscopy",
+    designation: "Senior Sports Orthopedic Surgeon",
+    experience: 14,
+    consultationFee: 950,
+    clinicInfo: "Elite Motion Ortho Clinic, CMH Road",
+    visitingHospitals: "Manipal Hospital, Cloudnine Hospital",
+    area: "Indiranagar, Bengaluru",
+    city: "Bengaluru",
+    rating: 4.8,
+    reviewsCount: 130,
+    licenseNumber: "KMC/2010/55490",
+    bio: "Specialist in knee ligament tears (ACL/PCL reconstruction), rotator cuff repairs, runner's knee, and active lifestyle joint preservation.",
+  },
+];
+
+// Helper to generate realistic available slots across next 5 days
+function generateDemoDoctorSlots(docId: string, now: Date) {
+  const slots: any[] = [];
+  
+  for (let dayOffset = 0; dayOffset <= 4; dayOffset++) {
+    const targetDate = new Date(now);
+    targetDate.setDate(targetDate.getDate() + dayOffset);
+
+    // Morning slot: 10:30 AM
+    const m = new Date(targetDate);
+    m.setHours(10, 30, 0, 0);
+    if (m > now) {
+      const endM = new Date(m);
+      endM.setMinutes(endM.getMinutes() + 20);
+      slots.push({
+        id: `slot-demo-${docId}-d${dayOffset}-1`,
+        startTime: m.toISOString(),
+        endTime: endM.toISOString(),
+        duration: 20,
+        period: "MORNING" as const,
+      });
+    }
+
+    // Afternoon slot: 02:30 PM
+    const a = new Date(targetDate);
+    a.setHours(14, 30, 0, 0);
+    if (a > now) {
+      const endA = new Date(a);
+      endA.setMinutes(endA.getMinutes() + 20);
+      slots.push({
+        id: `slot-demo-${docId}-d${dayOffset}-2`,
+        startTime: a.toISOString(),
+        endTime: endA.toISOString(),
+        duration: 20,
+        period: "AFTERNOON" as const,
+      });
+    }
+
+    // Evening slot: 05:00 PM
+    const e = new Date(targetDate);
+    e.setHours(17, 0, 0, 0);
+    if (e > now) {
+      const endE = new Date(e);
+      endE.setMinutes(endE.getMinutes() + 20);
+      slots.push({
+        id: `slot-demo-${docId}-d${dayOffset}-3`,
+        startTime: e.toISOString(),
+        endTime: endE.toISOString(),
+        duration: 20,
+        period: "EVENING" as const,
+      });
+    }
+  }
+
+  return slots;
+}
+
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
@@ -11,154 +300,130 @@ export async function GET(req: Request) {
     const area = searchParams.get("area")?.trim() || "";
     const city = searchParams.get("city")?.trim() || "";
     const search = searchParams.get("search")?.trim() || searchParams.get("q")?.trim() || "";
-    const sortBy = searchParams.get("sortBy")?.trim() || "slots"; // "slots", "experience", "fee_asc", "fee_desc", "name", "rating"
+    const sortBy = searchParams.get("sortBy")?.trim() || "slots";
     const maxFee = searchParams.get("maxFee") ? parseInt(searchParams.get("maxFee")!, 10) : null;
-    const dateFilter = searchParams.get("date")?.trim() || "ALL"; // "TODAY", "TOMORROW", "WEEK", "ALL"
+    const dateFilter = searchParams.get("date")?.trim() || "ALL";
 
     const now = new Date();
 
-    // Fetch active doctors with available future slots for extraction & booking
-    const doctors = await prisma.doctorProfile.findMany({
-      where: {
-        slots: {
-          some: {
-            status: "AVAILABLE",
-            startTime: { gte: now },
+    // Fetch active doctors from database
+    let dbDoctors: any[] = [];
+    try {
+      dbDoctors = await prisma.doctorProfile.findMany({
+        where: {
+          slots: {
+            some: {
+              status: "AVAILABLE",
+              startTime: { gte: now },
+            },
           },
         },
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+          slots: {
+            where: {
+              status: "AVAILABLE",
+              startTime: { gte: now },
+            },
+            orderBy: { startTime: "asc" },
           },
         },
-        slots: {
-          where: {
-            status: "AVAILABLE",
-            startTime: { gte: now },
-          },
-          orderBy: { startTime: "asc" },
-        },
-      },
-    });
+      });
+    } catch {
+      dbDoctors = [];
+    }
 
-    // Curated ratings and review counts map for realism
-    const ratingMap: Record<string, { rating: number; reviews: number }> = {
-      "Dr. Aarav Mehta": { rating: 4.9, reviews: 184 },
-      "Dr. Neha Kapoor": { rating: 4.9, reviews: 210 },
-      "Dr. Rohan Deshmukh": { rating: 4.8, reviews: 145 },
-      "Dr. Sunita Rao": { rating: 5.0, reviews: 278 },
-      "Dr. Vikram Singhania": { rating: 4.8, reviews: 162 },
-      "Dr. Ananya Sen": { rating: 4.9, reviews: 193 },
-      "Dr. Rajesh Kulkarni": { rating: 4.9, reviews: 156 },
-      "Dr. Meera Nambiar": { rating: 4.9, reviews: 224 },
-      "Dr. Tariq Alvi": { rating: 4.8, reviews: 138 },
-    };
-
-    // Filter and transform doctors
-    let list = doctors.map((doc) => {
-      const docRating = ratingMap[doc.user.name] || {
-        rating: 4.8,
-        reviews: 95 + (doc.experience * 7) % 60,
-      };
-
-      // Extract area and city from clinicInfo or defaults
-      let extractedArea = "Cyber City, Gurugram";
-      let extractedCity = "Delhi NCR";
-      if (doc.clinicInfo) {
-        if (doc.clinicInfo.includes("Bengaluru") || doc.clinicInfo.includes("Indiranagar") || doc.clinicInfo.includes("Airport Road")) {
-          extractedCity = "Bengaluru";
-          extractedArea = doc.clinicInfo.includes("Indiranagar") ? "Indiranagar, Bengaluru" : "Old Airport Road, Bengaluru";
-        } else if (doc.clinicInfo.includes("Mumbai") || doc.clinicInfo.includes("Bandra") || doc.clinicInfo.includes("Girgaon")) {
-          extractedCity = "Mumbai";
-          extractedArea = doc.clinicInfo.includes("Bandra") ? "Bandra West, Mumbai" : "Girgaon, Mumbai";
-        } else if (doc.clinicInfo.includes("Saket") || doc.clinicInfo.includes("Delhi")) {
-          extractedCity = "Delhi NCR";
-          extractedArea = "Saket, South Delhi";
-        } else if (doc.clinicInfo.includes("Sector 44")) {
-          extractedCity = "Delhi NCR";
-          extractedArea = "Sector 44, Gurugram";
-        } else if (doc.clinicInfo.includes("Sector 38")) {
-          extractedCity = "Delhi NCR";
-          extractedArea = "Sector 38, Gurugram";
-        }
-      }
-
-      // Group available slots
-      const availableSlots = doc.slots.filter((s) => new Date(s.startTime) > now);
-      const nextAvailableSlot = availableSlots.length > 0 ? availableSlots[0].startTime.toISOString() : null;
-
-      // Extract unique dates
-      const uniqueDates = Array.from(
-        new Set(
-          availableSlots.map((s) => s.startTime.toISOString().split("T")[0])
-        )
+    // Build complete demo list populated with dynamic slots
+    const demoPopulatedList = DEMO_DOCTORS_BASE.map((demoDoc) => {
+      // Check if this doctor matches a real DB doctor by name (e.g. Dr. Aarav Mehta)
+      const matchingDb = dbDoctors.find(
+        (d) => d.user?.name?.toLowerCase() === demoDoc.name.toLowerCase()
       );
 
-      // Slot counts by category
-      const todayDateStr = now.toISOString().split("T")[0];
-      const tomorrowDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-      const tomorrowDateStr = tomorrowDate.toISOString().split("T")[0];
-
-      const todaySlotsCount = availableSlots.filter(
-        (s) => s.startTime.toISOString().split("T")[0] === todayDateStr
-      ).length;
-
-      const tomorrowSlotsCount = availableSlots.filter(
-        (s) => s.startTime.toISOString().split("T")[0] === tomorrowDateStr
-      ).length;
-
-      return {
-        id: doc.id,
-        userId: doc.user.id,
-        name: doc.user.name,
-        email: doc.user.email,
-        specialization: doc.specialization,
-        qualification: doc.qualification || "MBBS, MD",
-        designation: doc.designation || "Senior Specialist",
-        experience: doc.experience || 10,
-        consultationFee: doc.consultationFee || 800,
-        upiId: getDoctorUpiVpa(doc.user.name, doc.upiId),
-        clinicInfo: doc.clinicInfo || "CodeRx Specialty Health Hub",
-        visitingHospitals: doc.visitingHospitals || "CodeRx Partner Hospitals",
-        licenseNumber: doc.licenseNumber,
-        bio: doc.bio,
-        area: extractedArea,
-        city: extractedCity,
-        rating: docRating.rating,
-        reviewsCount: docRating.reviews,
-        availableSlotsCount: availableSlots.length,
-        todaySlotsCount,
-        tomorrowSlotsCount,
-        nextAvailableSlot,
-        availableDates: uniqueDates,
-        slots: availableSlots.slice(0, 8).map((s) => {
-          const hour = s.startTime.getHours();
+      let availableSlots: any[] = [];
+      if (matchingDb && matchingDb.slots && matchingDb.slots.length > 0) {
+        availableSlots = matchingDb.slots.map((s: any) => {
+          const sTime = new Date(s.startTime);
+          const hour = sTime.getHours();
           let period: "MORNING" | "AFTERNOON" | "EVENING" = "MORNING";
           if (hour >= 12 && hour < 16) period = "AFTERNOON";
           else if (hour >= 16) period = "EVENING";
 
           return {
             id: s.id,
-            startTime: s.startTime.toISOString(),
-            endTime: s.endTime.toISOString(),
-            duration: s.duration,
+            startTime: s.startTime instanceof Date ? s.startTime.toISOString() : s.startTime,
+            endTime: s.endTime instanceof Date ? s.endTime.toISOString() : s.endTime,
+            duration: s.duration || 20,
             period,
           };
-        }),
+        });
+      }
+
+      // If DB has fewer than 2 slots, supplement with generated demo slots
+      if (availableSlots.length < 2) {
+        availableSlots = generateDemoDoctorSlots(demoDoc.id, now);
+      }
+
+      const uniqueDates = Array.from(
+        new Set(availableSlots.map((s) => s.startTime.split("T")[0]))
+      );
+
+      const todayDateStr = now.toISOString().split("T")[0];
+      const tomorrowDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+      const tomorrowDateStr = tomorrowDate.toISOString().split("T")[0];
+
+      const todaySlotsCount = availableSlots.filter(
+        (s) => s.startTime.split("T")[0] === todayDateStr
+      ).length;
+
+      const tomorrowSlotsCount = availableSlots.filter(
+        (s) => s.startTime.split("T")[0] === tomorrowDateStr
+      ).length;
+
+      const nextAvailableSlot = availableSlots.length > 0 ? availableSlots[0].startTime : null;
+
+      return {
+        id: matchingDb?.id || demoDoc.id,
+        userId: matchingDb?.user?.id || demoDoc.userId,
+        name: matchingDb?.user?.name || demoDoc.name,
+        email: matchingDb?.user?.email || demoDoc.email,
+        specialization: matchingDb?.specialization || demoDoc.specialization,
+        qualification: matchingDb?.qualification || demoDoc.qualification,
+        designation: matchingDb?.designation || demoDoc.designation,
+        experience: matchingDb?.experience || demoDoc.experience,
+        consultationFee: matchingDb?.consultationFee || demoDoc.consultationFee,
+        upiId: getDoctorUpiVpa(demoDoc.name),
+        clinicInfo: matchingDb?.clinicInfo || demoDoc.clinicInfo,
+        visitingHospitals: matchingDb?.visitingHospitals || demoDoc.visitingHospitals,
+        licenseNumber: matchingDb?.licenseNumber || demoDoc.licenseNumber,
+        bio: matchingDb?.bio || demoDoc.bio,
+        area: demoDoc.area,
+        city: demoDoc.city,
+        rating: demoDoc.rating,
+        reviewsCount: demoDoc.reviewsCount,
+        availableSlotsCount: availableSlots.length,
+        todaySlotsCount,
+        tomorrowSlotsCount,
+        nextAvailableSlot,
+        availableDates: uniqueDates,
+        slots: availableSlots,
       };
     });
 
-    // 1. Text Search Filter (Doctor Name, Qualification, Specialization, Clinic, Area, Bio)
+    let list = demoPopulatedList;
+
+    // 1. Text Search Filter
     if (search) {
       const q = search.toLowerCase();
       list = list.filter((doc) => {
         const text = `${doc.name} ${doc.specialization} ${doc.qualification} ${doc.clinicInfo} ${doc.visitingHospitals} ${doc.area} ${doc.city} ${doc.bio || ""}`.toLowerCase();
         
-        // Match condition keywords as well (e.g. fever -> GP, sugar/diabetes -> Diabetologist, knee -> Orthopedic)
         if (text.includes(q)) return true;
         if (q.includes("pediatr") || q.includes("child") || q.includes("baby") || q.includes("kid")) {
           return doc.specialization.toLowerCase().includes("pediatric");
@@ -167,25 +432,25 @@ export async function GET(req: Request) {
           return doc.specialization.toLowerCase().includes("general") || doc.designation.toLowerCase().includes("family");
         }
         if (q.includes("diabet") || q.includes("sugar") || q.includes("thyroid") || q.includes("endo")) {
-          return doc.specialization.toLowerCase().includes("diabet") || doc.qualification.toLowerCase().includes("endocrinology");
+          return doc.specialization.toLowerCase().includes("diabet") || doc.qualification.toLowerCase().includes("endocrin");
         }
         if (q.includes("heart") || q.includes("cardio") || q.includes("ecg") || q.includes("chest pain") || q.includes("bp")) {
           return doc.specialization.toLowerCase().includes("cardio");
         }
         if (q.includes("skin") || q.includes("derma") || q.includes("acne") || q.includes("hair") || q.includes("rash")) {
-          return doc.specialization.toLowerCase().includes("derma");
+          return doc.specialization.toLowerCase().includes("derma") || doc.specialization.toLowerCase().includes("skin");
         }
         if (q.includes("ortho") || q.includes("bone") || q.includes("knee") || q.includes("joint") || q.includes("spine")) {
-          return doc.specialization.toLowerCase().includes("ortho");
+          return doc.specialization.toLowerCase().includes("ortho") || doc.specialization.toLowerCase().includes("bone");
         }
         if (q.includes("neuro") || q.includes("brain") || q.includes("migraine") || q.includes("nerve")) {
-          return doc.specialization.toLowerCase().includes("neuro");
+          return doc.specialization.toLowerCase().includes("neuro") || doc.specialization.toLowerCase().includes("brain");
         }
         if (q.includes("gynec") || q.includes("women") || q.includes("pcos") || q.includes("pregnancy") || q.includes("pcod")) {
           return doc.specialization.toLowerCase().includes("gynec") || doc.specialization.toLowerCase().includes("obstetric");
         }
         if (q.includes("pulmo") || q.includes("lung") || q.includes("breath") || q.includes("asthma") || q.includes("cough")) {
-          return doc.specialization.toLowerCase().includes("pulmon");
+          return doc.specialization.toLowerCase().includes("pulmon") || doc.specialization.toLowerCase().includes("respiratory");
         }
         return false;
       });
@@ -209,10 +474,10 @@ export async function GET(req: Request) {
           return fullSpec.includes("cardio");
         }
         if (spec === "dermatologist" || spec === "dermatology") {
-          return fullSpec.includes("derma") || fullSpec.includes("skin");
+          return fullSpec.includes("derma") || fullSpec.includes("skin") || fullSpec.includes("tricholog");
         }
         if (spec === "orthopedic" || spec === "orthopedics") {
-          return fullSpec.includes("ortho") || fullSpec.includes("joint");
+          return fullSpec.includes("ortho") || fullSpec.includes("joint") || fullSpec.includes("bone");
         }
         if (spec === "neurologist" || spec === "neurology") {
           return fullSpec.includes("neuro");
@@ -275,7 +540,6 @@ export async function GET(req: Request) {
       if (sortBy === "name") {
         return a.name.localeCompare(b.name);
       }
-      // Default: "slots" (earliest available slot first, then most slots)
       if (a.nextAvailableSlot && b.nextAvailableSlot) {
         return new Date(a.nextAvailableSlot).getTime() - new Date(b.nextAvailableSlot).getTime();
       }
@@ -284,20 +548,8 @@ export async function GET(req: Request) {
       return b.availableSlotsCount - a.availableSlotsCount;
     });
 
-    // Extract all unique areas and specializations for dynamic filter chips
-    const allAreas = Array.from(new Set(doctors.map((d) => {
-      if (d.clinicInfo?.includes("Cyber City")) return "Cyber City, Gurugram";
-      if (d.clinicInfo?.includes("Sector 44")) return "Sector 44, Gurugram";
-      if (d.clinicInfo?.includes("Sector 38")) return "Sector 38, Gurugram";
-      if (d.clinicInfo?.includes("Saket")) return "Saket, South Delhi";
-      if (d.clinicInfo?.includes("Indiranagar")) return "Indiranagar, Bengaluru";
-      if (d.clinicInfo?.includes("Airport Road")) return "Old Airport Road, Bengaluru";
-      if (d.clinicInfo?.includes("Bandra")) return "Bandra West, Mumbai";
-      if (d.clinicInfo?.includes("Girgaon")) return "Girgaon, Mumbai";
-      return "Cyber City, Gurugram";
-    })));
-
-    const allCities = ["Delhi NCR", "Bengaluru", "Mumbai"];
+    const allAreas = Array.from(new Set(DEMO_DOCTORS_BASE.map((d) => d.area)));
+    const allCities = ["All Cities", "Delhi NCR", "Mumbai", "Bengaluru"];
 
     return NextResponse.json({
       success: true,
@@ -307,16 +559,16 @@ export async function GET(req: Request) {
         areas: allAreas,
         cities: allCities,
         specializations: [
-          { key: "ALL", label: "All Specializations" },
+          { key: "ALL", label: "All Specialists" },
           { key: "gp", label: "General Physician (GP)", icon: "Stethoscope" },
-          { key: "pediatrician", label: "Pediatrician (Child Specialist)", icon: "Baby" },
-          { key: "diabetologist", label: "Diabetologist & Endocrinologist", icon: "Activity" },
-          { key: "cardiologist", label: "Cardiologist (Heart)", icon: "Heart" },
-          { key: "dermatologist", label: "Dermatologist (Skin & Hair)", icon: "Sparkles" },
-          { key: "orthopedic", label: "Orthopedic Surgeon (Bones & Joints)", icon: "Bone" },
-          { key: "neurologist", label: "Neurologist (Brain & Nerve)", icon: "Brain" },
-          { key: "gynecologist", label: "Gynecologist (Women's Health)", icon: "Users" },
-          { key: "pulmonologist", label: "Pulmonologist (Lungs & Chest)", icon: "Wind" },
+          { key: "pediatrician", label: "Pediatrician", icon: "Baby" },
+          { key: "diabetologist", label: "Diabetologist", icon: "Activity" },
+          { key: "cardiologist", label: "Cardiologist", icon: "Heart" },
+          { key: "dermatologist", label: "Dermatologist", icon: "Sparkles" },
+          { key: "orthopedic", label: "Orthopedic", icon: "Bone" },
+          { key: "neurologist", label: "Neurologist", icon: "Brain" },
+          { key: "gynecologist", label: "Gynecologist", icon: "Users" },
+          { key: "pulmonologist", label: "Pulmonologist", icon: "Wind" },
         ],
       },
     });

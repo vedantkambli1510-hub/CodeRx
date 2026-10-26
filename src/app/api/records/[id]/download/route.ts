@@ -11,13 +11,14 @@ export async function GET(
   try {
     const user = await getCurrentUser();
     if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
     }
 
     const record = await prisma.medicalRecord.findUnique({
       where: { id: params.id },
       include: {
         patient: { include: { user: true } },
+        sharedDoctor: { include: { user: true } },
         appointment: { include: { doctor: { include: { user: true } } } },
       },
     });
@@ -26,12 +27,41 @@ export async function GET(
       return NextResponse.json({ error: "Record not found" }, { status: 404 });
     }
 
-    const isPatientOwner = user.role === "PATIENT" && record.patient.userId === user.userId;
-    const isConsultingDoctor =
-      user.role === "DOCTOR" && record.appointment?.doctor.userId === user.userId;
+    // Role-based authorization & purpose-specific consent enforcement
+    if (user.role === "PATIENT") {
+      // Patient can ONLY access their own records
+      if (record.patient.userId !== user.userId) {
+        return NextResponse.json(
+          { error: "Forbidden: You cannot access medical records belonging to another patient." },
+          { status: 403 }
+        );
+      }
+    } else if (user.role === "DOCTOR") {
+      // Doctor must be specifically authorized by patient consent
+      if (!record.doctorConsent) {
+        return NextResponse.json(
+          {
+            error:
+              "Forbidden: Patient has not authorized sharing of this diagnostic record with doctors, or consent has been withdrawn.",
+          },
+          { status: 403 }
+        );
+      }
 
-    if (!isPatientOwner && !isConsultingDoctor && user.role !== "PATIENT") {
-      return NextResponse.json({ error: "Forbidden access to medical file" }, { status: 403 });
+      const isDesignatedSharedDoctor = record.sharedDoctor?.userId === user.userId;
+      const isAppointmentDoctor = record.appointment?.doctor.userId === user.userId;
+
+      if (!isDesignatedSharedDoctor && !isAppointmentDoctor) {
+        return NextResponse.json(
+          {
+            error:
+              "Forbidden: You are not the authorized consulting doctor for this shared medical record.",
+          },
+          { status: 403 }
+        );
+      }
+    } else {
+      return NextResponse.json({ error: "Forbidden access" }, { status: 403 });
     }
 
     const filePath = path.join(process.cwd(), "storage", "uploads", record.storedName);
@@ -53,7 +83,8 @@ export async function GET(
 
       const paramsList = parsed?.parameters || [];
 
-      const rows = paramsList.map((p: any) => `
+      const rows = paramsList.length > 0
+        ? paramsList.map((p: any) => `
         <tr>
           <td style="font-weight: 700; padding: 10px 12px; border-bottom: 1px solid #e2e8f0;">${p.name}</td>
           <td style="font-weight: 800; font-size: 13px; padding: 10px 12px; border-bottom: 1px solid #e2e8f0;">${p.value} ${p.unit || ""}</td>
@@ -65,7 +96,8 @@ export async function GET(
           </td>
           <td style="color: #64748b; padding: 10px 12px; border-bottom: 1px solid #e2e8f0;">${p.note || "Within normal biological range"}</td>
         </tr>
-      `).join("");
+      `).join("")
+        : `<tr><td colspan="5" style="text-align: center; padding: 20px; color: #64748b;">This document was stored without automated AI extraction per patient consent preferences. Please inspect the original diagnostic file.</td></tr>`;
 
       const html = `<!DOCTYPE html>
 <html lang="en">
@@ -94,54 +126,49 @@ export async function GET(
 <body>
   <div class="no-print" style="margin-bottom: 20px; text-align: right;">
     <button onclick="window.print()" style="padding: 10px 20px; background: #0d8272; color: #fff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">
-      🖨️ Print Report
+      Print Report
     </button>
   </div>
 
   <div class="header">
     <div>
-      <h1 class="title">${record.reportName || "Diagnostic Medical Report"}</h1>
-      <p class="subtitle">${parsed?.laboratory || "Apex Diagnostic Pathology Research Lab"}</p>
-      <div class="badge">🔒 Verified 256-Bit Encrypted Medical Record</div>
+      <h1 class="title">${record.reportName}</h1>
+      <div class="subtitle">Patient Diagnostic Record &bull; CodeRx Clinical Platform</div>
+      <span class="badge">${record.reportType}</span>
     </div>
-    <div style="text-align: right; font-size: 12px; color: #64748b;">
-      <strong>CodeRx Longitudinal Health</strong><br />
-      Record ID: ${record.id.slice(0, 8)}...<br />
-      Date: ${record.reportDate ? new Date(record.reportDate).toLocaleDateString() : new Date().toLocaleDateString()}
+    <div style="text-align: right;">
+      <div style="font-weight: 800; font-size: 16px; color: #0d8272;">CodeRx Health</div>
+      <div style="font-size: 11px; color: #64748b; margin-top: 2px;">Standardized Clinical Index</div>
     </div>
   </div>
 
   <div class="meta-grid">
     <div>
       <div class="meta-label">Patient Name</div>
-      <div class="meta-value">${record.patient?.user?.name || "Rajesh Sharma"}</div>
+      <div class="meta-value">${record.patient.user.name}</div>
     </div>
     <div>
-      <div class="meta-label">Patient ID</div>
-      <div class="meta-value">PT-1024-CRX</div>
+      <div class="meta-label">Report Date</div>
+      <div class="meta-value">${record.reportDate ? new Date(record.reportDate).toLocaleDateString() : "Recent"}</div>
     </div>
     <div>
-      <div class="meta-label">Consulting Physician</div>
-      <div class="meta-value">${record.appointment?.doctor?.user?.name || "Dr. Aarav Mehta"}</div>
+      <div class="meta-label">AI Processing</div>
+      <div class="meta-value">${record.aiConsent ? "Enabled (Gemini)" : "Declined (Original File Only)"}</div>
     </div>
     <div>
-      <div class="meta-label">Specimen</div>
-      <div class="meta-value">${parsed?.specimen || "Venous Blood / Serum"}</div>
+      <div class="meta-label">Sharing Status</div>
+      <div class="meta-value">${record.doctorConsent ? "Authorized for Consulting Doctor" : "Private (Patient Only)"}</div>
     </div>
   </div>
-
-  <h3 style="font-size: 14px; font-weight: 800; color: #0f172a; margin-top: 25px;">
-    Laboratory Findings & Assayed Parameters
-  </h3>
 
   <table>
     <thead>
       <tr>
-        <th>Biomarker / Investigation</th>
-        <th>Observed Result</th>
-        <th>Reference Interval</th>
-        <th>Status</th>
-        <th>Clinical Remarks</th>
+        <th>Biomarker / Test</th>
+        <th>Measured Value</th>
+        <th>Biological Reference</th>
+        <th>Clinical Flag</th>
+        <th>Interpretation Note</th>
       </tr>
     </thead>
     <tbody>
@@ -157,12 +184,12 @@ export async function GET(
   ` : ""}
 
   <div class="security-notice">
-    <strong>Patient Data Privacy & Consent Guarantee:</strong> This report is shared strictly with your consulting physician under verified patient consent. Encrypted with AES-256 GCM. No medical information is leaked, sold, or shared with unauthorized entities.
+    <strong>Patient Data Protection Notice:</strong> Access to this medical document is strictly governed by patient-granted consent under CodeRx role-based authorization protocols.
   </div>
 
   <div class="footer">
-    <div>Electronically verified by CodeRx Clinical Engine.</div>
-    <div>Confidential Medical Record • For Patient & Doctor Use Only</div>
+    <div>Standardized by CodeRx Clinical System.</div>
+    <div>Confidential Medical Record &bull; Access controlled by verified consent decisions.</div>
   </div>
 </body>
 </html>`;

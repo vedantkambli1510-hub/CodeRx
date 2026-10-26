@@ -1,0 +1,1 @@
+export const CURRENT_NOTICE_VERSION = "v1.2-2026";

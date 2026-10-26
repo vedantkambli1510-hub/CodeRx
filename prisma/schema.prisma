@@ -43,6 +43,7 @@ model PatientProfile {
   prescriptions         Prescription[]
   payments              Payment[]
   checklistItems        ChecklistItem[]
+  consents              PatientConsent[]
 }
 
 model DoctorProfile {
@@ -66,6 +67,8 @@ model DoctorProfile {
   notes          DoctorNote[]
   prescriptions  Prescription[]
   payments       Payment[]
+  sharedRecords  MedicalRecord[]
+  doctorConsents PatientConsent[]
 }
 
 model AppointmentSlot {
@@ -171,9 +174,15 @@ model MedicalRecord {
   fileUrl           String?
   processingStatus  String          @default("COMPLETED") // PENDING | PROCESSING | COMPLETED | FAILED
   extractedDataJson String?         // Structured test parameters, findings, ranges, doctor notes, meds
+  storageConsent    Boolean         @default(true)
+  aiConsent         Boolean         @default(false)
+  doctorConsent     Boolean         @default(false)
+  sharedDoctorId    String?
+  sharedDoctor      DoctorProfile?  @relation(fields: [sharedDoctorId], references: [id], onDelete: SetNull)
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   timelines         MedicalTimeline[]
+  consents          PatientConsent[]
 }
 
 model MedicalTimeline {
@@ -304,4 +313,28 @@ model AuditLog {
   details   String?
   ipAddress String?
   createdAt DateTime @default(now())
+}
+
+model PatientConsent {
+  id              String          @id @default(cuid())
+  patientId       String
+  patient         PatientProfile  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  purpose         String          // "REPORT_STORAGE" | "AI_PROCESSING" | "DOCTOR_SHARING"
+  scope           String          @default("SINGLE_REPORT") // "SINGLE_REPORT" | "ACCOUNT_RECORDS" | "CONSULTATION"
+  recordId        String?
+  record          MedicalRecord?  @relation(fields: [recordId], references: [id], onDelete: Cascade)
+  recipientId     String?
+  recipientDoctor DoctorProfile?  @relation(fields: [recipientId], references: [id], onDelete: SetNull)
+  noticeVersion   String          @default("v1.2-2026")
+  decision        String          @default("GRANTED") // "GRANTED" | "DECLINED" | "WITHDRAWN" | "EXPIRED" | "SUPERSEDED"
+  source          String          @default("PATIENT_PORTAL_MODAL")
+  ipAddress       String?
+  userAgent       String?
+  accessDuration  String?         @default("ACTIVE_EPISODE_OF_CARE")
+  withdrawnAt     DateTime?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([patientId, purpose, decision])
+  @@index([recordId])
 }
