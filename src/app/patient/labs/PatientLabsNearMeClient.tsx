@@ -715,7 +715,7 @@ export function PatientLabsNearMeClient({
   return (
     <div className="space-y-6 max-w-5xl mx-auto pb-16 font-sans">
       {/* 1. SIMPLE CLEAN HEADER */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#D6EDE1]">
+      <div className="pb-4 border-b border-[#D6EDE1]">
         <div>
           <h1 className="text-2xl sm:text-3xl font-black text-[#064E3B] flex items-center gap-2.5">
             <div className="w-10 h-10 rounded-2xl bg-[#E8F8F0] border border-[#BCE8D0] flex items-center justify-center text-[#059669] shadow-2xs">
@@ -724,19 +724,8 @@ export function PatientLabsNearMeClient({
             <span>Pathology Labs Near Me</span>
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
-            Find certified pathology labs across India with GPS directions or book free home sample pickup.
+            Find certified pathology labs across India with GPS directions and direct contact.
           </p>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2 shrink-0">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-extrabold bg-[#E8F8F0] text-[#059669] border border-[#BCE8D0] shadow-2xs">
-            <CheckCircle2 className="w-3.5 h-3.5 text-[#059669]" />
-            <span>NABL &amp; CAP Certified</span>
-          </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-700 border border-[#D6EDE1] shadow-2xs">
-            <Home className="w-3.5 h-3.5 text-[#059669]" />
-            <span>Free Sample Pickup</span>
-          </span>
         </div>
       </div>
 
