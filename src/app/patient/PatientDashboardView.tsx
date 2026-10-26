@@ -149,24 +149,83 @@ export function PatientDashboardView({
     reader.readAsDataURL(file);
   };
 
-  const handleTriggerAi = (questionText: string) => {
-    if (!questionText.trim()) return;
+  const handleTriggerAi = async (questionText: string) => {
+    const text = questionText.trim();
+    if (!text) return;
     setShowAiModal(true);
     setAiLoading(true);
+    setAiQuestion("");
 
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/patient/ai-ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: text }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setAiResponse({
+          query: text,
+          answer: data.answer,
+          actionablePoints: data.actionablePoints || [],
+        });
+        setAiLoading(false);
+        return;
+      }
+    } catch (err) {
+      console.warn("AI API request failed, falling back to local clinical engine:", err);
+    }
+
+    // Resilient local fallback using props context
+    try {
+      const { answerPatientQuestion } = await import("@/lib/ai/patient-assistant");
+      const result = await answerPatientQuestion(text, {
+        userName: patientName,
+        userEmail: user?.email || "",
+        patientDob: patientDob || patient?.dob,
+        gender: patient?.gender,
+        bloodGroup: patient?.bloodGroup,
+        city: patient?.city,
+        allergies: patient?.allergies,
+        conditions: patient?.conditions,
+        currentMedications: patient?.currentMedications,
+        emergencyContactName: patient?.emergencyContactName,
+        emergencyContactPhone: patient?.emergencyContactPhone,
+        isSubscribed: !!isSubscribed,
+        appointments: appointments.map((a: any) => {
+          const d = a.slot?.startTime ? new Date(a.slot.startTime) : new Date();
+          return {
+            doctorName: a.doctor?.user?.name || "Dr. Medical Specialist",
+            specialization: a.doctor?.specialization || "General Medicine",
+            clinicInfo: a.doctor?.clinicInfo || "Apollo Clinic, Mumbai",
+            dateString: d.toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" }),
+            timeString: d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true }),
+            status: a.status || "CONFIRMED",
+          };
+        }),
+        records: records.map((r: any) => ({
+          title: r.title,
+          type: r.type,
+          date: new Date(r.createdAt || Date.now()).toLocaleDateString("en-US", { day: "numeric", month: "short" }),
+          findings: r.aiSummary || r.notes,
+          status: r.status,
+        })),
+      });
+
+      setAiResponse(result);
+    } catch {
       setAiResponse({
-        query: questionText,
-        answer: `Clinical AI Insight for "${questionText}": All markers across your blood report and current Metformin 500mg routine are within expected therapeutic limits. Your vitals remain stable.`,
+        query: text,
+        answer: `I am your CodeRx health assistant. You can ask me about your scheduled visits, prescribed medications, diagnostic reports, allergies, or how to navigate the portal.`,
         actionablePoints: [
-          "Continue daily Metformin 500mg with evening meals.",
-          "Keep drinking 2.5L clean water daily for kidney hydration.",
-          "Dr. Meera Nair will review your progress on 24 Oct 2026.",
+          "Check upcoming visits on your Visits Calendar HUD",
+          "Review active prescriptions under the Medications tab",
         ],
       });
+    } finally {
       setAiLoading(false);
-      setAiQuestion("");
-    }, 300);
+    }
   };
 
   // Consolidated non-redundant medical records list
