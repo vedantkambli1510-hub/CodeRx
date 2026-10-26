@@ -204,7 +204,7 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
   }, [appointmentsByDate, currentYear, currentMonth]);
 
   return (
-    <div className="bg-white rounded-xl p-3.5 sm:p-4 border border-slate-200/90 shadow-2xs flex flex-col justify-between space-y-3">
+    <div className="bg-white rounded-xl p-3.5 sm:p-4 border border-slate-200/90 shadow-2xs flex flex-col space-y-2.5">
       {/* 1. Header with Cute Icon, Month Selector and Badge */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">

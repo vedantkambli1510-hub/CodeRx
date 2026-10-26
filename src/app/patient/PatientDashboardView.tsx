@@ -105,6 +105,12 @@ export function PatientDashboardView({
       time: "Due before 24 Oct 2026",
       done: false,
     },
+    {
+      id: "rem-3",
+      title: "Log fasting blood sugar",
+      time: "Morning • Target: 90 - 130 mg/dL",
+      done: true,
+    },
   ]);
 
   const toggleReminder = (id: string) => {
@@ -335,17 +341,19 @@ export function PatientDashboardView({
         <CuteAppointmentCalendar appointments={appointments} />
 
         {/* Card 2: Today's Tasks & Medication Reminders */}
-        <div className="bg-white rounded-xl p-4 border border-slate-200/90 shadow-2xs flex flex-col justify-between space-y-3">
+        <div className="bg-white rounded-xl p-3.5 sm:p-4 border border-slate-200/90 shadow-2xs flex flex-col space-y-2.5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center border border-amber-100">
+              <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center border border-amber-100 shadow-2xs">
                 <Bell className="w-4 h-4" />
               </div>
               <div>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800 block">
                   Today&apos;s Checklist
                 </span>
-                <h3 className="text-sm font-bold text-slate-900">2 Pending Items</h3>
+                <h3 className="text-xs sm:text-sm font-bold text-slate-900">
+                  {reminders.filter((r) => !r.done).length} Pending Items
+                </h3>
               </div>
             </div>
 
@@ -354,23 +362,23 @@ export function PatientDashboardView({
             </Link>
           </div>
 
-          <div className="space-y-1.5">
+          <div className="space-y-1.5 flex-1">
             {reminders.map((rem) => (
               <div
                 key={rem.id}
                 onClick={() => toggleReminder(rem.id)}
-                className="p-2 rounded-lg bg-slate-50 hover:bg-slate-100/80 border border-slate-100 transition-colors flex items-center justify-between cursor-pointer"
+                className="p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100/80 border border-slate-100 transition-colors flex items-center justify-between cursor-pointer"
               >
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-2.5 min-w-0">
                   <div
-                    className={`w-4 h-4 rounded-md border flex items-center justify-center transition-colors ${
+                    className={`w-4 h-4 rounded-md border flex items-center justify-center transition-colors shrink-0 ${
                       rem.done ? "bg-emerald-600 border-emerald-600 text-white" : "border-slate-300 bg-white"
                     }`}
                   >
                     {rem.done && <Check className="w-3 h-3 stroke-[3]" />}
                   </div>
-                  <div>
-                    <div className={`text-xs font-semibold ${rem.done ? "line-through text-slate-400" : "text-slate-900"}`}>
+                  <div className="min-w-0">
+                    <div className={`text-xs font-semibold truncate ${rem.done ? "line-through text-slate-400" : "text-slate-900"}`}>
                       {rem.title}
                     </div>
                     <div className="text-[10px] text-slate-500">{rem.time}</div>
@@ -378,6 +386,16 @@ export function PatientDashboardView({
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Bottom Task Progress Strip */}
+          <div className="mt-auto pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+            <span>
+              <strong className="text-slate-800">{reminders.filter((r) => r.done).length}</strong> of {reminders.length} completed
+            </span>
+            <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+              {reminders.every((r) => r.done) ? "All done! 🎉" : "Tap items to check off"}
+            </span>
           </div>
         </div>
 
