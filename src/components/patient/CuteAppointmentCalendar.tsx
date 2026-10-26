@@ -14,6 +14,7 @@ import {
   CheckCircle2,
   CalendarCheck,
   Plus,
+  RotateCcw,
 } from "lucide-react";
 
 export interface AppointmentItem {
@@ -26,6 +27,8 @@ export interface AppointmentItem {
   dayNumber: number;
   dayName: string;
   monthName: string;
+  year: number;
+  monthIndex: number; // 0-11
   timeString: string;
   status: "CONFIRMED" | "SCHEDULED" | "CANCELLED" | "COMPLETED" | string;
 }
@@ -62,6 +65,8 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
           dayNumber: d.getDate(),
           dayName: d.toLocaleDateString("en-US", { weekday: "short" }),
           monthName: d.toLocaleDateString("en-US", { month: "short" }),
+          year: d.getFullYear(),
+          monthIndex: d.getMonth(),
           timeString,
           status: app.status || "CONFIRMED",
         });
@@ -75,12 +80,14 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
           id: "demo-1",
           doctorName: "Dr. Aarav Mehta",
           specialty: "Internal Medicine & Diabetology",
-          clinicInfo: "Apollo Clinic, Mumbai",
+          clinicInfo: "CodeRx Specialty Health Hub, Floor 4, Cyber City Med Center",
           date: new Date(2026, 9, 24, 10, 0),
           dateKey: "2026-10-24",
           dayNumber: 24,
           dayName: "Sat",
           monthName: "Oct",
+          year: 2026,
+          monthIndex: 9,
           timeString: "10:00 AM",
           status: "CONFIRMED",
         },
@@ -94,6 +101,8 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
           dayNumber: 26,
           dayName: "Mon",
           monthName: "Oct",
+          year: 2026,
+          monthIndex: 9,
           timeString: "03:30 PM",
           status: "SCHEDULED",
         },
@@ -107,6 +116,8 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
           dayNumber: 31,
           dayName: "Sat",
           monthName: "Oct",
+          year: 2026,
+          monthIndex: 9,
           timeString: "11:00 AM",
           status: "CONFIRMED",
         }
@@ -127,16 +138,51 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
     return map;
   }, [normalizedAppointments]);
 
-  // Initial selected date defaults to next upcoming appointment (e.g. 24 Oct)
-  const [selectedDateKey, setSelectedDateKey] = useState<string>(
-    normalizedAppointments[0]?.dateKey || "2026-10-24"
-  );
+  // Active Month & Year state (defaults to October 2026 where appointments are)
+  const [activeMonthYear, setActiveMonthYear] = useState({ year: 2026, month: 9 }); // 9 = October
 
-  // Focus Month (e.g., October 2026)
-  const [activeMonthYear, setActiveMonthYear] = useState({ year: 2026, month: 9 }); // 9 = Oct
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
 
-  // Generate a sleek horizontal digital ribbon of days (around current week/appointments, e.g. 23 Oct to 31 Oct)
+  // Month navigation handlers
+  const handlePrevMonth = () => {
+    setActiveMonthYear((prev) => {
+      if (prev.month === 0) {
+        return { year: prev.year - 1, month: 11 };
+      }
+      return { year: prev.year, month: prev.month - 1 };
+    });
+  };
+
+  const handleNextMonth = () => {
+    setActiveMonthYear((prev) => {
+      if (prev.month === 11) {
+        return { year: prev.year + 1, month: 0 };
+      }
+      return { year: prev.year, month: prev.month + 1 };
+    });
+  };
+
+  const jumpToOctober = () => {
+    setActiveMonthYear({ year: 2026, month: 9 });
+    setSelectedDateKey("2026-10-24");
+  };
+
+  // Appointments for the currently active month
+  const currentMonthAppointments = useMemo(() => {
+    return normalizedAppointments.filter(
+      (app) => app.year === activeMonthYear.year && app.monthIndex === activeMonthYear.month
+    );
+  }, [normalizedAppointments, activeMonthYear]);
+
+  // Selected date key
+  const [selectedDateKey, setSelectedDateKey] = useState<string>("2026-10-24");
+
+  // Generate dynamic days ribbon for the active month
   const ribbonDays = useMemo(() => {
+    const totalDays = new Date(activeMonthYear.year, activeMonthYear.month + 1, 0).getDate();
     const days: Array<{
       dateKey: string;
       dayNumber: number;
@@ -146,30 +192,29 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
       isToday: boolean;
     }> = [];
 
-    // Focus around October 22 to October 31
-    for (let d = 22; d <= 31; d++) {
-      const key = `2026-10-${String(d).padStart(2, "0")}`;
+    for (let d = 1; d <= totalDays; d++) {
+      const key = `${activeMonthYear.year}-${String(activeMonthYear.month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
       const apps = appointmentsByDate.get(key) || [];
-      const dateObj = new Date(2026, 9, d);
+      const dateObj = new Date(activeMonthYear.year, activeMonthYear.month, d);
       days.push({
         dateKey: key,
         dayNumber: d,
         dayName: dateObj.toLocaleDateString("en-US", { weekday: "short" }),
         hasAppointment: apps.length > 0,
         appointmentCount: apps.length,
-        isToday: d === 27, // current mock date 27 Oct 2026
+        isToday: activeMonthYear.year === 2026 && activeMonthYear.month === 9 && d === 27,
       });
     }
 
     return days;
-  }, [appointmentsByDate]);
+  }, [activeMonthYear, appointmentsByDate]);
 
-  // Currently selected appointments
+  // Selected appointments on current day
   const currentSelectedApps = useMemo(() => {
     return appointmentsByDate.get(selectedDateKey) || [];
   }, [appointmentsByDate, selectedDateKey]);
 
-  // Selected date components
+  // Selected date parsed details
   const selectedDateDetails = useMemo(() => {
     const [y, m, d] = selectedDateKey.split("-").map(Number);
     const dateObj = new Date(y, m - 1, d);
@@ -177,76 +222,112 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
       day: d,
       month: dateObj.toLocaleDateString("en-US", { month: "short" }),
       weekday: dateObj.toLocaleDateString("en-US", { weekday: "short" }),
-      fullWeekday: dateObj.toLocaleDateString("en-US", { weekday: "long" }),
       year: y,
     };
   }, [selectedDateKey]);
 
   return (
-    <div className="bg-white rounded-xl p-3.5 sm:p-4 border border-slate-200/90 shadow-2xs flex flex-col space-y-3">
-      {/* 1. Sleek Digital Header */}
-      <div className="flex items-center justify-between">
+    <div className="bg-white rounded-xl p-3.5 sm:p-4 border border-slate-200/90 shadow-2xs flex flex-col space-y-2.5">
+      {/* 1. Sleek Digital Header with Month Switcher (Emerald Brand Theme) */}
+      <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-indigo-700 text-white flex items-center justify-center shadow-xs">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#059669] to-[#047857] text-white flex items-center justify-center shadow-xs">
             <CalendarCheck className="w-4 h-4" />
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="text-[9px] font-black tracking-widest uppercase text-purple-700 bg-purple-100/70 px-1.5 py-0.2 rounded border border-purple-200/80">
+              <span className="text-[9px] font-black tracking-widest uppercase text-[#064E3B] bg-[#D7F3E5] px-1.5 py-0.2 rounded border border-[#BDE8D1]">
                 DIGITAL HUD
               </span>
               <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-slate-500">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#059669] animate-pulse"></span>
                 <span>Active</span>
               </span>
             </div>
-            <h3 className="text-xs sm:text-sm font-extrabold text-slate-900 tracking-tight mt-0.5">
+            <h3 className="text-xs sm:text-sm font-extrabold text-[#064E3B] tracking-tight mt-0.5">
               Visits Calendar
             </h3>
           </div>
         </div>
 
-        {/* Month & Badge */}
+        {/* Month Navigator Controls */}
         <div className="flex items-center gap-1.5">
-          <span className="px-2.5 py-1 rounded-lg bg-slate-100/90 border border-slate-200 text-slate-700 text-[11px] font-bold">
-            October 2026
-          </span>
-          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-200 shrink-0">
-            {normalizedAppointments.length} Booked
+          <div className="flex items-center bg-[#E8F8EE] border border-[#BDE8D1] rounded-lg px-1.5 py-0.5 shadow-2xs">
+            <button
+              type="button"
+              onClick={handlePrevMonth}
+              className="w-5 h-5 rounded hover:bg-[#BDE8D1]/70 text-[#064E3B] flex items-center justify-center cursor-pointer transition-colors"
+              title="Previous Month"
+              aria-label="Previous Month"
+            >
+              <ChevronLeft className="w-3.5 h-3.5" />
+            </button>
+            <span className="text-xs font-bold text-[#064E3B] px-1.5 select-none min-w-[95px] text-center">
+              {monthNames[activeMonthYear.month]} {activeMonthYear.year}
+            </span>
+            <button
+              type="button"
+              onClick={handleNextMonth}
+              className="w-5 h-5 rounded hover:bg-[#BDE8D1]/70 text-[#064E3B] flex items-center justify-center cursor-pointer transition-colors"
+              title="Next Month"
+              aria-label="Next Month"
+            >
+              <ChevronRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-[#D7F3E5] text-[#064E3B] border border-[#BDE8D1] shrink-0">
+            {currentMonthAppointments.length} Booked
           </span>
         </div>
       </div>
 
-      {/* 2. Quick Doctor Switcher Chips */}
+      {/* 2. Quick Doctor Switcher Chips for Current Month */}
       <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-none">
-        {normalizedAppointments.map((app) => {
-          const isSelected = selectedDateKey === app.dateKey;
-          return (
-            <button
-              key={app.id}
-              type="button"
-              onClick={() => setSelectedDateKey(app.dateKey)}
-              className={`px-2.5 py-1 rounded-lg text-[11px] font-bold flex items-center gap-1.5 shrink-0 transition-all cursor-pointer ${
-                isSelected
-                  ? "bg-purple-700 text-white shadow-2xs scale-102"
-                  : "bg-slate-100/80 hover:bg-purple-50 text-slate-700 hover:text-purple-800 border border-slate-200/80"
-              }`}
-            >
-              <span
-                className={`w-1.5 h-1.5 rounded-full ${
-                  isSelected ? "bg-white" : "bg-purple-600"
+        {currentMonthAppointments.length > 0 ? (
+          currentMonthAppointments.map((app) => {
+            const isSelected = selectedDateKey === app.dateKey;
+            return (
+              <button
+                key={app.id}
+                type="button"
+                onClick={() => setSelectedDateKey(app.dateKey)}
+                className={`px-2.5 py-1 rounded-lg text-[11px] font-bold flex items-center gap-1.5 shrink-0 transition-all cursor-pointer ${
+                  isSelected
+                    ? "bg-[#059669] text-white shadow-2xs scale-102 border border-[#047857]"
+                    : "bg-white hover:bg-[#E8F8EE] text-[#064E3B] border border-[#BDE8D1] hover:border-[#059669]"
                 }`}
-              />
-              <span>{app.doctorName.split(" ")[1] || app.doctorName}</span>
-              <span className="opacity-80 font-normal">({app.dayNumber} {app.monthName})</span>
+              >
+                <span
+                  className={`w-1.5 h-1.5 rounded-full ${
+                    isSelected ? "bg-white" : "bg-[#059669]"
+                  }`}
+                />
+                <span>{app.doctorName.split(" ")[1] || app.doctorName}</span>
+                <span className="opacity-80 font-normal">({app.dayNumber} {app.monthName})</span>
+              </button>
+            );
+          })
+        ) : (
+          <div className="flex items-center justify-between w-full text-xs py-0.5">
+            <span className="text-[11px] text-slate-500 font-medium">
+              No visits scheduled in {monthNames[activeMonthYear.month]}
+            </span>
+            <button
+              type="button"
+              onClick={jumpToOctober}
+              className="text-[11px] font-bold text-[#059669] hover:underline flex items-center gap-1 cursor-pointer ml-auto"
+            >
+              <RotateCcw className="w-3 h-3" />
+              <span>Back to Oct (3 Booked)</span>
             </button>
-          );
-        })}
+          </div>
+        )}
       </div>
 
-      {/* 3. Horizontal Digital Days Ribbon */}
-      <div className="bg-slate-50/80 rounded-xl p-1.5 border border-slate-150">
-        <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto py-0.5 scrollbar-none justify-between">
+      {/* 3. Horizontal Digital Days Ribbon (Scrollable for active month) */}
+      <div className="bg-[#F0FAF4] rounded-xl p-1.5 border border-[#BDE8D1]/80">
+        <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto py-0.5 scrollbar-none">
           {ribbonDays.map((d) => {
             const isSelected = selectedDateKey === d.dateKey;
             const hasApp = d.hasAppointment;
@@ -256,14 +337,14 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
                 key={d.dateKey}
                 type="button"
                 onClick={() => setSelectedDateKey(d.dateKey)}
-                className={`py-1 px-1.5 sm:px-2 rounded-lg flex flex-col items-center justify-center min-w-[34px] sm:min-w-[38px] transition-all cursor-pointer relative ${
+                className={`py-1 px-1.5 sm:px-2 rounded-lg flex flex-col items-center justify-center min-w-[34px] sm:min-w-[38px] transition-all cursor-pointer relative shrink-0 ${
                   isSelected
-                    ? "bg-purple-600 text-white font-extrabold shadow-2xs scale-105 z-10"
+                    ? "bg-[#059669] text-white font-extrabold shadow-2xs scale-105 z-10 border border-[#047857]"
                     : hasApp
-                    ? "bg-purple-100 text-purple-900 font-bold hover:bg-purple-200/90 border border-purple-200"
+                    ? "bg-[#D7F3E5] text-[#064E3B] font-bold hover:bg-[#BDE8D1] border border-[#BDE8D1]"
                     : "text-slate-600 hover:bg-slate-200/60 font-medium"
                 }`}
-                title={hasApp ? `Appointment on ${d.dayNumber} Oct` : `${d.dayNumber} Oct`}
+                title={hasApp ? `Appointment on ${d.dayNumber} ${monthNames[activeMonthYear.month]}` : `${d.dayNumber} ${monthNames[activeMonthYear.month]}`}
               >
                 <span className="text-[9px] uppercase tracking-wider font-semibold opacity-75">
                   {d.dayName}
@@ -276,7 +357,7 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
                 {hasApp && (
                   <span
                     className={`w-1 h-1 rounded-full mt-0.5 ${
-                      isSelected ? "bg-white" : "bg-purple-600 animate-pulse"
+                      isSelected ? "bg-white" : "bg-[#059669] animate-pulse"
                     }`}
                   />
                 )}
@@ -289,17 +370,17 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
 
       {/* 4. Active Selected Appointment Digital HUD Card */}
       {currentSelectedApps.length > 0 ? (
-        <div className="p-2.5 rounded-xl bg-gradient-to-r from-purple-50/90 via-indigo-50/40 to-slate-50 border border-purple-200/80 flex items-center justify-between text-xs transition-all shadow-2xs">
+        <div className="p-2.5 rounded-xl bg-gradient-to-r from-[#E8F8EE] via-[#F0FAF4] to-slate-50 border border-[#BDE8D1] flex items-center justify-between text-xs transition-all shadow-2xs">
           <div className="flex items-center gap-3 min-w-0 pr-2">
-            {/* Digital Date Cube */}
-            <div className="shrink-0 w-11 h-12 rounded-lg bg-gradient-to-br from-purple-600 to-indigo-700 text-white flex flex-col items-center justify-center shadow-xs border border-purple-500/30">
-              <span className="text-[9px] font-black tracking-widest uppercase opacity-90 leading-none">
+            {/* Digital Date Cube in Brand Green */}
+            <div className="shrink-0 w-11 h-12 rounded-lg bg-gradient-to-br from-[#059669] to-[#047857] text-white flex flex-col items-center justify-center shadow-xs border border-[#047857]/40">
+              <span className="text-[9px] font-black tracking-widest uppercase text-[#D7F3E5] leading-none">
                 {selectedDateDetails.month}
               </span>
-              <span className="text-base font-black leading-tight mt-0.5">
+              <span className="text-base font-black leading-tight mt-0.5 text-white">
                 {selectedDateDetails.day}
               </span>
-              <span className="text-[8px] uppercase font-bold opacity-80 leading-none">
+              <span className="text-[8px] uppercase font-bold text-[#D7F3E5] leading-none">
                 {selectedDateDetails.weekday}
               </span>
             </div>
@@ -307,26 +388,26 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
             {/* Doctor Info */}
             <div className="min-w-0 space-y-0.5">
               <div className="flex items-center gap-1.5 flex-wrap">
-                <span className="font-extrabold text-slate-900 text-xs sm:text-sm truncate">
+                <span className="font-extrabold text-[#064E3B] text-xs sm:text-sm truncate">
                   {currentSelectedApps[0].doctorName}
                 </span>
-                <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 shrink-0">
+                <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-[#059669]/15 text-[#064E3B] border border-[#BDE8D1] shrink-0">
                   {currentSelectedApps[0].status}
                 </span>
               </div>
               <div className="text-[11px] text-slate-600 truncate font-medium">
                 {currentSelectedApps[0].specialty}
               </div>
-              <div className="text-[11px] text-purple-900 font-semibold flex items-center gap-1 truncate">
-                <Clock className="w-3 h-3 text-purple-600 shrink-0" />
-                <span>{currentSelectedApps[0].timeString} • {currentSelectedApps[0].clinicInfo}</span>
+              <div className="text-[11px] text-[#064E3B] font-semibold flex items-center gap-1 truncate">
+                <Clock className="w-3 h-3 text-[#059669] shrink-0" />
+                <span className="truncate">{currentSelectedApps[0].timeString} • {currentSelectedApps[0].clinicInfo}</span>
               </div>
             </div>
           </div>
 
           <Link
             href="/patient/appointments"
-            className="px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold transition-all shadow-2xs flex items-center gap-1 shrink-0 ml-1 cursor-pointer"
+            className="px-3 py-1.5 rounded-lg bg-[#059669] hover:bg-[#047857] text-white text-xs font-bold transition-all shadow-2xs flex items-center gap-1 shrink-0 ml-1 cursor-pointer"
           >
             <span>Details</span>
             <ArrowRight className="w-3 h-3" />
@@ -343,17 +424,17 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
             <div className="space-y-0.5 min-w-0">
               <div className="font-bold text-slate-800 text-xs">No Visit Scheduled</div>
               <div className="text-[11px] text-slate-500 truncate">
-                Free clinical slot • Next visit on 24 Oct with Dr. Aarav Mehta
+                Free clinical slot on {selectedDateDetails.day} {monthNames[activeMonthYear.month]}
               </div>
             </div>
           </div>
 
           <button
             type="button"
-            onClick={() => setSelectedDateKey("2026-10-24")}
-            className="px-2.5 py-1 rounded-lg bg-purple-100 hover:bg-purple-200 text-purple-800 text-[11px] font-bold transition-all shrink-0 ml-1 cursor-pointer border border-purple-200"
+            onClick={jumpToOctober}
+            className="px-2.5 py-1 rounded-lg bg-[#E8F8EE] hover:bg-[#D7F3E5] text-[#064E3B] text-[11px] font-bold transition-all shrink-0 ml-1 cursor-pointer border border-[#BDE8D1]"
           >
-            Jump to 24th &rarr;
+            View Oct Visits &rarr;
           </button>
         </div>
       )}
