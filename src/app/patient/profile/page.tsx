@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { usePatientAvatar } from "@/lib/avatar";
+import { calculateAge } from "@/lib/date";
 
 export default function PatientProfilePage() {
   const [loading, setLoading] = useState(true);
@@ -69,7 +70,11 @@ export default function PatientProfilePage() {
         if (res.ok && data.patient) {
           setName(data.patient.user.name);
           setEmail(data.patient.user.email);
-          setDob(data.patient.dob || "");
+          const initialDob = data.patient.dob || "";
+          setDob(initialDob);
+          if (initialDob && typeof window !== "undefined") {
+            localStorage.setItem("coderx_patient_dob", initialDob);
+          }
           setGender(data.patient.gender || "");
           setPhone(data.patient.phone || "");
           setBloodGroup(data.patient.bloodGroup || "");
@@ -107,6 +112,11 @@ export default function PatientProfilePage() {
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to update profile");
+
+      if (typeof window !== "undefined") {
+        localStorage.setItem("coderx_patient_dob", dob);
+        window.dispatchEvent(new CustomEvent("coderx_profile_updated", { detail: { dob } }));
+      }
 
       setSuccess("Profile information saved successfully.");
     } catch (err) {
@@ -257,16 +267,26 @@ export default function PatientProfilePage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
-                Date of Birth / Age
-              </label>
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                  Date of Birth
+                </label>
+                {calculateAge(dob) !== null && (
+                  <span className="text-[11px] font-bold text-emerald-800 bg-emerald-100/90 px-2 py-0.5 rounded-md border border-emerald-300 shadow-2xs">
+                    Age: {calculateAge(dob)} years
+                  </span>
+                )}
+              </div>
               <input
-                type="text"
+                type="date"
                 value={dob}
                 onChange={(e) => setDob(e.target.value)}
-                placeholder="YYYY-MM-DD or 30 years"
-                className="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-white"
+                max={new Date().toISOString().split("T")[0]}
+                className="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
               />
+              <p className="text-[11px] text-slate-500 mt-1">
+                Calculates your exact age across CodeRx dashboard, visits & prescriptions
+              </p>
             </div>
 
             <div>

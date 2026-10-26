@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import {
   FileText,
@@ -33,6 +33,8 @@ import {
 } from "lucide-react";
 import { usePatientAvatar } from "@/lib/avatar";
 import { useSubscription } from "@/lib/subscription";
+import { calculateAge } from "@/lib/date";
+import { CuteAppointmentCalendar } from "@/components/patient/CuteAppointmentCalendar";
 
 interface PatientDashboardViewProps {
   user: any;
@@ -59,6 +61,32 @@ export function PatientDashboardView({
   const { avatarUrl, setAvatar } = usePatientAvatar();
   const { isSubscribed } = useSubscription();
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Dynamic Patient DOB & Age calculation with real-time sync
+  const [patientDob, setPatientDob] = useState<string | null>(patient?.dob || null);
+
+  useEffect(() => {
+    // Check localStorage if updated in profile settings
+    if (typeof window !== "undefined") {
+      const savedDob = localStorage.getItem("coderx_patient_dob");
+      if (savedDob) {
+        setPatientDob(savedDob);
+      } else if (patient?.dob) {
+        setPatientDob(patient.dob);
+      }
+    }
+
+    const onProfileUpdate = (e: any) => {
+      if (e.detail?.dob) {
+        setPatientDob(e.detail.dob);
+      }
+    };
+    window.addEventListener("coderx_profile_updated", onProfileUpdate);
+    return () => window.removeEventListener("coderx_profile_updated", onProfileUpdate);
+  }, [patient?.dob]);
+
+  const computedAge = calculateAge(patientDob);
+  const displayAge = computedAge !== null ? `Age: ${computedAge}` : "Age: --";
 
   // Filter state for records (All, Reports, Prescriptions)
   const [recordFilter, setRecordFilter] = useState<"All" | "Reports" | "Prescriptions">("All");
@@ -263,12 +291,16 @@ export function PatientDashboardView({
               </h1>
 
               <div className="flex flex-wrap items-center gap-2 mt-1 text-[11px] font-semibold text-[#064E3B]">
-                <span className="px-2 py-0.5 rounded-md bg-white/80 border border-[#BDE8D1]">Age: 22</span>
+                <span className="px-2 py-0.5 rounded-md bg-white/80 border border-[#BDE8D1]">
+                  {displayAge}
+                </span>
                 <span className="px-2 py-0.5 rounded-md bg-white/80 border border-[#BDE8D1] flex items-center gap-1">
                   <Droplet className="w-3 h-3 text-rose-500 fill-rose-500" />
-                  <span>B+</span>
+                  <span>{patient?.bloodGroup || "O+"}</span>
                 </span>
-                <span className="px-2 py-0.5 rounded-md bg-white/80 border border-[#BDE8D1]">Mumbai</span>
+                <span className="px-2 py-0.5 rounded-md bg-white/80 border border-[#BDE8D1]">
+                  {patient?.city || "Mumbai"}
+                </span>
               </div>
             </div>
           </div>
@@ -299,40 +331,8 @@ export function PatientDashboardView({
       {/* ============================================================== */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
         
-        {/* Card 1: Next Doctor Appointment */}
-        <div className="bg-white rounded-xl p-4 border border-slate-200/90 shadow-2xs flex flex-col justify-between space-y-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center border border-purple-100">
-                <Calendar className="w-4 h-4" />
-              </div>
-              <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-purple-800 block">
-                  Next Doctor Visit
-                </span>
-                <h3 className="text-sm font-bold text-slate-900">Dr. Meera Nair</h3>
-              </div>
-            </div>
-
-            <span className="text-[11px] font-bold text-purple-800 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-200">
-              In 3 Days
-            </span>
-          </div>
-
-          <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-between text-xs">
-            <div className="space-y-0.5">
-              <div className="font-bold text-slate-800">24 Oct 2026 • 10:30 AM</div>
-              <div className="text-[11px] text-slate-500">General Physician • Apollo Clinic, Mumbai</div>
-            </div>
-            <Link
-              href="/patient/appointments"
-              className="text-xs font-bold text-emerald-700 hover:underline flex items-center gap-0.5 shrink-0 ml-2"
-            >
-              <span>Details</span>
-              <span>&rarr;</span>
-            </Link>
-          </div>
-        </div>
+        {/* Card 1: Cute Visits & Appointments Calendar */}
+        <CuteAppointmentCalendar appointments={appointments} />
 
         {/* Card 2: Today's Tasks & Medication Reminders */}
         <div className="bg-white rounded-xl p-4 border border-slate-200/90 shadow-2xs flex flex-col justify-between space-y-3">
