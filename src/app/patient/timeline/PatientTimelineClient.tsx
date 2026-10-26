@@ -71,10 +71,6 @@ export function PatientTimelineClient({
     updateSubscription(true, "INDIVIDUAL");
   }
 
-  function handleLockAgain() {
-    updateSubscription(false);
-  }
-
   // Loading skeleton while reading storage
   if (!isLoaded) {
     return (
@@ -336,8 +332,8 @@ export function PatientTimelineClient({
   return (
     <div className="space-y-6 max-w-5xl mx-auto pb-16 animate-in fade-in duration-200 text-[#064E3B] font-sans">
       
-      {/* 1. TOP HEADER WITH TITLE & CONDITIONAL DEMO TOGGLE */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[#D6EDE1]">
+      {/* 1. TOP HEADER WITH TITLE */}
+      <div className="pb-4 border-b border-[#D6EDE1]">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="px-2.5 py-0.5 rounded-full text-[10.5px] font-black bg-[#E8F8F0] text-[#059669] border border-[#BCE8D0] flex items-center gap-1">
@@ -357,32 +353,6 @@ export function PatientTimelineClient({
           <p className="text-xs sm:text-sm text-[#047857] mt-1 leading-relaxed font-medium">
             See how your body condition evolved over time (<strong>pehle condition kaisi thi vs ab kaisi hai</strong>) &amp; chronological clinical events.
           </p>
-        </div>
-
-        {/* DEMO SWITCHER - Allows re-locking to test the paywall purchase flow */}
-        <div className="flex flex-wrap items-center gap-2.5 self-start md:self-auto">
-          <div className="flex items-center gap-2 bg-white border border-[#D6EDE1] p-1.5 rounded-2xl shadow-2xs">
-            <span className="text-[11px] font-bold text-[#047857] px-2">Demo:</span>
-            <button
-              type="button"
-              onClick={handleLockAgain}
-              className="px-2.5 py-1 rounded-xl text-xs font-bold text-[#047857] hover:bg-[#E8F8F0] transition-all cursor-pointer"
-              title="Lock again to test the subscription purchase screen"
-            >
-              🔒 Lock Again
-            </button>
-            <span className="px-2.5 py-1 rounded-xl text-xs font-black bg-[#059669] text-white shadow-xs">
-              ✨ Unlocked (₹149)
-            </span>
-          </div>
-
-          <Link
-            href="/patient/subscription"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-emerald-50 text-[#064E3B] text-xs font-bold border border-[#BCE8D0] shadow-2xs transition-all cursor-pointer"
-          >
-            <Crown className="w-3.5 h-3.5 text-[#059669]" />
-            <span>Manage Plan</span>
-          </Link>
         </div>
       </div>
 
