@@ -227,8 +227,8 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
   }, [selectedDateKey]);
 
   return (
-    <div className="bg-white rounded-xl p-3.5 sm:p-4 border border-slate-200/90 shadow-2xs flex flex-col space-y-2.5">
-      {/* 1. Sleek Digital Header with Month Switcher (Emerald Brand Theme) */}
+    <div className="bg-gradient-to-r from-[#D7F3E5] via-[#E8F8EE] to-[#CFEFE0] border border-[#BDE8D1] rounded-2xl p-3.5 sm:p-4 shadow-2xs flex flex-col space-y-2.5">
+      {/* 1. Sleek Digital Header with Month Switcher (Matching Light Green Theme) */}
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#059669] to-[#047857] text-white flex items-center justify-center shadow-xs">
@@ -236,10 +236,10 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="text-[9px] font-black tracking-widest uppercase text-[#064E3B] bg-[#D7F3E5] px-1.5 py-0.2 rounded border border-[#BDE8D1]">
+              <span className="text-[9px] font-black tracking-widest uppercase text-[#064E3B] bg-white/80 px-1.5 py-0.2 rounded border border-[#BDE8D1]">
                 DIGITAL HUD
               </span>
-              <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-slate-500">
+              <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#064E3B]/80">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#059669] animate-pulse"></span>
                 <span>Active</span>
               </span>
@@ -252,11 +252,11 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
 
         {/* Month Navigator Controls */}
         <div className="flex items-center gap-1.5">
-          <div className="flex items-center bg-[#E8F8EE] border border-[#BDE8D1] rounded-lg px-1.5 py-0.5 shadow-2xs">
+          <div className="flex items-center bg-white/85 border border-[#BDE8D1] rounded-lg px-1.5 py-0.5 shadow-2xs">
             <button
               type="button"
               onClick={handlePrevMonth}
-              className="w-5 h-5 rounded hover:bg-[#BDE8D1]/70 text-[#064E3B] flex items-center justify-center cursor-pointer transition-colors"
+              className="w-5 h-5 rounded hover:bg-[#D7F3E5] text-[#064E3B] flex items-center justify-center cursor-pointer transition-colors"
               title="Previous Month"
               aria-label="Previous Month"
             >
@@ -268,7 +268,7 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
             <button
               type="button"
               onClick={handleNextMonth}
-              className="w-5 h-5 rounded hover:bg-[#BDE8D1]/70 text-[#064E3B] flex items-center justify-center cursor-pointer transition-colors"
+              className="w-5 h-5 rounded hover:bg-[#D7F3E5] text-[#064E3B] flex items-center justify-center cursor-pointer transition-colors"
               title="Next Month"
               aria-label="Next Month"
             >
@@ -276,7 +276,7 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
             </button>
           </div>
 
-          <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-[#D7F3E5] text-[#064E3B] border border-[#BDE8D1] shrink-0">
+          <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-white/80 text-[#064E3B] border border-[#BDE8D1] shrink-0">
             {currentMonthAppointments.length} Booked
           </span>
         </div>
@@ -326,7 +326,7 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
       </div>
 
       {/* 3. Horizontal Digital Days Ribbon (Scrollable for active month) */}
-      <div className="bg-[#F0FAF4] rounded-xl p-1.5 border border-[#BDE8D1]/80">
+      <div className="bg-white/70 rounded-xl p-1.5 border border-[#BDE8D1]">
         <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto py-0.5 scrollbar-none">
           {ribbonDays.map((d) => {
             const isSelected = selectedDateKey === d.dateKey;
@@ -341,8 +341,8 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
                   isSelected
                     ? "bg-[#059669] text-white font-extrabold shadow-2xs scale-105 z-10 border border-[#047857]"
                     : hasApp
-                    ? "bg-[#D7F3E5] text-[#064E3B] font-bold hover:bg-[#BDE8D1] border border-[#BDE8D1]"
-                    : "text-slate-600 hover:bg-slate-200/60 font-medium"
+                    ? "bg-[#D7F3E5] text-[#064E3B] font-bold hover:bg-white border border-[#BDE8D1]"
+                    : "text-[#064E3B]/80 hover:bg-white font-medium"
                 }`}
                 title={hasApp ? `Appointment on ${d.dayNumber} ${monthNames[activeMonthYear.month]}` : `${d.dayNumber} ${monthNames[activeMonthYear.month]}`}
               >
@@ -370,7 +370,7 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
 
       {/* 4. Active Selected Appointment Digital HUD Card */}
       {currentSelectedApps.length > 0 ? (
-        <div className="p-2.5 rounded-xl bg-gradient-to-r from-[#E8F8EE] via-[#F0FAF4] to-slate-50 border border-[#BDE8D1] flex items-center justify-between text-xs transition-all shadow-2xs">
+        <div className="p-2.5 rounded-xl bg-white/90 border border-[#BDE8D1] flex items-center justify-between text-xs transition-all shadow-2xs">
           <div className="flex items-center gap-3 min-w-0 pr-2">
             {/* Digital Date Cube in Brand Green */}
             <div className="shrink-0 w-11 h-12 rounded-lg bg-gradient-to-br from-[#059669] to-[#047857] text-white flex flex-col items-center justify-center shadow-xs border border-[#047857]/40">
@@ -395,7 +395,7 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
                   {currentSelectedApps[0].status}
                 </span>
               </div>
-              <div className="text-[11px] text-slate-600 truncate font-medium">
+              <div className="text-[11px] text-[#064E3B]/80 truncate font-medium">
                 {currentSelectedApps[0].specialty}
               </div>
               <div className="text-[11px] text-[#064E3B] font-semibold flex items-center gap-1 truncate">
@@ -414,16 +414,16 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
           </Link>
         </div>
       ) : (
-        <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between text-xs text-slate-600 shadow-2xs">
+        <div className="p-2.5 rounded-xl bg-white/90 border border-[#BDE8D1] flex items-center justify-between text-xs text-[#064E3B] shadow-2xs">
           <div className="flex items-center gap-2.5 min-w-0 pr-2">
-            <div className="shrink-0 w-11 h-12 rounded-lg bg-slate-200 text-slate-700 flex flex-col items-center justify-center font-bold">
+            <div className="shrink-0 w-11 h-12 rounded-lg bg-[#E8F8EE] text-[#064E3B] border border-[#BDE8D1] flex flex-col items-center justify-center font-bold">
               <span className="text-[9px] uppercase leading-none">{selectedDateDetails.month}</span>
               <span className="text-base font-black leading-tight mt-0.5">{selectedDateDetails.day}</span>
               <span className="text-[8px] uppercase leading-none opacity-70">{selectedDateDetails.weekday}</span>
             </div>
             <div className="space-y-0.5 min-w-0">
-              <div className="font-bold text-slate-800 text-xs">No Visit Scheduled</div>
-              <div className="text-[11px] text-slate-500 truncate">
+              <div className="font-bold text-[#064E3B] text-xs">No Visit Scheduled</div>
+              <div className="text-[11px] text-[#064E3B]/70 truncate">
                 Free clinical slot on {selectedDateDetails.day} {monthNames[activeMonthYear.month]}
               </div>
             </div>
@@ -432,7 +432,7 @@ export function CuteAppointmentCalendar({ appointments = [] }: CuteAppointmentCa
           <button
             type="button"
             onClick={jumpToOctober}
-            className="px-2.5 py-1 rounded-lg bg-[#E8F8EE] hover:bg-[#D7F3E5] text-[#064E3B] text-[11px] font-bold transition-all shrink-0 ml-1 cursor-pointer border border-[#BDE8D1]"
+            className="px-2.5 py-1 rounded-lg bg-[#D7F3E5] hover:bg-white text-[#064E3B] text-[11px] font-bold transition-all shrink-0 ml-1 cursor-pointer border border-[#BDE8D1]"
           >
             View Oct Visits &rarr;
           </button>
